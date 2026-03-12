@@ -7,434 +7,421 @@
 <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=M+PLUS+Rounded+1c:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#fdf6ee;
-  --paper:#fff9f2;
-  --ink:#2a1a0e;
-  --red:#e8453c;
-  --red2:#c02828;
-  --salmon:#f4846a;
-  --teal:#3ab8a8;
-  --teal2:#2a9080;
-  --gold:#f5c842;
-  --gold2:#d4a010;
-  --green:#5aaa60;
-  --green2:#3a8040;
-  --ocean:#2a6898;
-  --ocean2:#1a4868;
-  --rice:#f8f0d8;
-  --panel:#ffffffcc;
-  --shadow:rgba(42,26,14,.12);
-  --r:16px;
+  --sky-top:#b8e8ff;--sky-bot:#e8f8d0;
+  --water:#3aa8d8;--water2:#1a7aaa;--water3:#0d5a8a;
+  --grass:#6cc83a;--grass2:#4aa018;--grass3:#2a7008;
+  --dirt:#c8883a;--dirt2:#a06018;
+  --road:#38384a;--road2:#22222e;
+  --sand:#e8d898;--sand2:#c8b868;
+  --red:#e8403a;--red2:#b82020;
+  --teal:#2abcaa;--teal2:#1a8c7a;
+  --gold:#f8c832;--gold2:#c89010;
+  --warm:#fff8ee;--ink:#2a1a0e;
+  --panel:rgba(255,252,245,0.92);
+  --panel-border:rgba(42,26,14,0.10);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none}
-html,body{width:100%;height:100%;overflow:hidden;touch-action:manipulation}
-body{font-family:'M PLUS Rounded 1c',sans-serif;background:var(--bg)}
+html,body{width:100%;height:100%;overflow:hidden;touch-action:manipulation;background:#000}
+body{font-family:'M PLUS Rounded 1c',sans-serif}
 
-/* PORTRAIT */
+/* ═══════════════════════════════════
+   PORTRAIT LOCK
+═══════════════════════════════════ */
 .portrait-warn{
   display:none;position:fixed;inset:0;z-index:99999;
-  background:linear-gradient(160deg,#fdf6ee,#f0e8d8);
-  flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:40px;
+  background:linear-gradient(160deg,#1a3a50,#0a1a28);
+  flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:40px;
 }
 @media(orientation:portrait){.portrait-warn{display:flex;}}
-.pw-icon{font-size:68px;animation:rphone 2s ease-in-out infinite}
-@keyframes rphone{0%,100%{transform:rotate(0)}50%{transform:rotate(90deg)}}
-.pw-title{font-family:'Zen Dots',monospace;font-size:22px;color:var(--red)}
-.pw-sub{font-size:13px;color:rgba(42,26,14,.5);font-weight:700;line-height:1.7}
+.pw-icon{font-size:72px;animation:rp 2s ease-in-out infinite}
+@keyframes rp{0%,100%{transform:rotate(0)}50%{transform:rotate(90deg)}}
+.pw-t{font-family:'Zen Dots',monospace;font-size:22px;color:var(--gold)}
+.pw-s{font-size:13px;color:rgba(255,255,255,.5);font-weight:700;line-height:1.7}
 
-/* SCREENS */
+/* ═══════════════════════════════════
+   SCREEN BASE
+═══════════════════════════════════ */
 .screen{position:fixed;inset:0;display:flex;flex-direction:column;transition:opacity .3s,transform .3s}
 .screen.hidden{opacity:0;pointer-events:none;transform:scale(.98)}
 
-/* ═══════════ MAP ═══════════ */
+/* ═══════════════════════════════════
+   MAP SCREEN
+═══════════════════════════════════ */
 #screen-map{
-  background:linear-gradient(160deg,#e8f4fc 0%,#fdf6ee 55%,#f0ead8 100%);
+  background:linear-gradient(175deg,#c8eeff 0%,#e8f8f0 45%,#d4f0a8 100%);
   overflow:hidden;
 }
-
-/* Decorative wave top */
-.map-wave{position:absolute;top:0;left:0;right:0;height:90px;z-index:0;pointer-events:none}
-
 .map-header{
   position:relative;z-index:10;
-  padding:16px 22px 12px;
+  padding:14px 20px 10px;
   display:flex;align-items:center;justify-content:space-between;
 }
-.map-logo{font-family:'Zen Dots',monospace;font-size:26px;color:var(--red);letter-spacing:1px;
-  text-shadow:2px 2px 0 rgba(232,69,60,.15)}
-.map-logo-sub{font-size:10px;color:rgba(42,26,14,.4);font-weight:800;letter-spacing:2px;margin-top:2px}
-.map-coin-pill{
+.map-logo{font-family:'Zen Dots',monospace;font-size:24px;color:var(--red);text-shadow:1px 2px 0 rgba(232,64,58,.18)}
+.map-logo-sub{font-size:9px;color:rgba(42,26,14,.38);font-weight:800;letter-spacing:2px;margin-top:1px}
+.map-wallet{
   display:flex;align-items:center;gap:7px;
-  background:var(--panel);border:2px solid rgba(245,200,66,.5);
-  border-radius:30px;padding:7px 16px;
-  backdrop-filter:blur(8px);
-  box-shadow:0 4px 16px var(--shadow);
+  background:var(--panel);border:2px solid rgba(248,200,50,.45);
+  border-radius:28px;padding:6px 16px;
+  box-shadow:0 4px 14px rgba(42,26,14,.1);
 }
-.map-coin-pill .coin-icon{font-size:20px}
-.map-coin-pill .coin-val{font-family:'Zen Dots',monospace;font-size:20px;color:var(--gold2)}
-.map-coin-pill .coin-lbl{font-size:9px;color:rgba(42,26,14,.4);font-weight:800;letter-spacing:1px}
-
-/* World chip */
-.map-world-chip{
-  position:relative;z-index:10;margin:0 22px 12px;
-  background:var(--panel);border:2px solid rgba(58,184,168,.3);
-  border-radius:14px;padding:9px 16px;
-  backdrop-filter:blur(8px);box-shadow:0 4px 16px var(--shadow);
+.map-wallet-val{font-family:'Zen Dots',monospace;font-size:19px;color:var(--gold2)}
+.map-world{
+  position:relative;z-index:10;margin:0 20px 10px;
+  background:var(--panel);border:2px solid rgba(42,188,170,.28);
+  border-radius:14px;padding:8px 16px;
+  box-shadow:0 4px 14px rgba(42,26,14,.08);
   display:flex;align-items:center;gap:10px;
 }
-.world-chip-icon{font-size:22px}
-.world-chip-title{font-family:'Zen Dots',monospace;font-size:13px;color:var(--teal2)}
-.world-chip-sub{font-size:9px;color:rgba(42,26,14,.4);font-weight:800;margin-top:2px}
-
-/* Map path */
+.map-world-t{font-family:'Zen Dots',monospace;font-size:12px;color:var(--teal2)}
+.map-world-s{font-size:9px;color:rgba(42,26,14,.38);font-weight:800;margin-top:2px}
 .map-body{flex:1;display:flex;align-items:center;overflow:hidden;position:relative}
-.map-scroll{width:100%;overflow-x:auto;overflow-y:hidden;padding:16px 28px}
+.map-scroll{width:100%;overflow-x:auto;overflow-y:hidden;padding:14px 26px}
 .map-scroll::-webkit-scrollbar{display:none}
-.levels-row{display:flex;align-items:center;gap:0;min-width:max-content}
-.lv-seg{display:flex;align-items:center}
-.lv-line{
-  width:44px;height:3px;flex-shrink:0;
-  background:repeating-linear-gradient(90deg,rgba(42,26,14,.2) 0,rgba(42,26,14,.2) 4px,transparent 4px,transparent 9px);
-}
+.levels-row{display:flex;align-items:center;min-width:max-content}
+.lv-line{width:44px;height:3px;background:repeating-linear-gradient(90deg,rgba(42,26,14,.18) 0,rgba(42,26,14,.18) 4px,transparent 4px,transparent 9px)}
+.lv-wrap{display:flex;flex-direction:column;align-items:center}
 .lv-node{
-  width:86px;height:86px;border-radius:50%;flex-shrink:0;
+  width:84px;height:84px;border-radius:50%;flex-shrink:0;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   cursor:pointer;position:relative;transition:transform .14s;
 }
 .lv-node:active{transform:scale(.88) translateY(4px)}
-.lv-node.done{
-  background:radial-gradient(circle at 38% 32%,#fff,var(--teal),var(--teal2));
-  border:4px solid #fff;
-  box-shadow:0 7px 0 var(--teal2),0 9px 22px rgba(58,184,168,.35),inset 0 2px 0 rgba(255,255,255,.6);
-}
-.lv-node.next{
-  background:radial-gradient(circle at 38% 32%,#fff8d0,var(--gold),var(--gold2));
-  border:4px solid #fff;
-  box-shadow:0 7px 0 var(--gold2),0 9px 22px rgba(245,200,66,.4),inset 0 2px 0 rgba(255,255,255,.6);
-  animation:npulse 1.8s ease-in-out infinite;
-}
-.lv-node.locked{
-  background:radial-gradient(circle at 38% 32%,#ddd,#aaa,#888);
-  border:4px solid #fff;
-  box-shadow:0 6px 0 #666,0 8px 18px rgba(0,0,0,.15),inset 0 2px 0 rgba(255,255,255,.3);
-  opacity:.6;cursor:default;
-}
-@keyframes npulse{
-  0%,100%{box-shadow:0 7px 0 var(--gold2),0 0 0 0 rgba(245,200,66,.7)}
-  50%{box-shadow:0 7px 0 var(--gold2),0 0 0 16px rgba(245,200,66,0)}
-}
+.lv-node.done{background:radial-gradient(circle at 38% 32%,#fff,var(--teal),var(--teal2));border:4px solid #fff;box-shadow:0 7px 0 var(--teal2),0 9px 20px rgba(42,188,170,.3),inset 0 2px 0 rgba(255,255,255,.6)}
+.lv-node.next{background:radial-gradient(circle at 38% 32%,#fffad0,var(--gold),var(--gold2));border:4px solid #fff;box-shadow:0 7px 0 var(--gold2),0 9px 20px rgba(248,200,50,.35),inset 0 2px 0 rgba(255,255,255,.6);animation:npulse 1.8s ease-in-out infinite}
+.lv-node.locked{background:radial-gradient(circle at 38% 32%,#ddd,#aaa,#888);border:4px solid #fff;box-shadow:0 6px 0 #666,inset 0 2px 0 rgba(255,255,255,.3);opacity:.6;cursor:default}
+@keyframes npulse{0%,100%{box-shadow:0 7px 0 var(--gold2),0 0 0 0 rgba(248,200,50,.7)}50%{box-shadow:0 7px 0 var(--gold2),0 0 0 16px rgba(248,200,50,0)}}
 .lv-num{font-family:'Zen Dots',monospace;font-size:26px;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.2);line-height:1}
 .lv-stars{display:flex;gap:1px;margin-top:2px}
 .lv-stars span{font-size:12px}
-.lv-shadow{width:64px;height:10px;background:radial-gradient(ellipse,rgba(0,0,0,.18),transparent);border-radius:50%;margin-top:4px;flex-shrink:0}
+.lv-shadow{width:62px;height:9px;background:radial-gradient(ellipse,rgba(0,0,0,.16),transparent);border-radius:50%;margin-top:4px}
+.map-deco{position:absolute;bottom:0;left:0;right:0;height:35%;pointer-events:none;z-index:1}
+.deco-i{position:absolute;bottom:0;filter:drop-shadow(0 4px 8px rgba(0,0,0,.1))}
+.petal{position:absolute;animation:petal-fall linear infinite;pointer-events:none;z-index:0;opacity:.65}
+@keyframes petal-fall{0%{transform:translateX(0) rotate(0);opacity:.65}100%{transform:translateX(70px) rotate(360deg);opacity:0;top:110vh!important}}
 
-/* Map deco */
-.map-deco{position:absolute;bottom:0;left:0;right:0;height:38%;pointer-events:none;z-index:1}
-.deco-item{position:absolute;bottom:0;font-size:44px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.1))}
-.sakura-petal{
-  position:absolute;font-size:16px;
-  animation:petal-fall linear infinite;
-  pointer-events:none;z-index:0;opacity:.7;
-}
-@keyframes petal-fall{
-  0%{transform:translateX(0) rotate(0deg);opacity:.7}
-  100%{transform:translateX(60px) rotate(360deg);opacity:0;top:100vh!important}
+/* ═══════════════════════════════════
+   GAME SCREEN — TRUE FULLSCREEN
+═══════════════════════════════════ */
+#screen-game{overflow:hidden;position:relative}
+
+/* ── THE WORLD (fills entire screen) ── */
+#world{
+  position:absolute;inset:0;
+  overflow:hidden;
 }
 
-/* ═══════════ GAME ═══════════ */
-#screen-game{flex-direction:column;overflow:hidden;background:var(--bg)}
-
-/* HUD */
-.hud{
-  height:50px;flex-shrink:0;position:relative;z-index:30;
-  background:rgba(255,249,242,.95);
-  border-bottom:2px solid rgba(42,26,14,.08);
-  backdrop-filter:blur(12px);
-  display:flex;align-items:center;gap:7px;padding:0 10px;
-  box-shadow:0 2px 16px var(--shadow);
-}
-.hud-back{
-  width:34px;height:34px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(145deg,#ff7043,var(--red));
-  border:2px solid rgba(255,255,255,.6);
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;color:#fff;cursor:pointer;
-  box-shadow:0 4px 0 var(--red2),0 5px 12px rgba(232,69,60,.3);
-  transition:transform .12s,box-shadow .12s;
-}
-.hud-back:active{transform:translateY(3px);box-shadow:0 1px 0 var(--red2)}
-.hud-lvl{
-  background:var(--red);border-radius:10px;
-  padding:4px 12px;font-family:'Zen Dots',monospace;
-  font-size:12px;color:#fff;
-  box-shadow:0 3px 0 var(--red2);flex-shrink:0;
-}
-/* Steps */
-.hud-steps{flex:1;display:flex;align-items:center;justify-content:center;gap:4px}
-.step-pill{
-  padding:3px 9px;border-radius:20px;font-size:9px;font-weight:800;
-  background:rgba(42,26,14,.06);color:rgba(42,26,14,.3);
-  border:1px solid rgba(42,26,14,.08);transition:all .3s;white-space:nowrap;
-}
-.step-pill.active{background:rgba(245,200,66,.25);color:var(--gold2);border-color:rgba(245,200,66,.5);animation:spulse .9s ease-in-out infinite}
-.step-pill.done{background:rgba(90,170,96,.18);color:var(--green2);border-color:rgba(90,170,96,.35)}
-@keyframes spulse{0%,100%{opacity:1}50%{opacity:.5}}
-.hud-sep{width:1px;height:28px;background:rgba(42,26,14,.1);flex-shrink:0}
-/* Stars */
-.hud-stars{display:flex;gap:2px;flex-shrink:0}
-.hud-star{font-size:18px;filter:grayscale(1) opacity(.25);transition:filter .3s,transform .3s}
-.hud-star.on{filter:none;animation:star-pop .4s ease}
-@keyframes star-pop{0%{transform:scale(1)}50%{transform:scale(1.9)}100%{transform:scale(1)}}
-/* Coins */
-.hud-coins{
-  display:flex;align-items:center;gap:4px;
-  background:linear-gradient(145deg,#fff8d0,#fde68a);
-  border:2px solid rgba(245,200,66,.5);border-radius:12px;
-  padding:3px 11px;font-size:14px;font-weight:900;color:var(--gold2);
-  box-shadow:0 3px 0 rgba(212,160,16,.4);flex-shrink:0;
-}
-/* Timer */
-.hud-timer{
-  display:flex;align-items:center;gap:4px;
-  background:var(--ink);border-radius:12px;
-  padding:4px 12px;font-family:'Zen Dots',monospace;font-size:14px;color:#fff;
-  min-width:78px;justify-content:center;flex-shrink:0;
-  box-shadow:0 3px 0 rgba(0,0,0,.3);
-}
-.hud-timer.red{background:var(--red);animation:tblink .5s infinite}
-@keyframes tblink{0%,100%{opacity:1}50%{opacity:.5}}
-
-/* BODY */
-.game-body{flex:1;display:flex;overflow:hidden;min-height:0}
-
-/* ── ORDERS PANEL ── */
-.orders-panel{
-  width:142px;flex-shrink:0;
-  background:rgba(255,249,242,.9);
-  border-right:2px solid rgba(42,26,14,.08);
-  display:flex;flex-direction:column;padding:8px 6px;gap:5px;
-  z-index:10;backdrop-filter:blur(8px);
-}
-.panel-title{
-  font-family:'Zen Dots',monospace;font-size:9px;color:rgba(42,26,14,.4);
-  letter-spacing:1.5px;text-transform:uppercase;text-align:center;
-  padding:3px 0 5px;border-bottom:1px solid rgba(42,26,14,.07);
-}
-.orders-list{display:flex;flex-direction:column;gap:5px;flex:1;overflow-y:auto}
-.orders-list::-webkit-scrollbar{display:none}
-
-/* Order card */
-.order-card{
-  background:#fff;border:2.5px solid #f0e0c0;border-radius:14px;
-  padding:8px 8px 6px;flex-shrink:0;cursor:pointer;position:relative;
-  box-shadow:0 3px 0 rgba(42,26,14,.1),0 5px 14px rgba(42,26,14,.06);
-  transition:transform .12s,box-shadow .12s;overflow:hidden;
-}
-.order-card::after{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,var(--teal),var(--salmon));border-radius:14px 14px 0 0;
-}
-.order-card:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(42,26,14,.1)}
-.order-card.sel{border-color:var(--ocean);box-shadow:0 3px 0 var(--ocean2),0 0 0 3px rgba(42,104,152,.2)}
-.order-card.ready{border-color:var(--teal);box-shadow:0 3px 0 var(--teal2),0 0 0 3px rgba(58,184,168,.2);animation:card-bob .85s ease-in-out infinite}
-@keyframes card-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-.oi-row{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:4px}
-.oi{font-size:20px;transition:filter .2s,opacity .2s}
-.oi.dim{filter:grayscale(1);opacity:.2}
-.o-reward{font-size:11px;font-weight:900;color:var(--gold2);display:flex;align-items:center;gap:2px}
-.o-tbar{height:4px;background:rgba(42,26,14,.08);border-radius:3px;overflow:hidden;margin-top:4px}
-.o-tfill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--teal),var(--green));transition:width .4s linear,background .4s}
-.o-tfill.low{background:linear-gradient(90deg,var(--red),var(--salmon))}
-.o-ph{border:2px dashed rgba(42,26,14,.1);border-radius:14px;min-height:54px;display:flex;align-items:center;justify-content:center;font-size:20px;opacity:.2}
-
-/* ── SCENE ── */
-.scene-col{flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column}
-.scene{flex:1;position:relative;overflow:hidden;min-height:0}
-
-/* Scene BG — Japanese restaurant interior feel */
-.scene-bg{
+/* Sky */
+.world-sky{
   position:absolute;inset:0;
   background:linear-gradient(180deg,
-    #e8f4fc 0%,
-    #d4ecf8 28%,
-    #c8e8f4 28%,
-    #b0d8e8 38%,
-    #5aaa60 38%,
-    #3a8040 55%,
-    #2a5c2a 68%,
-    #8a6848 68%,
-    #6a4828 82%,
-    #4a3018 100%
+    #7ed4f8 0%,
+    #b8eaff 30%,
+    #cef5d0 52%,
+    #8ed848 52%,
+    #60b828 64%,
+    #38800a 72%,
+    #c88838 72%,
+    #a06018 80%,
+    #383848 80%,
+    #22222e 100%
   );
 }
-/* water shimmer */
-.water-shimmer{
-  position:absolute;z-index:2;pointer-events:none;
+
+/* Animated sky elements */
+.world-sun{
+  position:absolute;top:12px;right:60px;width:52px;height:52px;border-radius:50%;z-index:2;
+  background:radial-gradient(circle at 42% 38%,#fffad0,#ffe050,#ffb000);
+  box-shadow:0 0 0 8px rgba(255,220,50,.15),0 0 0 18px rgba(255,210,40,.07),0 0 40px rgba(255,190,0,.4);
+  animation:sun-glow 5s ease-in-out infinite;
+}
+@keyframes sun-glow{0%,100%{box-shadow:0 0 0 8px rgba(255,220,50,.15),0 0 40px rgba(255,190,0,.4)}50%{box-shadow:0 0 0 14px rgba(255,220,50,.22),0 0 60px rgba(255,190,0,.6)}}
+.world-cloud{position:absolute;animation:cloud-move linear infinite;pointer-events:none;z-index:3;opacity:.85}
+@keyframes cloud-move{from{transform:translateX(-140px)}to{transform:translateX(115vw)}}
+
+/* Water layer with waves */
+.water-zone{
+  position:absolute;left:0;right:0;z-index:4;
+  overflow:hidden;
+}
+.water-surface{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,var(--water) 0%,var(--water2) 50%,var(--water3) 100%);
+}
+.water-wave{
+  position:absolute;top:0;left:-100%;right:-100%;height:8px;
   background:repeating-linear-gradient(90deg,
-    rgba(255,255,255,.08) 0, rgba(255,255,255,.08) 2px,
-    transparent 2px, transparent 22px
+    rgba(255,255,255,.18) 0,rgba(255,255,255,.18) 40px,
+    transparent 40px,transparent 90px
   );
-  animation:wshim 3s linear infinite;
+  animation:wave-move 3s linear infinite;
+  border-radius:4px;
 }
-@keyframes wshim{from{background-position:0 0}to{background-position:44px 0}}
-
-.sky-sun{
-  position:absolute;top:7px;right:32px;width:40px;height:40px;border-radius:50%;z-index:3;
-  background:radial-gradient(circle at 40% 38%,#fff9d0,#ffe066,#ffb300);
-  box-shadow:0 0 0 6px rgba(255,220,50,.15),0 0 0 14px rgba(255,210,40,.07),0 0 28px rgba(255,190,0,.4);
-  animation:sunpulse 4s ease-in-out infinite;
+.water-wave:nth-child(2){top:5px;animation-duration:4.5s;animation-delay:-2s;opacity:.6}
+.water-wave:nth-child(3){top:10px;animation-duration:3.8s;animation-delay:-1.2s;opacity:.4}
+@keyframes wave-move{from{transform:translateX(0)}to{transform:translateX(90px)}}
+.water-shimmer{
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0,rgba(255,255,255,.06) 2px,transparent 2px,transparent 28px);
+  animation:shim 4s linear infinite;
 }
-@keyframes sunpulse{0%,100%{opacity:1}50%{opacity:.8}}
+@keyframes shim{from{background-position:0 0}to{background-position:56px 0}}
 
-/* cherry blossoms in sky */
-.blossom{position:absolute;pointer-events:none;z-index:3;animation:blossom-drift linear infinite;font-size:14px;opacity:.6}
-@keyframes blossom-drift{
-  0%{transform:translateX(0) translateY(0) rotate(0deg);opacity:.6}
-  100%{transform:translateX(80px) translateY(40px) rotate(180deg);opacity:0}
-}
+/* Terrain layers */
+.terrain-layer{position:absolute;left:0;right:0}
 
-.scene-cloud{position:absolute;animation:cloud-drift linear infinite;pointer-events:none;z-index:3;font-size:24px}
-@keyframes cloud-drift{from{transform:translateX(-120px)}to{transform:translateX(115vw)}}
+/* Ground fence */
+.fence-svg{position:absolute;left:0;right:0;z-index:8;pointer-events:none}
 
-/* Ground layers */
-.ground-layer{position:absolute;left:0;right:0}
+/* ═══════════════════════════════════
+   SCENE OBJECTS — positioned absolutely in world
+═══════════════════════════════════ */
 
-/* ── PIER (piers/fish sources) ── */
-.pier-obj{
+/* ── PIER ── */
+.pier-structure{
   position:absolute;z-index:6;
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;
 }
-.pier-platform{
+.pier-deck{
   position:relative;
-  border-radius:6px 6px 2px 2px;
-  border:2.5px solid rgba(0,0,0,.2);
-  box-shadow:0 4px 0 rgba(0,0,0,.2),0 6px 14px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.3);
-  display:flex;align-items:center;justify-content:center;flex-direction:column;
-  overflow:hidden;
+  border-radius:6px 6px 0 0;
+  background:linear-gradient(180deg,#c8a050,#a07828,#805808);
+  border:2px solid #604008;
+  box-shadow:0 4px 0 #402800,0 6px 16px rgba(0,0,0,.3);
 }
-.pier-platform::before{
+.pier-deck::before{/* wood planks */
   content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0,rgba(0,0,0,.05) 1px,transparent 1px,transparent 10px);
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.07) 0,rgba(0,0,0,.07) 1px,transparent 1px,transparent 14px);
+  border-radius:5px 5px 0 0;
 }
-.pier-platform::after{
-  content:'';position:absolute;top:0;left:0;right:0;height:35%;
-  background:linear-gradient(180deg,rgba(255,255,255,.25),transparent);
+.pier-deck::after{/* top shine */
+  content:'';position:absolute;top:0;left:0;right:0;height:38%;
+  background:linear-gradient(180deg,rgba(255,255,255,.2),transparent);
+  border-radius:5px 5px 0 0;
 }
-.pier-emoji{font-size:28px;z-index:2;position:relative;transition:transform .12s}
-.pier-platform:active .pier-emoji{transform:scale(.85)}
-.pier-badge{
-  position:absolute;top:-7px;right:-7px;z-index:10;
+.pier-post{
+  position:absolute;bottom:-20px;
+  width:8px;background:linear-gradient(180deg,#a07828,#604008);
+  border-radius:0 0 3px 3px;border:1px solid #402800;
+}
+.pier-water-line{
+  width:100%;height:6px;
+  background:linear-gradient(180deg,rgba(255,255,255,.3),transparent);
+  border-radius:0 0 4px 4px;
+}
+/* Fisher character on pier */
+.fisher-char{
+  position:absolute;display:flex;flex-direction:column;align-items:center;
+  cursor:pointer;z-index:10;
+  transition:transform .12s;
+}
+.fisher-char:active{transform:scale(.88)}
+.char-body{
+  position:relative;display:flex;flex-direction:column;align-items:center;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.25));
+}
+.char-emoji{font-size:32px;line-height:1;animation:fisher-idle 3s ease-in-out infinite}
+@keyframes fisher-idle{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.char-rod{font-size:18px;position:absolute;right:-14px;top:2px;animation:rod-bob 2s ease-in-out infinite}
+@keyframes rod-bob{0%,100%{transform:rotate(15deg)}50%{transform:rotate(25deg)}}
+.char-cd-ring{
+  position:absolute;inset:-5px;border-radius:50%;
+  border:3px solid transparent;
+  transition:all .2s;
+}
+.char-cd-ring.active{
+  border-color:rgba(42,188,170,.6);
+  animation:cd-spin 1s linear infinite;
+}
+@keyframes cd-spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.char-ready-glow{
+  position:absolute;inset:-6px;border-radius:50%;
+  background:radial-gradient(circle,rgba(248,200,50,.35),transparent 70%);
+  animation:ready-pulse .9s ease-in-out infinite;
+}
+@keyframes ready-pulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.3);opacity:.4}}
+.char-bubble{
+  background:#fff;border:2px solid var(--teal);border-radius:10px;
+  padding:2px 8px;font-size:8px;font-weight:800;color:var(--teal2);
+  white-space:nowrap;margin-bottom:2px;
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
+  animation:bubble-pop .3s ease;
+}
+@keyframes bubble-pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.char-progress{
+  width:42px;height:4px;background:rgba(0,0,0,.15);border-radius:3px;overflow:hidden;margin-top:3px;
+  border:1px solid rgba(255,255,255,.3);
+}
+.char-progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),#8ae880);border-radius:3px;transition:width .25s linear}
+.char-name{font-size:8px;font-weight:800;color:var(--ink);opacity:.55;margin-top:2px;white-space:nowrap}
+.lv-badge{
+  position:absolute;top:-7px;right:-7px;
   background:linear-gradient(145deg,#fff8d0,var(--gold));
   border:2px solid var(--gold2);border-radius:8px;
   padding:1px 5px;font-size:8px;font-weight:900;color:var(--gold2);
-  box-shadow:0 2px 0 rgba(212,160,16,.4);
+  box-shadow:0 2px 0 rgba(200,144,16,.4);z-index:5;
 }
-.pier-bar{height:4px;background:rgba(0,0,0,.12);border-radius:3px;overflow:hidden;border:1px solid rgba(255,255,255,.2)}
-.pier-bar-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--green));border-radius:3px;transition:width .25s linear}
-.pier-cd-ov{
-  position:absolute;bottom:0;left:0;right:0;
-  background:rgba(0,0,0,.38);pointer-events:none;
-  transition:height .25s linear;
-}
-.pier-label{font-size:8px;font-weight:800;color:var(--ink);opacity:.6;white-space:nowrap;text-align:center}
-.pier-ready{animation:pier-bob .75s ease-in-out infinite}
-@keyframes pier-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
-/* ── KITCHEN / MACHINE ── */
-.kitchen-widget{
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  cursor:pointer;transition:transform .12s;
+/* ── RICE FIELD ── */
+.rice-field{
+  position:absolute;z-index:6;
+  display:flex;flex-direction:column;align-items:center;cursor:pointer;
 }
-.kitchen-widget:active .kitch-body{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.2)!important}
-.kitch-body{
-  width:106px;position:relative;
-  border-radius:12px;
-  border:2.5px solid rgba(0,0,0,.15);
-  box-shadow:0 5px 0 rgba(0,0,0,.18),0 7px 18px rgba(0,0,0,.1);
-  overflow:hidden;
-  transition:transform .12s,box-shadow .12s;
+.field-plot{
+  position:relative;border-radius:8px;overflow:hidden;
+  background:linear-gradient(180deg,#78c838,#58a018,#388008);
+  border:2.5px solid #285008;
+  box-shadow:0 5px 0 #183808,0 7px 16px rgba(0,0,0,.2);
 }
-.kitch-top{height:14px;border-radius:10px 10px 0 0;position:relative}
-.kitch-top::after{content:'';position:absolute;inset:0;border-radius:10px 10px 0 0;background:linear-gradient(180deg,rgba(255,255,255,.3),transparent)}
-.kitch-mid{height:58px;position:relative;display:flex;align-items:center;justify-content:center}
-.kitch-mid::before{
+.field-plot::before{/* grid lines */
   content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(180deg,rgba(0,0,0,.05) 0,rgba(0,0,0,.05) 1px,transparent 1px,transparent 9px);
+  background:
+    repeating-linear-gradient(0deg,rgba(0,0,0,.06) 0,rgba(0,0,0,.06) 1px,transparent 1px,transparent 12px),
+    repeating-linear-gradient(90deg,rgba(0,0,0,.06) 0,rgba(0,0,0,.06) 1px,transparent 1px,transparent 12px);
 }
-.kitch-sign{
-  position:absolute;top:4px;left:50%;transform:translateX(-50%);
-  background:rgba(255,255,255,.94);border:1.5px solid rgba(0,0,0,.1);
-  border-radius:8px;padding:2px 7px;font-size:9px;font-weight:900;color:var(--ink);white-space:nowrap;z-index:2;
-  box-shadow:0 2px 4px rgba(0,0,0,.08);
+.field-rice-row{
+  position:absolute;bottom:4px;left:0;right:0;
+  display:flex;justify-content:space-evenly;
 }
-.kitch-icon{font-size:24px;z-index:2;position:relative}
-.kitch-prog{position:absolute;bottom:0;left:0;right:0;height:6px;background:rgba(0,0,0,.15)}
-.kitch-prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--green));transition:width .3s linear}
-.kitch-lv{
-  position:absolute;top:-7px;right:-7px;z-index:10;
-  background:linear-gradient(145deg,#fff8d0,var(--gold));
-  border:2px solid var(--gold2);border-radius:8px;
-  padding:1px 5px;font-size:8px;font-weight:900;color:var(--gold2);
-  box-shadow:0 2px 0 rgba(212,160,16,.4);
+.rice-stalk{font-size:14px;animation:rice-sway 2s ease-in-out infinite}
+.rice-stalk:nth-child(2){animation-delay:.3s}
+.rice-stalk:nth-child(3){animation-delay:.6s}
+.rice-stalk:nth-child(4){animation-delay:.9s}
+@keyframes rice-sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+.field-farmer{
+  position:absolute;bottom:4px;right:4px;font-size:18px;
+  animation:farmer-work 2.5s ease-in-out infinite;
 }
-.kitch-shadow{height:7px;width:86px;background:radial-gradient(ellipse,rgba(0,0,0,.15),transparent);border-radius:50%;margin-top:2px}
-.kitch-label{font-size:9px;font-weight:800;color:rgba(42,26,14,.5);text-align:center;white-space:nowrap}
-.kitch-body.working{
-  box-shadow:0 5px 0 rgba(0,0,0,.18),0 0 0 3px rgba(58,184,168,.5),0 0 18px rgba(58,184,168,.3);
+@keyframes farmer-work{0%,100%{transform:scaleX(1)}50%{transform:scaleX(-1)}}
+
+/* ── AQUARIUM ── */
+.aqua-tank{
+  position:absolute;z-index:6;
+  display:flex;flex-direction:column;align-items:center;cursor:pointer;
 }
-/* Steam puff */
-.steam-puff{
+.tank-body{
+  position:relative;border-radius:8px;overflow:hidden;
+  background:linear-gradient(165deg,#4ad0f8,#1a9ad8,#0a6898);
+  border:3px solid #0a4878;
+  box-shadow:0 5px 0 #063060,0 7px 18px rgba(10,72,120,.4);
+}
+.tank-water{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.15),rgba(255,255,255,.05));
+}
+.tank-bubbles{position:absolute;inset:0}
+.tank-bubble{
   position:absolute;border-radius:50%;
-  background:rgba(220,240,255,.7);
-  animation:steam-up 2s ease-out infinite;
+  background:rgba(255,255,255,.55);
+  animation:bubble-rise linear infinite;
+}
+@keyframes bubble-rise{0%{transform:translateY(0) scale(1);opacity:.55}100%{transform:translateY(-60px) scale(.3);opacity:0}}
+.tank-fish{position:absolute;animation:fish-swim linear infinite}
+@keyframes fish-swim{0%{left:8px;transform:scaleX(1)}49%{left:calc(100% - 28px);transform:scaleX(1)}50%{left:calc(100% - 28px);transform:scaleX(-1)}99%{left:8px;transform:scaleX(-1)}100%{left:8px;transform:scaleX(1)}}
+.tank-glass{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.2) 0,transparent 50%);
   pointer-events:none;
 }
-@keyframes steam-up{
-  0%{transform:translateX(-50%) scale(1);opacity:.7}
-  100%{transform:translateX(-50%) scale(3);opacity:0;margin-bottom:30px}
-}
 
-/* ── FRIDGE/STORAGE ── */
-.fridge-widget{display:flex;flex-direction:column;align-items:center;gap:3px}
-.fridge-body{
-  width:106px;border-radius:12px;
-  background:linear-gradient(160deg,#eaf8f6,#c8ece8,#a8dcd8);
-  border:2.5px solid var(--teal2);
-  box-shadow:0 5px 0 rgba(42,144,128,.3),0 7px 18px rgba(58,184,168,.15);
-  overflow:hidden;
+/* ── GARDEN ── */
+.garden-plot{
+  position:absolute;z-index:6;
+  display:flex;flex-direction:column;align-items:center;cursor:pointer;
 }
-.fridge-top{
-  height:36px;background:linear-gradient(160deg,#2abcac,#1a9080);
-  display:flex;align-items:center;justify-content:center;position:relative;
+.garden-bed{
+  position:relative;border-radius:8px;overflow:hidden;
+  background:linear-gradient(180deg,#88b840,#60880a,#405808);
+  border:2.5px solid #284008;
+  box-shadow:0 5px 0 #182808,0 7px 14px rgba(0,0,0,.2);
 }
-.fridge-top::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.2),transparent)}
-.fridge-handle{
-  position:absolute;right:8px;top:50%;transform:translateY(-50%);
-  width:5px;height:18px;background:#fff;border-radius:3px;opacity:.7;
+.garden-bed::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,rgba(0,0,0,.04) 0,rgba(0,0,0,.04) 2px,transparent 2px,transparent 10px);
 }
-.fridge-items{
-  display:flex;gap:2px;flex-wrap:wrap;justify-content:center;
-  padding:5px;min-height:20px;
+.garden-plants{
+  position:absolute;inset:4px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;align-items:end;
 }
-.fridge-chip{
-  background:#fff;border:1.5px solid rgba(58,184,168,.3);
-  border-radius:8px;padding:2px 5px;font-size:12px;
-  display:flex;align-items:center;gap:1px;
+.garden-plant{font-size:14px;text-align:center;animation:plant-grow 3s ease-in-out infinite}
+.garden-plant:nth-child(2){animation-delay:.5s}
+.garden-plant:nth-child(3){animation-delay:1s}
+@keyframes plant-grow{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.08)}}
+
+/* ── KITCHEN BUILDING ── */
+.kitchen-building{
+  position:absolute;z-index:7;
+  display:flex;flex-direction:column;align-items:center;
 }
-.fridge-chip span{font-size:8px;font-weight:900;color:var(--teal2)}
-.fridge-lbl{font-size:9px;font-weight:800;color:rgba(42,26,14,.5);text-align:center;padding:2px;white-space:nowrap}
+/* Roof */
+.bld-roof-wrap{display:flex;flex-direction:column;align-items:center;width:100%}
+.bld-roof{
+  width:0;height:0;
+  position:relative;
+}
+.bld-roof-band{width:100%;border-radius:0 0 4px 4px;border:2px solid rgba(0,0,0,.2);border-top:none}
+/* Walls */
+.bld-walls{
+  width:100%;position:relative;overflow:hidden;
+  border:3px solid rgba(0,0,0,.25);border-top:none;
+  border-radius:0 0 8px 8px;
+}
+.bld-walls::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(180deg,rgba(0,0,0,.06) 0,rgba(0,0,0,.06) 1px,transparent 1px,transparent 10px);
+}
+.bld-walls::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:32%;
+  background:linear-gradient(180deg,rgba(255,255,255,.2),transparent);
+}
+.bld-window{
+  position:absolute;background:linear-gradient(145deg,#c8e8f8,#88c0e0);
+  border:2px solid rgba(0,0,0,.25);border-radius:3px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);z-index:2;
+}
+.bld-window::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.4) 0,transparent 60%);border-radius:2px}
+.bld-door{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  border:2px solid rgba(0,0,0,.3);border-radius:4px 4px 0 0;z-index:2;
+}
+.bld-sign{
+  position:absolute;top:4px;left:50%;transform:translateX(-50%);
+  background:rgba(255,255,255,.95);border:1.5px solid rgba(0,0,0,.1);
+  border-radius:7px;padding:2px 7px;font-size:9px;font-weight:900;color:var(--ink);
+  white-space:nowrap;z-index:3;box-shadow:0 2px 4px rgba(0,0,0,.08);
+}
+.bld-progress{position:absolute;bottom:0;left:0;right:0;height:6px;background:rgba(0,0,0,.18);z-index:3}
+.bld-progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),#80e860);transition:width .3s linear}
+/* Cook character in window */
+.cook-char{
+  position:absolute;z-index:4;
+  animation:cook-peek 4s ease-in-out infinite;
+}
+@keyframes cook-peek{0%,100%{transform:translateY(0)}30%,70%{transform:translateY(-4px)}}
+/* Steam from chimney */
+.chimney-obj{position:absolute;top:-18px;width:14px;height:20px;background:linear-gradient(180deg,#888,#555);border-radius:3px 3px 0 0;border:1.5px solid #333}
+.steam{
+  position:absolute;border-radius:50%;
+  background:rgba(220,235,255,.65);
+  animation:steam-rise 2s ease-out infinite;
+}
+@keyframes steam-rise{0%{transform:translateX(-50%) scale(1);opacity:.65}100%{transform:translateX(-50%) scale(3.5);opacity:0;margin-bottom:36px}}
+.bld-shadow{
+  width:90%;height:10px;margin-top:4px;
+  background:radial-gradient(ellipse,rgba(0,0,0,.2),transparent);
+  border-radius:50%;
+}
+.bld-lbl{font-size:9px;font-weight:800;color:rgba(42,26,14,.5);white-space:nowrap;margin-top:2px}
+.bld-working{box-shadow:0 5px 0 rgba(0,0,0,.25),0 0 0 3px rgba(42,188,170,.5),0 0 20px rgba(42,188,170,.3)!important}
 
 /* ── DELIVERY MOPED ── */
 .moped-obj{
-  position:absolute;cursor:pointer;
+  position:absolute;z-index:9;
   display:flex;flex-direction:column;align-items:center;gap:3px;
-  transition:left .1s linear;z-index:9;
+  cursor:pointer;
 }
 .moped-speech{
-  background:#fff;border:2px solid var(--gold);
-  border-radius:12px;padding:3px 10px;
-  font-size:9px;font-weight:800;color:var(--gold2);
+  background:#fff;border:2px solid var(--gold);border-radius:12px;
+  padding:3px 10px;font-size:9px;font-weight:800;color:var(--gold2);
   box-shadow:0 3px 8px rgba(0,0,0,.1);white-space:nowrap;position:relative;
 }
 .moped-speech::after{
@@ -442,58 +429,198 @@ body{font-family:'M PLUS Rounded 1c',sans-serif;background:var(--bg)}
   border-left:5px solid transparent;border-right:5px solid transparent;
   border-top:7px solid #fff;
 }
-.moped-icon{
-  font-size:34px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15));
-  transition:transform .1s;
+.moped-vehicle{
+  display:flex;flex-direction:column;align-items:center;
+  filter:drop-shadow(0 5px 8px rgba(0,0,0,.2));
 }
-.moped-obj.moving .moped-icon{animation:moped-move .3s ease-in-out infinite}
-@keyframes moped-move{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-.moped-glow{filter:drop-shadow(0 0 8px rgba(245,200,66,.9));animation:mglow .65s ease-in-out infinite}
-@keyframes mglow{0%,100%{filter:drop-shadow(0 0 5px rgba(245,200,66,.8))}50%{filter:drop-shadow(0 0 14px rgba(245,200,66,1))}}
+.moped-body-svg{font-size:40px;line-height:1}
+.moped-obj.moving .moped-body-svg{animation:moped-bounce .25s ease-in-out infinite}
+@keyframes moped-bounce{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-4px) rotate(1deg)}}
+.moped-glow .moped-vehicle{filter:drop-shadow(0 0 10px rgba(248,200,50,1)) drop-shadow(0 5px 8px rgba(0,0,0,.2));animation:mglow .6s ease-in-out infinite}
+@keyframes mglow{0%,100%{filter:drop-shadow(0 0 6px rgba(248,200,50,.8)) drop-shadow(0 5px 8px rgba(0,0,0,.2))}50%{filter:drop-shadow(0 0 16px rgba(248,200,50,1)) drop-shadow(0 5px 8px rgba(0,0,0,.2))}}
 
-/* ═══════════ UPGRADE ═══════════ */
+/* ═══════════════════════════════════
+   FLOATING UI — overlaid on world
+═══════════════════════════════════ */
+#ui-layer{
+  position:absolute;inset:0;pointer-events:none;z-index:20;
+  display:flex;flex-direction:column;
+}
+
+/* Top bar — minimal floating */
+.top-bar{
+  pointer-events:all;
+  display:flex;align-items:center;gap:8px;
+  padding:10px 12px 6px;
+}
+.tb-back{
+  width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  background:rgba(255,255,255,.88);border:2px solid rgba(232,64,58,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:var(--red);cursor:pointer;
+  box-shadow:0 3px 10px rgba(0,0,0,.15);
+  backdrop-filter:blur(8px);
+  transition:transform .12s;
+}
+.tb-back:active{transform:scale(.88)}
+.tb-lvl{
+  background:var(--red);border-radius:10px;
+  padding:4px 12px;font-family:'Zen Dots',monospace;
+  font-size:12px;color:#fff;box-shadow:0 3px 0 var(--red2);flex-shrink:0;
+}
+/* Steps floating pills */
+.tb-steps{flex:1;display:flex;justify-content:center;gap:4px}
+.step-pill{
+  padding:4px 9px;border-radius:20px;font-size:9px;font-weight:800;
+  background:rgba(255,255,255,.72);color:rgba(42,26,14,.35);
+  border:1px solid rgba(255,255,255,.5);backdrop-filter:blur(6px);
+  transition:all .3s;white-space:nowrap;pointer-events:none;
+}
+.step-pill.active{background:rgba(248,200,50,.85);color:#8a5800;border-color:rgba(248,200,50,.6);animation:spulse .9s ease-in-out infinite}
+.step-pill.done{background:rgba(42,188,170,.8);color:#fff;border-color:rgba(42,188,170,.5)}
+@keyframes spulse{0%,100%{opacity:1}50%{opacity:.6}}
+.tb-sep{width:1px;height:26px;background:rgba(255,255,255,.4);flex-shrink:0}
+/* Stars */
+.tb-stars{display:flex;gap:2px;flex-shrink:0}
+.tb-star{font-size:18px;filter:grayscale(1) opacity(.3);transition:filter .3s,transform .3s;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.2)) grayscale(1) opacity(.3)}
+.tb-star.on{filter:drop-shadow(0 2px 4px rgba(248,200,50,.5));animation:star-pop .4s ease}
+@keyframes star-pop{0%{transform:scale(1)}50%{transform:scale(1.9)}100%{transform:scale(1)}}
+/* Timer */
+.tb-timer{
+  background:rgba(30,30,40,.82);border-radius:12px;
+  padding:4px 12px;font-family:'Zen Dots',monospace;font-size:14px;color:#fff;
+  min-width:74px;text-align:center;flex-shrink:0;
+  backdrop-filter:blur(8px);box-shadow:0 3px 10px rgba(0,0,0,.2);
+}
+.tb-timer.red{background:rgba(232,64,58,.9);animation:tblink .5s infinite}
+@keyframes tblink{0%,100%{opacity:1}50%{opacity:.5}}
+/* Coins */
+.tb-coins{
+  display:flex;align-items:center;gap:3px;
+  background:rgba(255,255,255,.88);border:2px solid rgba(248,200,50,.45);
+  border-radius:12px;padding:3px 11px;
+  font-size:14px;font-weight:900;color:var(--gold2);
+  backdrop-filter:blur(8px);box-shadow:0 3px 10px rgba(0,0,0,.1);flex-shrink:0;
+}
+
+/* Side panels */
+.side-panels{
+  flex:1;display:flex;align-items:stretch;pointer-events:none;
+  padding:0 8px 10px;gap:8px;min-height:0;
+}
+
+/* Orders panel — left */
+.orders-panel{
+  width:136px;flex-shrink:0;pointer-events:all;
+  background:rgba(255,252,245,.9);
+  border:2px solid rgba(42,26,14,.08);border-radius:16px;
+  display:flex;flex-direction:column;padding:8px 6px;gap:5px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 8px 24px rgba(0,0,0,.12);
+  overflow:hidden;
+}
+.panel-title{
+  font-family:'Zen Dots',monospace;font-size:9px;color:rgba(42,26,14,.35);
+  letter-spacing:1.5px;text-transform:uppercase;text-align:center;
+  padding:3px 0 5px;border-bottom:1px solid rgba(42,26,14,.07);
+}
+.orders-list{display:flex;flex-direction:column;gap:5px;flex:1;overflow-y:auto}
+.orders-list::-webkit-scrollbar{display:none}
+.order-card{
+  background:#fff;border:2.5px solid #f0dfc0;border-radius:12px;
+  padding:7px 8px 6px;flex-shrink:0;cursor:pointer;position:relative;
+  box-shadow:0 3px 0 rgba(42,26,14,.09),0 4px 12px rgba(42,26,14,.05);
+  transition:transform .12s,box-shadow .12s;overflow:hidden;
+}
+.order-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:12px 12px 0 0}
+.order-card:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(42,26,14,.09)}
+.order-card.sel{border-color:var(--teal);box-shadow:0 3px 0 var(--teal2),0 0 0 3px rgba(42,188,170,.2)}
+.order-card.ready{border-color:var(--teal);box-shadow:0 3px 0 var(--teal2),0 0 0 3px rgba(42,188,170,.18);animation:card-bob .85s ease-in-out infinite}
+@keyframes card-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.oi-row{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:4px}
+.oi{font-size:20px;transition:filter .2s,opacity .2s}
+.oi.dim{filter:grayscale(1);opacity:.2}
+.o-reward{font-size:11px;font-weight:900;color:var(--gold2);display:flex;align-items:center;gap:2px}
+.o-tbar{height:4px;background:rgba(42,26,14,.08);border-radius:3px;overflow:hidden;margin-top:4px}
+.o-tfill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--teal),#80e860);transition:width .4s linear,background .4s}
+.o-tfill.low{background:linear-gradient(90deg,var(--red),#ff8060)}
+.o-ph{border:2px dashed rgba(42,26,14,.1);border-radius:12px;min-height:52px;display:flex;align-items:center;justify-content:center;font-size:20px;opacity:.18}
+
+/* Spacer middle */
+.panel-spacer{flex:1}
+
+/* Kitchen panel — right */
+.kitchen-panel{
+  width:136px;flex-shrink:0;pointer-events:all;
+  background:rgba(255,252,245,.9);
+  border:2px solid rgba(42,26,14,.08);border-radius:16px;
+  display:flex;flex-direction:column;padding:8px 6px;gap:6px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 8px 24px rgba(0,0,0,.12);
+  overflow-y:auto;
+}
+.kitchen-panel::-webkit-scrollbar{display:none}
+
+/* Kitchen card (tappable building proxy) */
+.kitchen-card{
+  background:#fff;border:2.5px solid rgba(42,26,14,.08);border-radius:12px;
+  padding:8px;display:flex;flex-direction:column;align-items:center;gap:4px;
+  cursor:pointer;transition:transform .12s,box-shadow .12s;
+  box-shadow:0 3px 8px rgba(0,0,0,.06);position:relative;
+}
+.kitchen-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:12px 12px 0 0}
+.kitchen-card:active{transform:scale(.96)}
+.kitchen-card.working{
+  border-color:var(--teal);
+  box-shadow:0 3px 8px rgba(0,0,0,.06),0 0 0 3px rgba(42,188,170,.2);
+}
+.kc-icon{font-size:26px;filter:drop-shadow(0 3px 5px rgba(0,0,0,.15))}
+.kc-recipe{font-size:10px;font-weight:800;color:rgba(42,26,14,.45);white-space:nowrap}
+.kc-name{font-size:9px;font-weight:800;color:rgba(42,26,14,.35);white-space:nowrap}
+.kc-prog{width:100%;height:5px;background:rgba(42,26,14,.08);border-radius:3px;overflow:hidden}
+.kc-prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),#80e860);transition:width .3s linear}
+.kc-lv{position:absolute;top:-6px;right:-6px;background:linear-gradient(145deg,#fffad0,var(--gold));border:2px solid var(--gold2);border-radius:7px;padding:1px 5px;font-size:8px;font-weight:900;color:var(--gold2);box-shadow:0 2px 0 rgba(200,144,16,.3)}
+
+/* Fridge card */
+.fridge-card{
+  background:linear-gradient(160deg,#e8f8f8,#c8ecea);
+  border:2px solid rgba(42,188,170,.3);border-radius:12px;
+  padding:6px 8px;
+  box-shadow:0 3px 8px rgba(0,0,0,.06);
+}
+.fridge-title{font-size:9px;font-weight:800;color:var(--teal2);margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.fridge-items{display:flex;gap:2px;flex-wrap:wrap}
+.fridge-chip{background:#fff;border:1.5px solid rgba(42,188,170,.3);border-radius:8px;padding:2px 5px;font-size:12px;display:flex;align-items:center;gap:1px}
+.fridge-chip span{font-size:8px;font-weight:900;color:var(--teal2)}
+.fridge-empty{font-size:9px;color:rgba(42,26,14,.25);font-weight:700}
+
+/* ═══════════════════════════════════
+   UPGRADE SCREEN
+═══════════════════════════════════ */
 #screen-upgrade{
   background:linear-gradient(160deg,#fdf6ee,#f0ead8);
   flex-direction:row;overflow:hidden;
 }
-.upg-left{
-  width:265px;flex-shrink:0;
-  background:rgba(255,255,255,.7);
-  border-right:2px solid rgba(42,26,14,.08);
-  backdrop-filter:blur(12px);
-  display:flex;flex-direction:column;padding:20px;gap:12px;
-}
-.upg-headline{font-family:'Zen Dots',monospace;font-size:22px;color:var(--red)}
+.upg-left{width:262px;flex-shrink:0;background:rgba(255,255,255,.75);border-right:2px solid rgba(42,26,14,.08);backdrop-filter:blur(12px);display:flex;flex-direction:column;padding:20px;gap:12px}
+.upg-hl{font-family:'Zen Dots',monospace;font-size:21px;color:var(--red)}
 .upg-stars-row{display:flex;gap:10px;margin:4px 0}
 .s-big{font-size:36px;filter:grayscale(1) opacity(.2);transition:filter .3s,transform .3s}
 .s-big.on{filter:none;animation:spop .5s ease}
 @keyframes spop{0%{transform:scale(0) rotate(-25deg)}60%{transform:scale(1.35) rotate(8deg)}100%{transform:scale(1)}}
-.res-pills{display:flex;gap:8px;flex-wrap:wrap}
-.rpill{background:rgba(255,255,255,.8);border:1.5px solid rgba(42,26,14,.1);border-radius:14px;padding:8px 14px;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.res-pills{display:flex;gap:7px;flex-wrap:wrap}
+.rpill{background:rgba(255,255,255,.85);border:1.5px solid rgba(42,26,14,.1);border-radius:13px;padding:7px 13px;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,.05)}
 .rpill-v{font-family:'Zen Dots',monospace;font-size:18px;color:var(--ink)}
 .rpill-l{font-size:9px;color:rgba(42,26,14,.4);margin-top:2px}
 .upg-wallet{font-size:13px;font-weight:700;color:rgba(42,26,14,.4);margin-top:auto}
-.upg-wallet strong{font-family:'Zen Dots',monospace;font-size:20px;color:var(--gold2)}
-.btn-next{
-  width:100%;padding:14px;
-  background:linear-gradient(145deg,var(--teal),var(--teal2));
-  border:none;border-radius:16px;
-  font-family:'Zen Dots',monospace;font-size:17px;color:#fff;cursor:pointer;
-  box-shadow:0 5px 0 rgba(42,144,128,.5),0 7px 18px rgba(58,184,168,.3);
-  transition:transform .12s,box-shadow .12s;
-}
-.btn-next:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(42,144,128,.5)}
-
-.upg-right{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:5px}
+.upg-wallet strong{font-family:'Zen Dots',monospace;font-size:19px;color:var(--gold2)}
+.btn-next{width:100%;padding:14px;background:linear-gradient(145deg,var(--teal),var(--teal2));border:none;border-radius:16px;font-family:'Zen Dots',monospace;font-size:17px;color:#fff;cursor:pointer;box-shadow:0 5px 0 rgba(42,144,120,.5),0 7px 18px rgba(42,188,170,.25);transition:transform .12s,box-shadow .12s}
+.btn-next:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(42,144,120,.5)}
+.upg-right{flex:1;overflow-y:auto;padding:13px;display:flex;flex-direction:column;gap:5px}
 .upg-right::-webkit-scrollbar{display:none}
-.upg-sec{font-family:'Zen Dots',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(42,26,14,.3);margin:6px 0 3px}
-.upg-card{
-  background:#fff;border:2px solid rgba(42,26,14,.07);
-  border-radius:16px;padding:10px 13px;display:flex;align-items:center;gap:10px;
-  cursor:pointer;transition:background .15s,transform .12s;
-  box-shadow:0 3px 10px rgba(0,0,0,.05);
-}
-.upg-card:hover{background:#fffaf5}
+.upg-sec{font-family:'Zen Dots',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(42,26,14,.28);margin:5px 0 3px}
+.upg-card{background:#fff;border:2px solid rgba(42,26,14,.07);border-radius:15px;padding:10px 12px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:background .15s,transform .12s;box-shadow:0 3px 10px rgba(0,0,0,.04)}
+.upg-card:hover{background:#fffaf4}
 .upg-card:active{transform:scale(.97)}
 .upg-card.off{opacity:.4;cursor:default}
 .upg-card.broke{opacity:.5;cursor:default}
@@ -501,68 +628,40 @@ body{font-family:'M PLUS Rounded 1c',sans-serif;background:var(--bg)}
 .u-info{flex:1}
 .u-name{font-size:13px;font-weight:900;color:var(--ink)}
 .u-sub{font-size:10px;color:rgba(42,26,14,.38);margin-top:2px}
-.u-dots{display:flex;gap:3px;margin-top:5px}
+.u-dots{display:flex;gap:3px;margin-top:4px}
 .udot{width:9px;height:9px;border-radius:50%;background:rgba(42,26,14,.1)}
 .udot.on{background:var(--teal)}
-.u-cost-btn{
-  background:linear-gradient(145deg,#fff8d0,#fde68a);
-  border:2px solid rgba(245,200,66,.5);border-radius:11px;
-  padding:6px 11px;box-shadow:0 3px 0 rgba(212,160,16,.3);
-  cursor:pointer;text-align:center;flex-shrink:0;
-  transition:transform .12s,box-shadow .12s;
-}
-.u-cost-btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(212,160,16,.3)}
+.u-cost-btn{background:linear-gradient(145deg,#fffad0,#fde68a);border:2px solid rgba(248,200,50,.5);border-radius:11px;padding:5px 10px;box-shadow:0 3px 0 rgba(200,144,16,.28);cursor:pointer;text-align:center;flex-shrink:0;transition:transform .12s,box-shadow .12s}
+.u-cost-btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(200,144,16,.28)}
 .u-cost-v{font-family:'Zen Dots',monospace;font-size:14px;color:var(--gold2)}
-.u-cost-l{font-size:8px;color:rgba(212,160,16,.6)}
-.u-max-lbl{font-size:10px;font-weight:800;color:rgba(42,26,14,.25);padding:6px 9px;flex-shrink:0}
+.u-cost-l{font-size:8px;color:rgba(200,144,16,.6)}
+.u-max{font-size:10px;font-weight:800;color:rgba(42,26,14,.22);padding:5px 8px;flex-shrink:0}
 
-/* ═══════════ TUTORIAL ═══════════ */
+/* ═══════════════════════════════════
+   TUTORIAL
+═══════════════════════════════════ */
 .tut-overlay{position:fixed;inset:0;z-index:999;pointer-events:none}
-.tut-bg{position:absolute;inset:0;background:rgba(42,26,14,.5);pointer-events:all}
+.tut-bg{position:absolute;inset:0;background:rgba(0,0,0,.55);pointer-events:all}
 .tut-bubble{
-  position:absolute;
-  background:#fff;border:3px solid var(--teal);border-radius:20px;
-  padding:14px 16px;max-width:225px;
-  box-shadow:0 10px 30px rgba(0,0,0,.15);
-  pointer-events:all;z-index:1;
-  animation:bub-in .32s cubic-bezier(.34,1.56,.64,1);
+  position:absolute;background:#fff;border:3px solid var(--teal);border-radius:20px;
+  padding:14px 16px;max-width:228px;
+  box-shadow:0 10px 30px rgba(0,0,0,.15);pointer-events:all;z-index:1;
+  animation:bub-in .3s cubic-bezier(.34,1.56,.64,1);
 }
-@keyframes bub-in{from{transform:scale(.65) translateY(10px);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes bub-in{from{transform:scale(.6) translateY(10px);opacity:0}to{transform:scale(1);opacity:1}}
 .tut-arrow{font-size:24px;display:block;animation:arrbob .65s ease-in-out infinite;margin-bottom:4px}
 @keyframes arrbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .tut-title{font-family:'Zen Dots',monospace;font-size:14px;color:var(--red);margin-bottom:5px}
-.tut-text{font-size:11px;font-weight:700;color:rgba(42,26,14,.6);line-height:1.7}
-.tut-ok{
-  margin-top:10px;width:100%;padding:8px;
-  background:var(--teal);border:none;border-radius:10px;
-  font-family:'Zen Dots',monospace;font-size:13px;color:#fff;
-  cursor:pointer;box-shadow:0 4px 0 var(--teal2);
-  transition:transform .12s,box-shadow .12s;
-}
+.tut-text{font-size:11px;font-weight:700;color:rgba(42,26,14,.55);line-height:1.7}
+.tut-ok{margin-top:10px;width:100%;padding:9px;background:var(--teal);border:none;border-radius:10px;font-family:'Zen Dots',monospace;font-size:13px;color:#fff;cursor:pointer;box-shadow:0 4px 0 var(--teal2);transition:transform .12s,box-shadow .12s}
 .tut-ok:active{transform:translateY(3px);box-shadow:0 1px 0 var(--teal2)}
-.tut-highlight{
-  position:absolute;border:3px solid var(--gold);border-radius:14px;
-  box-shadow:0 0 0 4px rgba(245,200,66,.3),0 0 20px rgba(245,200,66,.4);
-  pointer-events:none;z-index:2;
-  animation:hl-pulse 1s ease-in-out infinite;
-}
-@keyframes hl-pulse{
-  0%,100%{box-shadow:0 0 0 4px rgba(245,200,66,.3),0 0 20px rgba(245,200,66,.4)}
-  50%{box-shadow:0 0 0 9px rgba(245,200,66,0),0 0 30px rgba(245,200,66,.6)}
-}
+.tut-hl{position:absolute;border:3px solid var(--gold);border-radius:14px;box-shadow:0 0 0 4px rgba(248,200,50,.3),0 0 20px rgba(248,200,50,.4);pointer-events:none;z-index:2;animation:hl-p 1s ease-in-out infinite}
+@keyframes hl-p{0%,100%{box-shadow:0 0 0 4px rgba(248,200,50,.3),0 0 20px rgba(248,200,50,.4)}50%{box-shadow:0 0 0 9px rgba(248,200,50,0),0 0 30px rgba(248,200,50,.6)}}
 
 /* FX */
-.fx{
-  position:fixed;pointer-events:none;z-index:9999;
-  font-family:'Zen Dots',monospace;font-size:17px;
-  animation:fxup 1.3s ease-out forwards;
-}
-@keyframes fxup{0%{opacity:1;transform:translateY(0) scale(1)}75%{opacity:1}100%{opacity:0;transform:translateY(-68px) scale(.6)}}
-.particle{
-  position:fixed;pointer-events:none;z-index:9998;
-  width:7px;height:7px;border-radius:50%;
-  animation:part-fly .85s ease-out forwards;
-}
+.fx{position:fixed;pointer-events:none;z-index:9999;font-family:'Zen Dots',monospace;font-size:16px;animation:fxup 1.3s ease-out forwards}
+@keyframes fxup{0%{opacity:1;transform:translateY(0) scale(1)}75%{opacity:1}100%{opacity:0;transform:translateY(-65px) scale(.6)}}
+.particle{position:fixed;pointer-events:none;z-index:9998;border-radius:50%;animation:part-fly .85s ease-out forwards}
 @keyframes part-fly{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:var(--fly) scale(0)}}
 </style>
 </head>
@@ -570,103 +669,86 @@ body{font-family:'M PLUS Rounded 1c',sans-serif;background:var(--bg)}
 
 <div class="portrait-warn">
   <div class="pw-icon">📱</div>
-  <div class="pw-title">Поверни телефон!</div>
-  <div class="pw-sub">Sushi Rush лучше играется<br>в горизонтальном режиме 🍣</div>
+  <div class="pw-t">Поверни телефон!</div>
+  <div class="pw-s">Sushi Rush лучше в<br>горизонтальном режиме 🍣</div>
 </div>
 
 <!-- ══════════ MAP ══════════ -->
 <div id="screen-map" class="screen">
-  <!-- Sakura petals -->
   <div id="map-petals" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0"></div>
-
   <div class="map-header">
-    <div>
-      <div class="map-logo">🍣 Sushi Rush</div>
-      <div class="map-logo-sub">Catch · Cook · Deliver</div>
-    </div>
-    <div class="map-coin-pill">
-      <span class="coin-icon">🪙</span>
-      <div>
-        <div class="coin-val" id="map-coins">0</div>
-        <div class="coin-lbl">Монеты</div>
-      </div>
-    </div>
+    <div><div class="map-logo">🍣 Sushi Rush</div><div class="map-logo-sub">Catch · Cook · Deliver</div></div>
+    <div class="map-wallet"><span style="font-size:20px">🪙</span><div class="map-wallet-val" id="map-coins">0</div></div>
   </div>
-
-  <div class="map-world-chip">
-    <span class="world-chip-icon">🌸</span>
-    <div>
-      <div class="world-chip-title">Мир 1 — Токийская гавань</div>
-      <div class="world-chip-sub">Нажми уровень чтобы начать</div>
-    </div>
+  <div class="map-world">
+    <span style="font-size:20px">🌸</span>
+    <div><div class="map-world-t">Мир 1 — Токийская гавань</div><div class="map-world-s">Нажми уровень чтобы начать</div></div>
   </div>
-
   <div class="map-body">
     <div class="map-scroll">
       <div class="levels-row" id="levels-path"></div>
     </div>
   </div>
-
   <div class="map-deco" id="map-deco"></div>
 </div>
 
 <!-- ══════════ GAME ══════════ -->
 <div id="screen-game" class="screen hidden">
 
-  <div class="hud">
-    <div class="hud-back" onclick="goMap()">◀</div>
-    <div class="hud-lvl" id="hud-lvl">Lv.1</div>
-    <div class="hud-steps">
-      <div class="step-pill" id="sp0">🎣 Источник</div>
-      <div class="step-pill" id="sp1">🍳 Повар</div>
-      <div class="step-pill" id="sp2">📋 Заказ</div>
-      <div class="step-pill" id="sp3">🛵 Доставь!</div>
-    </div>
-    <div class="hud-sep"></div>
-    <div class="hud-stars" id="hud-stars">
-      <span class="hud-star">⭐</span>
-      <span class="hud-star">⭐</span>
-      <span class="hud-star">⭐</span>
-    </div>
-    <div class="hud-coins">🪙<span id="hud-coins">0</span></div>
-    <div class="hud-timer" id="hud-timer">⏱2:00</div>
+  <!-- WORLD — full background -->
+  <div id="world">
+    <div class="world-sky"></div>
+    <div class="world-sun"></div>
+    <div id="world-clouds"></div>
+    <div id="world-layers"></div>
+    <div id="world-objects"></div>
+    <div id="world-mopers"></div>
   </div>
 
-  <div class="game-body">
-
-    <!-- ORDERS LEFT -->
-    <div class="orders-panel">
-      <div class="panel-title">📋 Заказы</div>
-      <div class="orders-list" id="orders-list"></div>
+  <!-- UI LAYER — floats above world -->
+  <div id="ui-layer">
+    <!-- Top floating bar -->
+    <div class="top-bar">
+      <div class="tb-back" onclick="goMap()">◀</div>
+      <div class="tb-lvl" id="tb-lvl">Lv.1</div>
+      <div class="tb-steps">
+        <div class="step-pill" id="sp0">🎣 Поймай</div>
+        <div class="step-pill" id="sp1">🍳 Готовь</div>
+        <div class="step-pill" id="sp2">📋 Заказ</div>
+        <div class="step-pill" id="sp3">🛵 Доставь</div>
+      </div>
+      <div class="tb-sep"></div>
+      <div class="tb-stars" id="tb-stars">
+        <span class="tb-star">⭐</span><span class="tb-star">⭐</span><span class="tb-star">⭐</span>
+      </div>
+      <div class="tb-coins">🪙<span id="tb-coins">0</span></div>
+      <div class="tb-timer" id="tb-timer">2:00</div>
     </div>
 
-    <!-- SCENE CENTER -->
-    <div class="scene-col">
-      <div class="scene" id="scene">
-        <div class="scene-bg"></div>
-        <div class="sky-sun"></div>
-        <div id="scene-clouds"></div>
-        <div id="scene-layers"></div>
-        <div id="piers-wrap"></div>
-        <div id="mopers-wrap"></div>
+    <!-- Side panels -->
+    <div class="side-panels">
+      <!-- Left: orders -->
+      <div class="orders-panel">
+        <div class="panel-title">📋 Заказы</div>
+        <div class="orders-list" id="orders-list"></div>
+      </div>
+
+      <div class="panel-spacer"></div>
+
+      <!-- Right: kitchen controls -->
+      <div class="kitchen-panel" id="kitchen-panel">
+        <div class="panel-title">👨‍🍳 Кухня</div>
+        <!-- injected -->
       </div>
     </div>
-
-    <!-- KITCHEN RIGHT -->
-    <div class="orders-panel" id="kitchen-panel" style="width:148px;border-left:2px solid rgba(42,26,14,.08);border-right:none">
-      <div class="panel-title">👨‍🍳 Кухня</div>
-    </div>
-
   </div>
 </div>
 
 <!-- ══════════ UPGRADE ══════════ -->
 <div id="screen-upgrade" class="screen hidden">
   <div class="upg-left">
-    <div class="upg-headline" id="upg-headline">🎉 Пройден!</div>
-    <div class="upg-stars-row" id="upg-stars">
-      <span class="s-big">⭐</span><span class="s-big">⭐</span><span class="s-big">⭐</span>
-    </div>
+    <div class="upg-hl" id="upg-hl">🎉 Пройден!</div>
+    <div class="upg-stars-row" id="upg-stars"><span class="s-big">⭐</span><span class="s-big">⭐</span><span class="s-big">⭐</span></div>
     <div class="res-pills" id="res-pills"></div>
     <div class="upg-wallet" style="margin-top:auto">Монеты: <strong id="upg-wallet">0</strong> 🪙</div>
     <button class="btn-next" id="btn-next">Следующий →</button>
@@ -676,23 +758,24 @@ body{font-family:'M PLUS Rounded 1c',sans-serif;background:var(--bg)}
 
 <script>
 'use strict';
-/* ═══ DATA ═══ */
+
+/* ═══════════════════════════ DATA ═══════════════════════════ */
 const LEVELS=[
   {id:1,time:120,goals:[250,500,800],maxOrders:3,kitchens:['sushi'],sources:['fisher','rice']},
   {id:2,time:140,goals:[400,750,1200],maxOrders:3,kitchens:['sushi','tempura'],sources:['fisher','rice','aqua']},
-  {id:3,time:150,goals:[600,1100,1700],maxOrders:4,kitchens:['sushi','tempura'],sources:['fisher','rice','aqua','garden']},
+  {id:3,time:155,goals:[600,1100,1700],maxOrders:4,kitchens:['sushi','tempura'],sources:['fisher','rice','aqua','garden']},
   {id:4,time:170,goals:[900,1600,2400],maxOrders:4,kitchens:['sushi','tempura'],sources:['fisher','rice','aqua','garden']},
   {id:5,time:170,goals:[1200,2000,3000],maxOrders:5,kitchens:['sushi','tempura'],sources:['fisher','rice','aqua','garden']},
 ];
 const SOURCES={
-  fisher:{e:'🎣',n:'Рыбак',    out:'🐟',outN:'Рыба',    baseCd:7000,sz:58,bg:'#1a4868',border:'#0a2848'},
-  rice:  {e:'🌾',n:'Поле риса',out:'🍚',outN:'Рис',     baseCd:8000,sz:50,bg:'#5aaa60',border:'#3a8040'},
-  aqua:  {e:'🦐',n:'Аквариум', out:'🦐',outN:'Креветка',baseCd:9000,sz:52,bg:'#1a7898',border:'#0a5878'},
-  garden:{e:'🥑',n:'Огород',   out:'🥑',outN:'Авокадо', baseCd:10000,sz:50,bg:'#6aaa30',border:'#4a7a10'},
+  fisher:{e:'🎣',n:'Рыбак',     out:'🐟',outN:'Рыба',     baseCd:7000,zone:'water'},
+  rice:  {e:'🌾',n:'Рисовое поле',out:'🍚',outN:'Рис',    baseCd:8000,zone:'grass'},
+  aqua:  {e:'🦐',n:'Аквариум',  out:'🦐',outN:'Креветка', baseCd:9000,zone:'water'},
+  garden:{e:'🥑',n:'Огород',    out:'🥑',outN:'Авокадо',  baseCd:10000,zone:'hill'},
 };
 const KITCHENS={
-  sushi:  {e:'🍣',n:'Суши-стол',color:'#c83838',roofColor:'#902020',in:'🐟',in2:'🍚',out:'🍱',outN:'Суши',  baseTime:9000},
-  tempura:{e:'🍤',n:'Темпура',  color:'#d47020',roofColor:'#a04810',in:'🦐',in2:'🍚',out:'🍤',outN:'Темпура',baseTime:11000},
+  sushi:  {e:'🍣',n:'Суши-стол',  color:'#c83838',roofColor:'#8a1a1a',in:'🐟',in2:'🍚',out:'🍱',outN:'Суши',   baseTime:9000},
+  tempura:{e:'🍤',n:'Темпура',    color:'#d47020',roofColor:'#904010',in:'🦐',in2:'🍚',out:'🍤',outN:'Темпура', baseTime:11000},
 };
 const ORDER_POOLS=[
   [{i:['🐟'],r:70},{i:['🍚'],r:60},{i:['🐟','🍚'],r:140},{i:['🍱'],r:160}],
@@ -700,234 +783,367 @@ const ORDER_POOLS=[
   [{i:['🍱'],r:160},{i:['🍤'],r:140},{i:['🥑','🍚'],r:130},{i:['🍱','🍤'],r:280},{i:['🐟','🦐','🍚'],r:320}],
 ];
 const UPG=[
-  {k:'fisher', e:'🎣',n:'Рыбак',      d:'Ловит рыбу быстрее',m:5},
-  {k:'rice',   e:'🌾',n:'Поле риса',  d:'Рис растёт быстрее',m:5},
-  {k:'aqua',   e:'🦐',n:'Аквариум',   d:'Быстрее даёт креветок',m:5},
-  {k:'garden', e:'🥑',n:'Огород',     d:'Авокадо растёт быстрее',m:5},
-  {k:'sushi',  e:'🍣',n:'Суши-стол',  d:'Повар работает быстрее',m:5},
-  {k:'tempura',e:'🍤',n:'Темпура',    d:'Жарит быстрее',m:5},
-  {k:'moped',  e:'🛵',n:'Мопед',      d:'Быстрее доставляет',m:5},
-  {k:'fridge', e:'🧊',n:'Холодильник',d:'Больше места',m:5},
+  {k:'fisher', e:'🎣',n:'Рыбак',       d:'Ловит рыбу быстрее',   m:5},
+  {k:'rice',   e:'🌾',n:'Поле риса',   d:'Рис растёт быстрее',   m:5},
+  {k:'aqua',   e:'🦐',n:'Аквариум',    d:'Быстрее даёт креветок', m:5},
+  {k:'garden', e:'🥑',n:'Огород',      d:'Авокадо растёт быстрее',m:5},
+  {k:'sushi',  e:'🍣',n:'Суши-стол',   d:'Повар работает быстрее',m:5},
+  {k:'tempura',e:'🍤',n:'Темпура',     d:'Жарит быстрее',         m:5},
+  {k:'moped',  e:'🛵',n:'Мопед',       d:'Быстрее доставляет',    m:5},
+  {k:'fridge', e:'🧊',n:'Холодильник', d:'Больше места',          m:5},
 ];
 const UCOSTS=[0,150,280,450,650,900];
 
-/* ═══ STATE ═══ */
+/* ═══════════════════════════ STATE ═══════════════════════════ */
 const S={coins:0,stars:{},upg:{fisher:1,rice:1,aqua:1,garden:1,sushi:1,tempura:1,moped:1,fridge:1}};
 let G=null;
 
-/* ═══ COMPUTED ═══ */
 const sCd=k=>Math.max(1500,SOURCES[k].baseCd-(S.upg[k]-1)*1200);
 const kTm=k=>Math.max(3000,KITCHENS[k].baseTime-(S.upg[k]-1)*2000);
 const mTm=()=>Math.max(1500,6000-(S.upg.moped-1)*1100);
 const stMax=()=>6+(S.upg.fridge-1)*4;
 const stUsed=()=>Object.values(G.storage).reduce((a,b)=>a+b,0);
-const show=id=>{document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('screen-'+id).classList.remove('hidden')};
+const $=id=>document.getElementById(id);
+const show=id=>{document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));$(id).classList.remove('hidden')};
 
-/* ═══ MAP ═══ */
+/* ═══════════════════════════ MAP ═══════════════════════════ */
 function renderMap(){
-  document.getElementById('map-coins').textContent=S.coins;
-  // sakura petals
-  const pp=document.getElementById('map-petals');pp.innerHTML='';
-  for(let i=0;i<12;i++){
-    const el=document.createElement('div');el.className='sakura-petal';
-    el.textContent='🌸';
-    el.style.cssText=`left:${Math.random()*100}%;top:${-10+Math.random()*20}%;animation-duration:${6+Math.random()*8}s;animation-delay:-${Math.random()*10}s;font-size:${10+Math.random()*8}px`;
+  $('map-coins').textContent=S.coins;
+  const pp=$('map-petals');pp.innerHTML='';
+  for(let i=0;i<14;i++){
+    const el=document.createElement('div');el.className='petal';el.textContent='🌸';
+    el.style.cssText=`left:${Math.random()*100}%;top:${-5+Math.random()*15}%;animation-duration:${5+Math.random()*9}s;animation-delay:-${Math.random()*12}s;font-size:${9+Math.random()*9}px`;
     pp.appendChild(el);
   }
-  // deco
-  const deco=document.getElementById('map-deco');deco.innerHTML='';
-  [['🌊',5],['🐠',15],['⛩️',35],['🌳',52],['🎋',68],['🌊',82],['🗼',90]].forEach(([e,l])=>{
-    const d=document.createElement('div');d.className='deco-item';d.textContent=e;
-    d.style.cssText=`left:${l}%;font-size:${36+Math.random()*16}px`;
+  const deco=$('map-deco');deco.innerHTML='';
+  [['🌊',3,42],['🐠',13,36],['⛩️',30,44],['🌳',50,40],['🎋',65,38],['🗼',82,48]].forEach(([e,l,fs])=>{
+    const d=document.createElement('div');d.className='deco-i';
+    d.textContent=e;d.style.cssText=`left:${l}%;font-size:${fs}px`;
     deco.appendChild(d);
   });
-  // levels
-  const path=document.getElementById('levels-path');path.innerHTML='';
+  const path=$('levels-path');path.innerHTML='';
   LEVELS.forEach((lv,i)=>{
     if(i>0){const ln=document.createElement('div');ln.className='lv-line';path.appendChild(ln);}
-    const stars=S.stars[lv.id]||0;
-    const unlocked=lv.id<=nextUnlocked();
-    const isCur=lv.id===nextUnlocked();
-    const wrap=document.createElement('div');wrap.style.cssText='display:flex;flex-direction:column;align-items:center';
+    const stars=S.stars[lv.id]||0,unlocked=lv.id<=nextUnlocked(),isCur=lv.id===nextUnlocked();
+    const wrap=document.createElement('div');wrap.className='lv-wrap';
     const node=document.createElement('div');
     node.className='lv-node '+(stars>0?'done':isCur?'next':'locked');
     let sh='';for(let s=1;s<=3;s++)sh+=`<span>${s<=stars?'⭐':'☆'}</span>`;
-    node.innerHTML=stars>0||isCur?`<div class="lv-num">${lv.id}</div><div class="lv-stars">${sh}</div>`:`<span style="font-size:24px">🔒</span>`;
+    node.innerHTML=stars>0||isCur?`<div class="lv-num">${lv.id}</div><div class="lv-stars">${sh}</div>`:'<span style="font-size:24px">🔒</span>';
     if(unlocked)node.onclick=()=>startLevel(lv.id);
     const shadow=document.createElement('div');shadow.className='lv-shadow';
-    wrap.appendChild(node);wrap.appendChild(shadow);
-    path.appendChild(wrap);
+    wrap.appendChild(node);wrap.appendChild(shadow);path.appendChild(wrap);
   });
 }
 const nextUnlocked=()=>{for(const l of LEVELS)if(!(S.stars[l.id]>0))return l.id;return LEVELS[LEVELS.length-1].id};
 
-/* ═══ START ═══ */
+/* ═══════════════════════════ START LEVEL ═══════════════════════════ */
 function startLevel(id){
   const cfg=LEVELS.find(l=>l.id===id);if(!cfg)return;
   G={cfg,running:false,ended:false,timeLeft:cfg.time,coins:0,ordersOk:0,ordersFailed:0,
      storage:{},orders:[],oid:0,sources:{},kitchens:{},
-     mopers:[{id:0,busy:false,tl:0,x:30},{id:1,busy:false,tl:0,x:0}],
+     mopers:[{id:0,busy:false,tl:0,x:0},{id:1,busy:false,tl:0,x:0}],
      selOrder:null,tick:null};
   cfg.sources.forEach(k=>G.sources[k]={cd:0,maxCd:sCd(k)});
   cfg.kitchens.forEach(k=>G.kitchens[k]={running:false,tl:0,total:kTm(k)});
-  buildScene();show('game');
-  setTimeout(()=>{
-    spawnOrder();spawnOrder();
-    if(id===1)runTutorial(()=>beginGame());else beginGame();
-  },300);
+  buildWorld();show('screen-game');
+  setTimeout(()=>{spawnOrder();spawnOrder();if(id===1)runTutorial(()=>beginGame());else beginGame();},350);
 }
 
-/* ═══ BUILD SCENE ═══ */
-function buildScene(){
+/* ═══════════════════════════ BUILD WORLD ═══════════════════════════ */
+function buildWorld(){
   const cfg=G.cfg;
-  document.getElementById('hud-lvl').textContent='Lv.'+cfg.id;
+  $('tb-lvl').textContent='Lv.'+cfg.id;
   refreshTimer();refreshCoins();refreshStars();
 
-  const scene=document.getElementById('scene');
-  const SW=scene.offsetWidth||600,SH=scene.offsetHeight||220;
+  const W=window.innerWidth,H=window.innerHeight;
 
-  // clouds
-  const sc=document.getElementById('scene-clouds');sc.innerHTML='';
-  [{t:5,d:22},{t:13,d:33},{t:7,d:41}].forEach((cl,i)=>{
-    const el=document.createElement('div');el.className='scene-cloud';
-    el.textContent='☁️';el.style.cssText=`top:${cl.t}px;animation-duration:${cl.d}s;animation-delay:-${i*10}s`;
-    sc.appendChild(el);
+  // z-layout percentages (from bottom)
+  const roadH   = Math.round(H*0.24);
+  const dirtH   = Math.round(H*0.08);
+  const grassH  = Math.round(H*0.18);
+  const waterH  = Math.round(H*0.16);
+  const skyBot  = roadH+dirtH+grassH+waterH;
+
+  // Clouds
+  const wc=$('world-clouds');wc.innerHTML='';
+  [{t:8,d:24},{t:18,d:36},{t:6,d:44}].forEach((c,i)=>{
+    const el=document.createElement('div');el.className='world-cloud';el.textContent='☁️';
+    el.style.cssText=`top:${c.t}px;font-size:${24+i*4}px;animation-duration:${c.d}s;animation-delay:-${i*11}s`;
+    wc.appendChild(el);
   });
 
-  const sl=document.getElementById('scene-layers');sl.innerHTML='';
-  const skyH=Math.round(SH*0.38);
-  const waterH=Math.round(SH*0.14);
-  const grassH=Math.round(SH*0.22);
-  const dirtH=Math.round(SH*0.12);
-  const roadH=Math.round(SH*0.24);
+  // Layers
+  const wl=$('world-layers');wl.innerHTML='';
 
-  // Water shimmer overlay
-  const water=document.createElement('div');
-  water.className='water-shimmer';
-  water.style.cssText=`bottom:${roadH+dirtH+grassH}px;height:${waterH}px;left:0;right:0;z-index:2`;
-  sl.appendChild(water);
+  // Water zone
+  const waterZone=document.createElement('div');
+  waterZone.className='water-zone';
+  waterZone.style.cssText=`bottom:${roadH+dirtH+grassH}px;height:${waterH}px`;
+  waterZone.innerHTML=`<div class="water-surface"></div><div class="water-wave"></div><div class="water-wave"></div><div class="water-wave"></div><div class="water-shimmer"></div>`;
+  wl.appendChild(waterZone);
 
   // Grass
   const grass=document.createElement('div');
-  grass.className='ground-layer';
-  grass.style.cssText=`bottom:${roadH+dirtH}px;height:${grassH}px;background:linear-gradient(180deg,#6dcf38,#52b020,#3a8a10);z-index:4`;
-  sl.appendChild(grass);
+  grass.className='terrain-layer';
+  grass.style.cssText=`bottom:${roadH+dirtH}px;height:${grassH}px;background:linear-gradient(180deg,#6cc83a,#4aa018,#2a7008);z-index:5`;
+  wl.appendChild(grass);
 
   // Dirt
   const dirt=document.createElement('div');
-  dirt.className='ground-layer';
-  dirt.style.cssText=`bottom:${roadH}px;height:${dirtH}px;background:linear-gradient(180deg,#c8893a,#a06820);z-index:4`;
-  sl.appendChild(dirt);
+  dirt.className='terrain-layer';
+  dirt.style.cssText=`bottom:${roadH}px;height:${dirtH}px;background:linear-gradient(180deg,#c8883a,#a06018,#784010);z-index:5`;
+  wl.appendChild(dirt);
 
   // Road
   const road=document.createElement('div');
-  road.className='ground-layer';
-  road.style.cssText=`bottom:0;height:${roadH}px;background:linear-gradient(180deg,#4a4a5a,#2a2a3a);z-index:4;border-top:2px solid rgba(255,255,255,.08)`;
-  road.innerHTML=`<div style="position:absolute;top:50%;left:0;right:0;height:4px;transform:translateY(-50%);background:repeating-linear-gradient(90deg,rgba(255,255,255,.4) 0,rgba(255,255,255,.4) 20px,transparent 20px,transparent 44px);border-radius:2px"></div>`;
-  sl.appendChild(road);
+  road.className='terrain-layer';
+  road.style.cssText=`bottom:0;height:${roadH}px;background:linear-gradient(180deg,#3a3a4a,#22222e,#181820);z-index:5;border-top:2px solid rgba(255,255,255,.06)`;
+  road.innerHTML=`<div style="position:absolute;top:42%;left:0;right:0;height:5px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.35) 0,rgba(255,255,255,.35) 22px,transparent 22px,transparent 48px);border-radius:3px"></div>`;
+  wl.appendChild(road);
 
-  // SVG fence
-  const fence=document.createElement('div');
-  fence.style.cssText=`position:absolute;bottom:${roadH+dirtH+grassH-5}px;left:0;right:0;height:16px;z-index:5;pointer-events:none`;
-  fence.innerHTML=`<svg viewBox="0 0 ${SW} 16" preserveAspectRatio="none" style="width:100%;height:100%">
-    <rect y="3" width="${SW}" height="4" rx="2" fill="#c89040" stroke="#7a4e10" stroke-width="1"/>
-    <rect y="9" width="${SW}" height="4" rx="2" fill="#b07828" stroke="#7a4e10" stroke-width="1"/>
-    ${Array.from({length:Math.ceil(SW/50)},(_,i)=>`<rect x="${i*50+6}" y="0" width="9" height="16" rx="2" fill="#d4a840" stroke="#7a4e10" stroke-width="1.5"/>`).join('')}
+  // Hills SVG behind grass
+  const hillsDiv=document.createElement('div');
+  hillsDiv.style.cssText=`position:absolute;bottom:${roadH+dirtH+grassH-18}px;left:0;right:0;height:60px;z-index:4;pointer-events:none`;
+  hillsDiv.innerHTML=`<svg viewBox="0 0 ${W} 60" preserveAspectRatio="none" style="width:100%;height:100%">
+    <ellipse cx="${W*.12}" cy="65" rx="${W*.18}" ry="50" fill="#4aa018" opacity=".8"/>
+    <ellipse cx="${W*.55}" cy="70" rx="${W*.26}" ry="46" fill="#5ab828" opacity=".7"/>
+    <ellipse cx="${W*.88}" cy="68" rx="${W*.16}" ry="44" fill="#3a8a10" opacity=".75"/>
   </svg>`;
-  sl.appendChild(fence);
+  wl.appendChild(hillsDiv);
 
-  // ── PIERS (sources) ──
-  const pw=document.getElementById('piers-wrap');pw.innerHTML='';
-  const sourcePositions={
-    1:[{x:0.5,bot:0.52}],
-    2:[{x:0.32,bot:0.52},{x:0.65,bot:0.52}],
-    3:[{x:0.22,bot:0.54},{x:0.5,bot:0.58},{x:0.75,bot:0.52}],
-    4:[{x:0.18,bot:0.52},{x:0.38,bot:0.58},{x:0.58,bot:0.54},{x:0.78,bot:0.52}],
+  // Ground fence
+  const fenceDiv=document.createElement('div');
+  fenceDiv.className='fence-svg';
+  fenceDiv.style.cssText=`bottom:${roadH+dirtH+grassH-6}px;height:18px`;
+  fenceDiv.innerHTML=`<svg viewBox="0 0 ${W} 18" preserveAspectRatio="none" style="width:100%;height:100%">
+    <rect y="4" width="${W}" height="4" rx="2" fill="#c89040" stroke="#7a4e10" stroke-width="1"/>
+    <rect y="10" width="${W}" height="4" rx="2" fill="#b07828" stroke="#7a4e10" stroke-width="1"/>
+    ${Array.from({length:Math.ceil(W/52)},(_,i)=>`<rect x="${i*52+7}" y="0" width="9" height="18" rx="2" fill="#d4a840" stroke="#7a4e10" stroke-width="1.5"/>`).join('')}
+  </svg>`;
+  wl.appendChild(fenceDiv);
+
+  // ── BUILD SCENE OBJECTS ──
+  const wo=$('world-objects');wo.innerHTML='';
+  buildSourceObjects(wo,cfg,W,H,roadH,dirtH,grassH,waterH);
+  buildKitchenBuildings(wo,cfg,W,H,roadH,dirtH,grassH);
+  buildKitchenPanel(cfg);
+  buildMopers(W,H,roadH);
+}
+
+/* ── SOURCE OBJECTS (piers, fields, aqua, garden) ── */
+function buildSourceObjects(container,cfg,W,H,roadH,dirtH,grassH,waterH){
+  const sources=cfg.sources;
+  // Layout: fisher on pier (water), aqua on water-right, rice field center-grass, garden on hill-right
+  const layouts={
+    fisher:{x:0.18,zone:'water',side:'left'},
+    aqua:  {x:0.42,zone:'water',side:'left'},
+    rice:  {x:0.52,zone:'grass',side:'center'},
+    garden:{x:0.72,zone:'hill', side:'right'},
   };
-  const positions=sourcePositions[cfg.sources.length]||sourcePositions[2];
-  cfg.sources.forEach((k,i)=>{
-    const s=SOURCES[k];const pos=positions[i]||{x:0.5,bot:0.5};
-    const sz=s.sz;
-    const div=document.createElement('div');
-    div.className='pier-obj';div.id='pier-'+k;
-    div.style.cssText=`left:${Math.round(pos.x*SW)-sz/2}px;bottom:${Math.round(pos.bot*SH)}px`;
-    div.innerHTML=`
-      <div class="pier-platform pier-ready" id="pb-${k}" style="width:${sz}px;height:${sz}px;background:${s.bg};border:2.5px solid ${s.border}">
-        <div class="pier-emoji">${s.e}</div>
-        <div class="pier-cd-ov" id="pcd-${k}" style="height:0%"></div>
-        <div class="pier-badge">Lv${S.upg[k]}</div>
-      </div>
-      <div style="width:${sz-6}px">
-        <div class="pier-bar"><div class="pier-bar-fill" id="pbf-${k}" style="width:100%"></div></div>
-      </div>
-      <div class="pier-label">${s.outN}</div>`;
-    div.querySelector('.pier-platform').addEventListener('click',()=>tapSource(k));
-    pw.appendChild(div);
+
+  sources.forEach(k=>{
+    const lo=layouts[k]||{x:0.5,zone:'grass'};
+    const s=SOURCES[k];
+    const cx=Math.round(lo.x*W);
+
+    if(k==='fisher') buildPier(container,k,cx,W,H,roadH,dirtH,grassH,waterH);
+    else if(k==='aqua') buildAquarium(container,k,cx,W,H,roadH,dirtH,grassH,waterH);
+    else if(k==='rice') buildRiceField(container,k,cx,W,H,roadH,dirtH,grassH);
+    else if(k==='garden') buildGarden(container,k,cx,W,H,roadH,dirtH,grassH);
   });
-
-  // ── KITCHEN PANEL ──
-  const kp=document.getElementById('kitchen-panel');
-  kp.querySelectorAll('.kitchen-widget,.fridge-widget').forEach(e=>e.remove());
-  cfg.kitchens.forEach(k=>kp.appendChild(buildKitchenWidget(k)));
-  kp.appendChild(buildFridgeWidget());
-
-  // ── MOPERS ──
-  buildMopers(roadH);
 }
 
-function buildKitchenWidget(k){
-  const kit=KITCHENS[k],lv=S.upg[k];
-  const div=document.createElement('div');div.className='kitchen-widget';div.id='kw-'+k;
+function buildPier(c,k,cx,W,H,roadH,dirtH,grassH,waterH){
+  const pW=88,pH=60;
+  const bottom=roadH+dirtH+grassH+Math.round(waterH*0.1);
+  const div=document.createElement('div');
+  div.style.cssText=`position:absolute;left:${cx-pW/2}px;bottom:${bottom}px;z-index:6;display:flex;flex-direction:column;align-items:center`;
   div.innerHTML=`
-    <div class="kitch-body" id="kb-${k}" style="background:${kit.color}">
-      <div class="steam-puff" style="width:10px;height:10px;left:30%;bottom:65px;animation-delay:0s"></div>
-      <div class="steam-puff" style="width:8px;height:8px;left:65%;bottom:65px;animation-delay:.8s"></div>
-      <div class="kitch-top" style="background:linear-gradient(145deg,${kit.roofColor},${kit.color})"></div>
-      <div class="kitch-mid" style="background:linear-gradient(165deg,${kit.color},${kit.roofColor})">
-        <div class="kitch-sign">${kit.in}+${kit.in2}→${kit.out}</div>
-        <div class="kitch-icon">${kit.e}</div>
-        <div class="kitch-prog"><div class="kitch-prog-fill" id="kpf-${k}" style="width:0%"></div></div>
-      </div>
-      <div class="kitch-lv">Lv${lv}</div>
+    <div class="pier-deck" id="pier-${k}" style="width:${pW}px;height:${pH}px;cursor:pointer">
+      <div class="pier-post" style="left:8px;height:${Math.round(waterH*0.6)}px"></div>
+      <div class="pier-post" style="right:8px;height:${Math.round(waterH*0.6)}px"></div>
+      <div class="pier-post" style="left:50%;transform:translateX(-50%);height:${Math.round(waterH*0.5)}px"></div>
+    </div>`;
+  // Fisher on pier
+  const fisher=document.createElement('div');
+  fisher.style.cssText=`position:absolute;bottom:${pH+2}px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;z-index:7`;
+  fisher.id='src-'+k;
+  fisher.innerHTML=`
+    <div style="position:relative">
+      <div id="src-ready-${k}" class="char-ready-glow" style="width:48px;height:48px;border-radius:50%;position:absolute;top:-4px;left:-4px"></div>
+      <div style="font-size:34px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.3));animation:fisher-idle 3s ease-in-out infinite">👨‍🦱</div>
+      <div style="font-size:16px;position:absolute;right:-14px;top:0;animation:rod-bob 2s ease-in-out infinite">🎣</div>
+      <div class="lv-badge" style="top:-6px;right:-8px">Lv${S.upg[k]}</div>
     </div>
-    <div class="kitch-shadow"></div>
-    <div class="kitch-label">${kit.n}</div>`;
-  div.querySelector('.kitch-body').addEventListener('click',()=>tapKitchen(k));
-  return div;
+    <div style="width:44px"><div class="char-progress"><div class="char-progress-fill" id="pbf-${k}" style="width:100%"></div></div></div>
+    <div class="char-name">${SOURCES[k].outN}</div>`;
+  fisher.addEventListener('click',()=>tapSource(k));
+  div.appendChild(fisher);
+  c.appendChild(div);
 }
 
-function buildFridgeWidget(){
-  const div=document.createElement('div');div.className='fridge-widget';div.id='fridge-widget';
+function buildAquarium(c,k,cx,W,H,roadH,dirtH,grassH,waterH){
+  const aW=72,aH=58;
+  const bottom=roadH+dirtH+grassH+Math.round(waterH*0.15);
+  const div=document.createElement('div');
+  div.id='src-'+k;
+  div.style.cssText=`position:absolute;left:${cx-aW/2}px;bottom:${bottom}px;z-index:6;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer`;
   div.innerHTML=`
-    <div class="fridge-body">
-      <div class="fridge-top">
-        <span style="font-size:18px;z-index:2;position:relative">🧊</span>
-        <div class="fridge-handle"></div>
+    <div style="position:relative">
+      <div id="src-ready-${k}" class="char-ready-glow" style="width:${aW+10}px;height:${aH+10}px;border-radius:10px;position:absolute;top:-5px;left:-5px"></div>
+      <div class="tank-body" style="width:${aW}px;height:${aH}px">
+        <div class="tank-water"></div>
+        <div class="tank-bubbles">
+          ${Array.from({length:5},(_,i)=>`<div class="tank-bubble" style="width:${4+Math.random()*4}px;height:${4+Math.random()*4}px;left:${10+i*12}%;bottom:5px;animation-duration:${1.5+Math.random()}s;animation-delay:-${Math.random()*2}s"></div>`).join('')}
+        </div>
+        <div class="tank-fish" style="top:30%;font-size:18px;animation-duration:4s">🦐</div>
+        <div class="tank-fish" style="top:55%;font-size:14px;animation-duration:6s;animation-delay:-2s">🐟</div>
+        <div class="tank-glass"></div>
+        <div class="lv-badge">Lv${S.upg[k]}</div>
       </div>
-      <div class="fridge-items" id="fridge-items"></div>
     </div>
-    <div class="fridge-lbl" id="fridge-lbl">Холодильник (0/${stMax()})</div>`;
-  return div;
+    <div style="width:${aW-6}px"><div class="char-progress"><div class="char-progress-fill" id="pbf-${k}" style="width:100%"></div></div></div>
+    <div class="char-name">${SOURCES[k].outN}</div>`;
+  div.addEventListener('click',()=>tapSource(k));
+  c.appendChild(div);
 }
 
-function buildMopers(roadH){
-  const mw=document.getElementById('mopers-wrap');mw.innerHTML='';
-  const scene=document.getElementById('scene');
-  const SW=scene.offsetWidth||600;
-  const startXs=[SW*0.07,SW*0.54];
+function buildRiceField(c,k,cx,W,H,roadH,dirtH,grassH){
+  const fW=96,fH=62;
+  const bottom=roadH+dirtH+Math.round(grassH*0.05);
+  const div=document.createElement('div');
+  div.id='src-'+k;
+  div.style.cssText=`position:absolute;left:${cx-fW/2}px;bottom:${bottom}px;z-index:6;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer`;
+  div.innerHTML=`
+    <div style="position:relative">
+      <div id="src-ready-${k}" class="char-ready-glow" style="width:${fW+10}px;height:${fH+10}px;border-radius:10px;position:absolute;top:-5px;left:-5px"></div>
+      <div class="field-plot" style="width:${fW}px;height:${fH}px">
+        <div class="field-rice-row">
+          <div class="rice-stalk">🌾</div><div class="rice-stalk">🌾</div>
+          <div class="rice-stalk">🌾</div><div class="rice-stalk">🌾</div>
+        </div>
+        <div class="field-farmer">👩‍🌾</div>
+        <div class="lv-badge">Lv${S.upg[k]}</div>
+      </div>
+    </div>
+    <div style="width:${fW-6}px"><div class="char-progress"><div class="char-progress-fill" id="pbf-${k}" style="width:100%"></div></div></div>
+    <div class="char-name">${SOURCES[k].outN}</div>`;
+  div.addEventListener('click',()=>tapSource(k));
+  c.appendChild(div);
+}
+
+function buildGarden(c,k,cx,W,H,roadH,dirtH,grassH){
+  const gW=80,gH=54;
+  const bottom=roadH+dirtH+Math.round(grassH*0.35);
+  const div=document.createElement('div');
+  div.id='src-'+k;
+  div.style.cssText=`position:absolute;left:${cx-gW/2}px;bottom:${bottom}px;z-index:6;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer`;
+  div.innerHTML=`
+    <div style="position:relative">
+      <div id="src-ready-${k}" class="char-ready-glow" style="width:${gW+10}px;height:${gH+10}px;border-radius:10px;position:absolute;top:-5px;left:-5px"></div>
+      <div class="garden-bed" style="width:${gW}px;height:${gH}px">
+        <div class="garden-plants">
+          <div class="garden-plant">🥑</div><div class="garden-plant">🌿</div>
+          <div class="garden-plant">🥒</div><div class="garden-plant">🥑</div>
+          <div class="garden-plant">🌿</div><div class="garden-plant">🥒</div>
+        </div>
+        <div class="lv-badge">Lv${S.upg[k]}</div>
+      </div>
+    </div>
+    <div style="width:${gW-6}px"><div class="char-progress"><div class="char-progress-fill" id="pbf-${k}" style="width:100%"></div></div></div>
+    <div class="char-name">${SOURCES[k].outN}</div>`;
+  div.addEventListener('click',()=>tapSource(k));
+  c.appendChild(div);
+}
+
+/* ── KITCHEN BUILDINGS ── */
+function buildKitchenBuildings(container,cfg,W,H,roadH,dirtH,grassH){
+  const bldPositions={
+    sushi:  {x:0.85,widthRatio:0.1},
+    tempura:{x:0.76,widthRatio:0.09},
+  };
+  cfg.kitchens.forEach((k,i)=>{
+    const kit=KITCHENS[k];
+    const pos=bldPositions[k]||{x:0.82-i*0.1,widthRatio:0.09};
+    const bW=Math.round(W*pos.widthRatio);
+    const bH=Math.round(bW*0.8);
+    const cx=Math.round(pos.x*W);
+    const bottom=roadH+dirtH;
+    const roofW=bW+20;
+
+    const div=document.createElement('div');
+    div.className='kitchen-building';div.id='bld-'+k;
+    div.style.cssText=`left:${cx-bW/2}px;bottom:${bottom}px`;
+    div.innerHTML=`
+      <div class="bld-roof-wrap" style="width:${bW}px">
+        <div class="bld-roof" style="border-left:${roofW/2}px solid transparent;border-right:${roofW/2}px solid transparent;border-bottom:${Math.round(roofW*0.32)}px solid ${kit.roofColor};margin-left:-10px"></div>
+        <div class="bld-roof-band" style="background:linear-gradient(180deg,${kit.roofColor},${kit.color});height:10px"></div>
+      </div>
+      <div class="bld-walls" id="bldw-${k}" style="width:${bW}px;height:${bH}px;background:linear-gradient(165deg,${kit.color},${kit.roofColor});box-shadow:0 6px 0 rgba(0,0,0,.28),0 8px 20px rgba(0,0,0,.2)">
+        <div class="bld-sign">${kit.in}+${kit.in2}→${kit.out}</div>
+        <div class="bld-window" style="left:${Math.round(bW*.08)}px;top:${Math.round(bH*.32)}px;width:${Math.round(bW*.2)}px;height:${Math.round(bH*.22)}px">
+          <div class="cook-char" style="font-size:${Math.round(bW*.18)}px;bottom:0;left:50%;transform:translateX(-50%)">👨‍🍳</div>
+        </div>
+        <div class="bld-window" style="right:${Math.round(bW*.08)}px;top:${Math.round(bH*.32)}px;width:${Math.round(bW*.2)}px;height:${Math.round(bH*.22)}px"></div>
+        <div class="bld-door" style="width:${Math.round(bW*.22)}px;height:${Math.round(bH*.44)}px;background:${kit.roofColor}"></div>
+        <div class="bld-progress"><div class="bld-progress-fill" id="bpf-${k}" style="width:0%"></div></div>
+        <div class="chimney-obj" style="${k==='sushi'?'right:14px':'left:14px'}">
+          <div class="steam" style="width:10px;height:10px;left:50%;bottom:10px;animation-delay:0s"></div>
+          <div class="steam" style="width:8px;height:8px;left:50%;bottom:10px;animation-delay:.8s"></div>
+        </div>
+        <div class="lv-badge">Lv${S.upg[k]}</div>
+      </div>
+      <div class="bld-shadow" style="width:${bW}px"></div>`;
+    div.querySelector('.bld-walls').addEventListener('click',()=>tapKitchen(k));
+    container.appendChild(div);
+  });
+}
+
+/* ── KITCHEN PANEL (right UI) ── */
+function buildKitchenPanel(cfg){
+  const kp=$('kitchen-panel');
+  kp.querySelectorAll('.kitchen-card,.fridge-card').forEach(e=>e.remove());
+  cfg.kitchens.forEach(k=>{
+    const kit=KITCHENS[k],lv=S.upg[k];
+    const card=document.createElement('div');card.className='kitchen-card';card.id='kc-'+k;
+    card.innerHTML=`
+      <div class="kc-icon">${kit.e}</div>
+      <div class="kc-recipe">${kit.in}+${kit.in2}→${kit.out}</div>
+      <div class="kc-name">${kit.n}</div>
+      <div class="kc-prog"><div class="kc-prog-fill" id="kpf-${k}" style="width:0%"></div></div>
+      <div class="kc-lv">Lv${lv}</div>`;
+    card.addEventListener('click',()=>tapKitchen(k));
+    kp.appendChild(card);
+  });
+  // Fridge
+  const fcard=document.createElement('div');fcard.className='fridge-card';fcard.id='fridge-card';
+  fcard.innerHTML=`
+    <div class="fridge-title">🧊 Холодильник <span id="fridge-count" style="color:rgba(42,26,14,.3)">(0/${stMax()})</span></div>
+    <div class="fridge-items" id="fridge-items"><div class="fridge-empty">Пусто</div></div>`;
+  kp.appendChild(fcard);
+}
+
+/* ── MOPERS ── */
+function buildMopers(W,H,roadH){
+  const mw=$('world-mopers');mw.innerHTML='';
+  const startXs=[Math.round(W*0.28),Math.round(W*0.55)];
   G.mopers.forEach((m,i)=>{
     m.x=startXs[i];
+    const bottom=Math.round(roadH*0.18);
     const div=document.createElement('div');div.className='moped-obj';div.id='mp-'+m.id;
-    div.style.cssText=`left:${m.x}px;bottom:${Math.round(roadH*0.15)}px`;
+    div.style.cssText=`left:${m.x}px;bottom:${bottom}px`;
     div.innerHTML=`
       <div class="moped-speech" id="mpb-${m.id}">Готов ✓</div>
-      <div class="moped-icon" id="mpi-${m.id}">🛵</div>`;
+      <div class="moped-vehicle">
+        <div class="moped-body-svg">🛵</div>
+      </div>`;
     div.addEventListener('click',()=>tapMoper(m.id));
     mw.appendChild(div);
   });
 }
 
-/* ═══ GAME LOOP ═══ */
+/* ═══════════════════════════ GAME LOOP ═══════════════════════════ */
 const TICK=200;
 function beginGame(){G.running=true;G.tick=setInterval(gameTick,TICK)}
 
@@ -937,72 +1153,76 @@ function gameTick(){
   if(G.timeLeft<=0){G.timeLeft=0;endGame();return;}
   refreshTimer();
 
+  // Sources
   G.cfg.sources.forEach(k=>{
     const s=G.sources[k];
     if(s.cd>0){
       s.cd=Math.max(0,s.cd-TICK);
       const pct=100-(s.cd/s.maxCd*100);
-      document.getElementById('pbf-'+k)?.style.setProperty('width',pct+'%');
-      const ov=document.getElementById('pcd-'+k);if(ov)ov.style.height=(s.cd>0?(s.cd/s.maxCd*100)+'%':'0%');
-      const pb=document.getElementById('pb-'+k);
-      if(pb){pb.classList.toggle('pier-ready',s.cd===0);}
+      const bar=$('pbf-'+k);if(bar)bar.style.width=pct+'%';
+      const rg=$('src-ready-'+k);if(rg)rg.style.display=s.cd===0?'block':'none';
+      const src=$('src-'+k);if(src){src.style.opacity=s.cd>0?'0.7':'1';}
     }
   });
 
+  // Kitchens
   G.cfg.kitchens.forEach(k=>{
     const kit=G.kitchens[k];
     if(kit.running){
       kit.tl-=TICK;
       const pct=((kit.total-kit.tl)/kit.total)*100;
-      document.getElementById('kpf-'+k)?.style.setProperty('width',Math.min(100,pct)+'%');
+      [$('bpf-'+k),$('kpf-'+k)].forEach(b=>{if(b)b.style.width=Math.min(100,pct)+'%'});
       if(kit.tl<=0){
         kit.running=false;
-        document.getElementById('kpf-'+k)?.style.setProperty('width','0%');
-        document.getElementById('kb-'+k)?.classList.remove('working');
+        [$('bpf-'+k),$('kpf-'+k)].forEach(b=>{if(b)b.style.width='0%'});
+        $('bldw-'+k)?.classList.remove('bld-working');
+        $('kc-'+k)?.classList.remove('working');
         addStorage(KITCHENS[k].out);
-        fxEl(document.getElementById('kw-'+k),KITCHENS[k].out+' готово!','#3ab8a8');
+        fxEl($('bld-'+k),KITCHENS[k].out+' готово!','#2abcaa');
         refreshSteps();
       }
     }
   });
 
-  const scene=document.getElementById('scene');
-  const SW=scene.offsetWidth||600;
+  // Mopers
+  const W=window.innerWidth;
   G.mopers.forEach(m=>{
     if(m.busy&&m.tl>0){
-      m.tl-=TICK;m.x=Math.min(SW+90,m.x+5);
-      const el=document.getElementById('mp-'+m.id);if(el)el.style.left=m.x+'px';
+      m.tl-=TICK;m.x=Math.min(W+100,m.x+6);
+      const el=$('mp-'+m.id);if(el)el.style.left=m.x+'px';
       if(m.tl<=0){
         m.busy=false;
-        const startXs=[SW*0.07,SW*0.54];m.x=startXs[m.id];
+        const sx=[Math.round(W*0.28),Math.round(W*0.55)];m.x=sx[m.id];
         if(el){el.style.left=m.x+'px';el.classList.remove('moped-glow');el.classList.remove('moving');}
-        const mb=document.getElementById('mpb-'+m.id);if(mb)mb.textContent='Готов ✓';
+        const mb=$('mpb-'+m.id);if(mb)mb.textContent='Готов ✓';
       }
     }
   });
 
+  // Orders timer
   let rerender=false;
   G.orders.forEach(o=>{
     if(!o.active)return;
     o.tl-=TICK/1000;
     if(o.tl<=0){o.active=false;G.ordersFailed++;rerender=true;refreshStars();setTimeout(()=>{if(G.running)spawnOrder();},2500);}
-    else{const f=document.getElementById('otf-'+o.id);if(f){const p=(o.tl/o.maxTl)*100;f.style.width=p+'%';f.classList.toggle('low',p<25);}}
+    else{const f=$('otf-'+o.id);if(f){const p=(o.tl/o.maxTl)*100;f.style.width=p+'%';f.classList.toggle('low',p<25);}}
   });
   if(rerender)renderOrders();
   if(G.orders.filter(o=>o.active).length<G.cfg.maxOrders&&Math.random()<0.006)spawnOrder();
   checkAllDeliv();
 }
 
-/* ═══ INTERACTIONS ═══ */
+/* ═══════════════════════════ INTERACTIONS ═══════════════════════════ */
 function tapSource(k){
   if(!G.running)return;
   const s=G.sources[k];if(s.cd>0)return;
-  if(stUsed()>=stMax()){fxXY(window.innerWidth*.5,60,'🧊 Холодильник полон!','#e8453c');return;}
+  if(stUsed()>=stMax()){fxXY(window.innerWidth*.5,60,'🧊 Холодильник полон!','#e8403a');return;}
   addStorage(SOURCES[k].out);
   s.cd=sCd(k);s.maxCd=s.cd;
-  document.getElementById('pb-'+k)?.classList.remove('pier-ready');
-  spawnParticles(document.getElementById('pier-'+k),SOURCES[k].out);
-  fxEl(document.getElementById('pier-'+k),SOURCES[k].out+' +1','#3ab8a8');
+  const rg=$('src-ready-'+k);if(rg)rg.style.display='none';
+  const src=$('src-'+k);if(src)src.style.opacity='0.7';
+  spawnParticles($('src-'+k),SOURCES[k].out);
+  fxEl($('src-'+k),SOURCES[k].out+' +1','#2abcaa');
   refreshSteps();
 }
 
@@ -1010,57 +1230,61 @@ function tapKitchen(k){
   if(!G.running)return;
   const kit=G.kitchens[k];if(kit.running)return;
   const need1=KITCHENS[k].in,need2=KITCHENS[k].in2;
-  if(!(G.storage[need1]>0)){fxXY(window.innerWidth*.72,120,'Нужно '+need1,'#e8453c');return;}
-  if(!(G.storage[need2]>0)){fxXY(window.innerWidth*.72,120,'Нужно '+need2,'#e8453c');return;}
+  if(!(G.storage[need1]>0)){fxXY(window.innerWidth*.72,120,'Нужно '+need1,'#e8403a');return;}
+  if(!(G.storage[need2]>0)){fxXY(window.innerWidth*.72,120,'Нужно '+need2,'#e8403a');return;}
   removeStorage(need1,1);removeStorage(need2,1);
   kit.running=true;kit.tl=kTm(k);kit.total=kit.tl;
-  document.getElementById('kb-'+k)?.classList.add('working');
+  $('bldw-'+k)?.classList.add('bld-working');
+  $('kc-'+k)?.classList.add('working');
   refreshSteps();
 }
 
 function tapMoper(id){
   if(!G.running)return;
   const moper=G.mopers[id];if(moper.busy)return;
-  if(!G.selOrder){fxXY(window.innerWidth*.5,100,'👆 Выбери заказ!','#f5c842');return;}
+  if(!G.selOrder){fxXY(window.innerWidth*.5,100,'👆 Выбери заказ!','#f8c832');return;}
   const order=G.orders.find(o=>o.id===G.selOrder&&o.active);
   if(!order){G.selOrder=null;renderOrders();return;}
-  if(!order.deliverable){fxXY(window.innerWidth*.5,100,'❌ Не хватает!','#e8453c');return;}
+  if(!order.deliverable){fxXY(window.innerWidth*.5,100,'❌ Не хватает!','#e8403a');return;}
   const need={};order.items.forEach(i=>need[i]=(need[i]||0)+1);
   Object.entries(need).forEach(([i,q])=>removeStorage(i,q));
   order.active=false;G.ordersOk++;G.coins+=order.reward;G.selOrder=null;
   refreshCoins();refreshStars();renderOrders();
   moper.busy=true;moper.tl=mTm();
-  const el=document.getElementById('mp-'+id);
+  const el=$('mp-'+id);
   el?.classList.remove('moped-glow');el?.classList.add('moving');
-  const mb=document.getElementById('mpb-'+id);if(mb)mb.textContent='🏍️ Едет!';
-  fxXY(window.innerWidth*.5,75,'+'+order.reward+'🪙','#f5c842');
-  fxXY(window.innerWidth*.5,105,'✅ Доставлено!','#3ab8a8');
+  const mb=$('mpb-'+id);if(mb)mb.textContent='🏍️ Едет!';
+  fxXY(window.innerWidth*.5,72,'+'+order.reward+'🪙','#f8c832');
+  fxXY(window.innerWidth*.5,100,'✅ Доставлено!','#2abcaa');
   setTimeout(()=>{if(G.running)spawnOrder();},2200);
   refreshSteps();
 }
 
 function selectOrder(id){
-  G.selOrder=G.selOrder===id?null:id;
-  renderOrders();
+  G.selOrder=G.selOrder===id?null:id;renderOrders();
   if(G.selOrder){
     const rm=G.mopers.find(m=>!m.busy);
-    if(rm){const el=document.getElementById('mp-'+rm.id);el?.classList.add('moped-glow');setTimeout(()=>el?.classList.remove('moped-glow'),2500);}
+    if(rm){const el=$('mp-'+rm.id);el?.classList.add('moped-glow');setTimeout(()=>el?.classList.remove('moped-glow'),2500);}
   }
   refreshSteps();
 }
 
-/* ═══ STORAGE ═══ */
+/* ═══════════════════════════ STORAGE ═══════════════════════════ */
 function addStorage(item){G.storage[item]=(G.storage[item]||0)+1;renderFridge();checkAllDeliv();}
 function removeStorage(item,qty){G.storage[item]=(G.storage[item]||0)-qty;if(G.storage[item]<=0)delete G.storage[item];renderFridge();checkAllDeliv();}
 function renderFridge(){
   const max=stMax(),used=stUsed();
-  const lbl=document.getElementById('fridge-lbl');if(lbl)lbl.textContent=`Холодильник (${used}/${max})`;
-  const items=document.getElementById('fridge-items');
-  if(items)items.innerHTML=Object.entries(G.storage).filter(([,v])=>v>0)
-    .map(([e,q])=>`<div class="fridge-chip">${e}<span>×${q}</span></div>`).join('');
+  const cnt=$('fridge-count');if(cnt)cnt.textContent=`(${used}/${max})`;
+  const items=$('fridge-items');
+  if(items){
+    const entries=Object.entries(G.storage).filter(([,v])=>v>0);
+    items.innerHTML=entries.length
+      ?entries.map(([e,q])=>`<div class="fridge-chip">${e}<span>×${q}</span></div>`).join('')
+      :'<div class="fridge-empty">Пусто</div>';
+  }
 }
 
-/* ═══ ORDERS ═══ */
+/* ═══════════════════════════ ORDERS ═══════════════════════════ */
 function spawnOrder(){
   if(G.orders.filter(o=>o.active).length>=G.cfg.maxOrders)return;
   const pi=Math.min(G.cfg.id-1,ORDER_POOLS.length-1);
@@ -1074,20 +1298,17 @@ function spawnOrder(){
 }
 
 function renderOrders(){
-  const list=document.getElementById('orders-list');list.innerHTML='';
+  const list=$('orders-list');list.innerHTML='';
   const active=G.orders.filter(o=>o.active);
-  if(!active.length){
-    list.innerHTML='<div style="color:rgba(42,26,14,.25);font-size:11px;font-weight:800;text-align:center;padding:12px">Ожидаем...</div>';
-    return;
-  }
+  if(!active.length){list.innerHTML='<div style="color:rgba(42,26,14,.2);font-size:10px;font-weight:800;text-align:center;padding:12px">Ожидаем...</div>';return;}
   active.forEach(o=>{
     checkDeliv(o);
     const isSel=G.selOrder===o.id;
-    const itemsHtml=o.items.map(item=>`<span class="oi ${(G.storage[item]||0)>0?'':'dim'}">${item}</span>`).join('');
+    const html=o.items.map(item=>`<span class="oi ${(G.storage[item]||0)>0?'':'dim'}">${item}</span>`).join('');
     const card=document.createElement('div');
     card.className='order-card'+(isSel?' sel':'')+(o.deliverable&&!isSel?' ready':'');
     card.id='oc-'+o.id;card.onclick=()=>selectOrder(o.id);
-    card.innerHTML=`<div class="oi-row">${itemsHtml}</div><div class="o-reward">🪙${o.reward}</div><div class="o-tbar"><div class="o-tfill" id="otf-${o.id}" style="width:${o.tl/o.maxTl*100}%"></div></div>`;
+    card.innerHTML=`<div class="oi-row">${html}</div><div class="o-reward">🪙${o.reward}</div><div class="o-tbar"><div class="o-tfill" id="otf-${o.id}" style="width:${o.tl/o.maxTl*100}%"></div></div>`;
     list.appendChild(card);
   });
   for(let i=active.length;i<G.cfg.maxOrders;i++)list.innerHTML+='<div class="o-ph">🍱</div>';
@@ -1100,7 +1321,7 @@ function checkDeliv(o){
 function checkAllDeliv(){
   G.orders.forEach(o=>{if(o.active)checkDeliv(o);});
   G.orders.filter(o=>o.active).forEach(o=>{
-    const c=document.getElementById('oc-'+o.id);if(!c)return;
+    const c=$('oc-'+o.id);if(!c)return;
     c.classList.toggle('ready',o.deliverable&&G.selOrder!==o.id);
     c.classList.toggle('sel',G.selOrder===o.id);
     c.querySelectorAll('.oi').forEach((el,i)=>el.classList.toggle('dim',(G.storage[o.items[i]]||0)===0));
@@ -1108,28 +1329,31 @@ function checkAllDeliv(){
   refreshSteps();
 }
 
-/* ═══ DISPLAY ═══ */
+/* ═══════════════════════════ DISPLAY ═══════════════════════════ */
 function refreshTimer(){
-  const el=document.getElementById('hud-timer');
+  const el=$('tb-timer');
   const m=Math.floor(G.timeLeft/60),s=Math.floor(G.timeLeft%60);
-  el.textContent='⏱'+m+':'+String(s).padStart(2,'0');
+  el.textContent=m+':'+String(s).padStart(2,'0');
   el.classList.toggle('red',G.timeLeft<30);
 }
-function refreshCoins(){document.getElementById('hud-coins').textContent=G.coins;}
+function refreshCoins(){$('tb-coins').textContent=G.coins;}
 function refreshStars(){
   const n=calcStars();
-  document.querySelectorAll('#hud-stars .hud-star').forEach((el,i)=>{el.textContent=i<n?'⭐':'☆';el.classList.toggle('on',i<n);});
+  document.querySelectorAll('#tb-stars .tb-star').forEach((el,i)=>{
+    el.textContent=i<n?'⭐':'☆';
+    el.classList.toggle('on',i<n);
+  });
 }
 function calcStars(){const g=G.cfg.goals;return G.coins>=g[2]?3:G.coins>=g[1]?2:G.coins>=g[0]?1:0;}
 function refreshSteps(){
   if(!G)return;
-  [0,1,2,3].forEach(i=>{const el=document.getElementById('sp'+i);if(el)el.className='step-pill';});
+  [0,1,2,3].forEach(i=>{const el=$('sp'+i);if(el)el.className='step-pill';});
   const hasRes=Object.values(G.storage||{}).some(v=>v>0);
-  const canKit=G.cfg.kitchens.some(k=>{const kit=KITCHENS[k];return (G.storage[kit.in]||0)>0&&(G.storage[kit.in2]||0)>0&&!G.kitchens[k].running;});
+  const canKit=G.cfg.kitchens.some(k=>{const kit=KITCHENS[k];return(G.storage[kit.in]||0)>0&&(G.storage[kit.in2]||0)>0&&!G.kitchens[k].running;});
   const kitRun=Object.values(G.kitchens||{}).some(k=>k.running);
   const hasReady=G.orders.some(o=>o.active&&o.deliverable);
   const hasSel=!!G.selOrder;
-  const set=(i,cls)=>{const el=document.getElementById('sp'+i);if(el)el.className='step-pill '+cls;};
+  const set=(i,cls)=>{const el=$('sp'+i);if(el)el.className='step-pill '+cls;};
   if(!hasRes&&!kitRun)set(0,'active');
   else if(canKit){set(0,'done');set(1,'active');}
   else if(hasReady&&!hasSel){set(0,'done');set(1,'done');set(2,'active');}
@@ -1137,29 +1361,27 @@ function refreshSteps(){
   else if(hasRes||kitRun)set(0,'done');
 }
 
-/* ═══ FX ═══ */
+/* ═══════════════════════════ FX ═══════════════════════════ */
 function fxEl(el,t,c){if(!el)return;const r=el.getBoundingClientRect();fxXY(r.left+r.width/2,r.top,t,c);}
 function fxXY(x,y,t,c){
   const el=document.createElement('div');el.className='fx';
-  el.style.cssText=`left:${x-40}px;top:${y-10}px;color:${c}`;
-  el.textContent=t;document.body.appendChild(el);
-  setTimeout(()=>el.remove(),1400);
+  el.style.cssText=`left:${x-40}px;top:${y-8}px;color:${c}`;
+  el.textContent=t;document.body.appendChild(el);setTimeout(()=>el.remove(),1400);
 }
 function spawnParticles(el){
   if(!el)return;
-  const r=el.getBoundingClientRect();
-  const cx=r.left+r.width/2,cy=r.top+r.height/2;
-  const colors=['#3ab8a8','#f5c842','#f4846a','#5aaa60','#e8453c'];
+  const r=el.getBoundingClientRect();const cx=r.left+r.width/2,cy=r.top+r.height/2;
+  const colors=['#2abcaa','#f8c832','#f4846a','#6cc83a','#e8403a'];
   for(let i=0;i<8;i++){
     const p=document.createElement('div');p.className='particle';
-    const ang=Math.random()*360,dist=38+Math.random()*48;
+    const ang=Math.random()*360,dist=40+Math.random()*50;
     const dx=Math.cos(ang*Math.PI/180)*dist,dy=Math.sin(ang*Math.PI/180)*dist;
-    p.style.cssText=`left:${cx}px;top:${cy}px;background:${colors[i%colors.length]};--fly:translate(${dx}px,${dy}px);animation-delay:${i*0.035}s`;
+    p.style.cssText=`left:${cx}px;top:${cy}px;width:7px;height:7px;background:${colors[i%colors.length]};--fly:translate(${dx}px,${dy}px);animation-delay:${i*.035}s`;
     document.body.appendChild(p);setTimeout(()=>p.remove(),900);
   }
 }
 
-/* ═══ END ═══ */
+/* ═══════════════════════════ END ═══════════════════════════ */
 function endGame(){
   if(G.ended)return;G.ended=true;G.running=false;clearInterval(G.tick);
   const stars=calcStars();
@@ -1167,63 +1389,46 @@ function endGame(){
   S.coins+=G.coins;
   setTimeout(()=>showResult(stars),600);
 }
-function goMap(){if(G){G.running=false;clearInterval(G.tick);}show('map');renderMap();}
+function goMap(){if(G){G.running=false;clearInterval(G.tick);}show('screen-map');renderMap();}
 
-/* ═══ RESULT ═══ */
+/* ═══════════════════════════ RESULT ═══════════════════════════ */
 function showResult(stars){
-  document.getElementById('upg-headline').textContent=
-    stars===0?'😔 Ещё раз!':stars===1?'👍 Пройден!':stars===2?'🎉 Отлично!':'🏆 Мастер суши!';
-  document.querySelectorAll('#upg-stars .s-big').forEach((el,i)=>
-    setTimeout(()=>{el.textContent=i<stars?'⭐':'☆';if(i<stars)el.classList.add('on');},i*280));
-  document.getElementById('res-pills').innerHTML=`
+  $('upg-hl').textContent=stars===0?'😔 Ещё раз!':stars===1?'👍 Пройден!':stars===2?'🎉 Отлично!':'🏆 Мастер суши!';
+  document.querySelectorAll('#upg-stars .s-big').forEach((el,i)=>setTimeout(()=>{el.textContent=i<stars?'⭐':'☆';if(i<stars)el.classList.add('on');},i*280));
+  $('res-pills').innerHTML=`
     <div class="rpill"><div class="rpill-v">🪙${G.coins}</div><div class="rpill-l">Монет</div></div>
     <div class="rpill"><div class="rpill-v">📦${G.ordersOk}</div><div class="rpill-l">Доставлено</div></div>
     <div class="rpill"><div class="rpill-v">❌${G.ordersFailed}</div><div class="rpill-l">Просрочено</div></div>`;
-  document.getElementById('upg-wallet').textContent=S.coins;
+  $('upg-wallet').textContent=S.coins;
   buildUpgList();
-  const btn=document.getElementById('btn-next');
+  const btn=$('btn-next');
   if(stars===0){btn.textContent='🔄 Ещё раз';btn.onclick=()=>startLevel(G.cfg.id);}
-  else{const nid=G.cfg.id+1,has=LEVELS.find(l=>l.id===nid);btn.textContent=has?'Следующий →':'🗺 На карту';btn.onclick=()=>{show('map');renderMap();};}
-  show('upgrade');
+  else{const nid=G.cfg.id+1,has=LEVELS.find(l=>l.id===nid);btn.textContent=has?'Следующий →':'🗺 На карту';btn.onclick=()=>{show('screen-map');renderMap();};}
+  show('screen-upgrade');
 }
 
 function buildUpgList(){
-  const list=document.getElementById('upg-list');list.innerHTML='';
+  const list=$('upg-list');list.innerHTML='';
   list.innerHTML+='<div class="upg-sec">🎣 Источники</div>';
   UPG.forEach((item,idx)=>{
     const lv=S.upg[item.k]||1,maxed=lv>=item.m,cost=UCOSTS[lv],afford=S.coins>=cost;
     const dots=Array.from({length:item.m},(_,i)=>`<div class="udot ${i<lv?'on':''}"></div>`).join('');
     const card=document.createElement('div');
     card.className='upg-card'+(maxed?' off':'')+((!afford&&!maxed)?' broke':'');
-    card.innerHTML=`
-      <div class="u-ico">${item.e}</div>
-      <div class="u-info">
-        <div class="u-name">${item.n}</div>
-        <div class="u-sub">${item.d} · Lv${lv}${maxed?'':' → '+(lv+1)}</div>
-        <div class="u-dots">${dots}</div>
-      </div>
-      ${maxed?`<div class="u-max-lbl">МАКС ✓</div>`:`<div class="u-cost-btn" style="opacity:${afford?1:.4}"><div class="u-cost-v">🪙${cost}</div><div class="u-cost-l">Купить</div></div>`}`;
-    if(!maxed&&afford){
-      card.onclick=()=>{
-        S.upg[item.k]++;S.coins-=cost;
-        document.getElementById('upg-wallet').textContent=S.coins;
-        document.getElementById('map-coins').textContent=S.coins;
-        buildUpgList();
-        fxXY(window.innerWidth*.72,190,'⬆️ '+item.n+' Lv'+(lv+1),'#3ab8a8');
-      };
-    }
+    card.innerHTML=`<div class="u-ico">${item.e}</div><div class="u-info"><div class="u-name">${item.n}</div><div class="u-sub">${item.d} · Lv${lv}${maxed?'':' → '+(lv+1)}</div><div class="u-dots">${dots}</div></div>${maxed?`<div class="u-max">МАКС ✓</div>`:`<div class="u-cost-btn" style="opacity:${afford?1:.4}"><div class="u-cost-v">🪙${cost}</div><div class="u-cost-l">Купить</div></div>`}`;
+    if(!maxed&&afford){card.onclick=()=>{S.upg[item.k]++;S.coins-=cost;$('upg-wallet').textContent=S.coins;$('map-coins').textContent=S.coins;buildUpgList();fxXY(window.innerWidth*.72,185,'⬆️ '+item.n+' Lv'+(lv+1),'#2abcaa');};}
     list.appendChild(card);
     if(item.k==='garden')list.innerHTML+='<div class="upg-sec" style="margin-top:5px">👨‍🍳 Кухня и доставка</div>';
   });
 }
 
-/* ═══ TUTORIAL ═══ */
+/* ═══════════════════════════ TUTORIAL ═══════════════════════════ */
 const TUT=[
-  {t:'piers-wrap',title:'🎣 Тапай источники!',text:'Нажми на рыбака или поле риса — получишь ингредиенты для кухни.',pos:'top'},
-  {t:'fridge-widget',title:'🧊 Холодильник',text:'Все ингредиенты хранятся в холодильнике. Следи — не переполни!',pos:'left'},
-  {t:'kw-sushi',title:'🍣 Запусти повара!',text:'Тапни суши-стол справа — нужны рыба + рис. Повар приготовит суши!',pos:'left'},
-  {t:'orders-list',title:'📋 Выбери заказ!',text:'Тапни карточку заказа слева. Зелёная рамка = готово к доставке!',pos:'right'},
-  {t:'mopers-wrap',title:'🛵 Доставь!',text:'Выбери заказ, потом тапни мопед — курьер помчится к клиенту!',pos:'top'},
+  {t:'src-fisher',title:'🎣 Тапни рыбака!',text:'Рыбак на пирсе ловит рыбу. Тапни его когда светится — получишь 🐟 для кухни!',pos:'right'},
+  {t:'fridge-card',title:'🧊 Холодильник',text:'Все ингредиенты хранятся здесь. Следи — не переполни склад!',pos:'left'},
+  {t:'kc-sushi',title:'🍣 Готовь суши!',text:'Тапни суши-стол — нужны рыба + рис. Повар в окне всё приготовит!',pos:'left'},
+  {t:'orders-list',title:'📋 Выбери заказ!',text:'Тапни карточку заказа. Когда всё есть — зелёная рамка!',pos:'right'},
+  {t:'mp-0',title:'🛵 Доставляй!',text:'Выбери заказ потом тапни мопед — курьер помчится к клиенту!',pos:'top'},
 ];
 let tutI=0,tutOv=null;
 function runTutorial(done){tutI=0;showTutStep(done);}
@@ -1233,16 +1438,16 @@ function showTutStep(done){
   const step=TUT[tutI];
   const ov=document.createElement('div');ov.className='tut-overlay';tutOv=ov;
   const bg=document.createElement('div');bg.className='tut-bg';ov.appendChild(bg);
-  const target=document.getElementById(step.t);
-  let tx=window.innerWidth/2-112,ty=window.innerHeight/2-100;
+  const target=$(step.t);
+  let tx=window.innerWidth/2-114,ty=window.innerHeight/2-100;
   if(target){
     const r=target.getBoundingClientRect();
-    const hl=document.createElement('div');hl.className='tut-highlight';
+    const hl=document.createElement('div');hl.className='tut-hl';
     hl.style.cssText=`top:${r.top-5}px;left:${r.left-5}px;width:${r.width+10}px;height:${r.height+10}px`;
     ov.appendChild(hl);
     if(step.pos==='right'){tx=r.right+12;ty=r.top+r.height/2-80;}
     else if(step.pos==='left'){tx=r.left-244;ty=r.top+r.height/2-80;}
-    else if(step.pos==='top'){tx=r.left+r.width/2-112;ty=r.top-195;}
+    else if(step.pos==='top'){tx=r.left+r.width/2-114;ty=r.top-196;}
     tx=Math.max(8,Math.min(window.innerWidth-244,tx));
     ty=Math.max(8,Math.min(window.innerHeight-210,ty));
   }
@@ -1254,8 +1459,8 @@ function showTutStep(done){
   ov.appendChild(bubble);document.body.appendChild(ov);
 }
 
-/* ═══ INIT ═══ */
-renderMap();show('map');
+/* ═══════════════════════════ INIT ═══════════════════════════ */
+renderMap();show('screen-map');
 </script>
 </body>
 </html>
