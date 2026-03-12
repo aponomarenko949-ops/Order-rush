@@ -2,1158 +2,1006 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>🍣 Sushi Rush</title>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=M+PLUS+Rounded+1c:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
+/* ══ RESET & BASE ══ */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{
+  width:100%;height:100%;overflow:hidden;touch-action:manipulation;
+  background:#5ab8e8; /* sky color — never shows black */
+  font-family:'M PLUS Rounded 1c',sans-serif;
+}
+
+/* ══ CSS VARS ══ */
 :root{
-  --sky-top:#b8e8ff;--sky-bot:#e8f8d0;
-  --water:#3aa8d8;--water2:#1a7aaa;--water3:#0d5a8a;
-  --grass:#6cc83a;--grass2:#4aa018;--grass3:#2a7008;
-  --dirt:#c8883a;--dirt2:#a06018;
-  --road:#38384a;--road2:#22222e;
-  --sand:#e8d898;--sand2:#c8b868;
   --red:#e8403a;--red2:#b82020;
   --teal:#2abcaa;--teal2:#1a8c7a;
   --gold:#f8c832;--gold2:#c89010;
-  --warm:#fff8ee;--ink:#2a1a0e;
-  --panel:rgba(255,252,245,0.92);
-  --panel-border:rgba(42,26,14,0.10);
+  --ink:#2a1a0e;
+  --glass:rgba(255,252,245,.88);
 }
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none}
-html,body{width:100%;height:100%;overflow:hidden;touch-action:manipulation;background:#7ed4f8}
-body{font-family:'M PLUS Rounded 1c',sans-serif}
 
-/* ═══════════════════════════════════
-   PORTRAIT LOCK
-═══════════════════════════════════ */
-.portrait-warn{
-  display:none;position:fixed;inset:0;z-index:99999;
-  background:linear-gradient(160deg,#1a3a50,#0a1a28);
-  flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:40px;
-}
-@media(orientation:portrait){.portrait-warn{display:flex;}}
-.pw-icon{font-size:72px;animation:rp 2s ease-in-out infinite}
-@keyframes rp{0%,100%{transform:rotate(0)}50%{transform:rotate(90deg)}}
-.pw-t{font-family:'Zen Dots',monospace;font-size:22px;color:var(--gold)}
-.pw-s{font-size:13px;color:rgba(255,255,255,.5);font-weight:700;line-height:1.7}
+/* ══ SCREENS ══ */
+.screen{position:fixed;inset:0;overflow:hidden}
+.screen.hidden{display:none}
 
-/* ═══════════════════════════════════
-   SCREEN BASE
-═══════════════════════════════════ */
-.screen{position:fixed;inset:0;display:flex;flex-direction:column;transition:opacity .25s}
-.screen.hidden{opacity:0;pointer-events:none;visibility:hidden}
-
-/* ═══════════════════════════════════
+/* ══════════════════════════════════════
    MAP SCREEN
-═══════════════════════════════════ */
+══════════════════════════════════════ */
 #screen-map{
-  background:linear-gradient(175deg,#c8eeff 0%,#e8f8f0 45%,#d4f0a8 100%);
-  overflow:hidden;
+  background:linear-gradient(170deg,#a8dcff 0%,#c8f0e0 40%,#b8e870 75%,#78c828 100%);
+  display:flex;flex-direction:column;
 }
 .map-header{
-  position:relative;z-index:10;
-  padding:14px 20px 10px;
+  padding:12px 18px 8px;
   display:flex;align-items:center;justify-content:space-between;
+  position:relative;z-index:2;
 }
-.map-logo{font-family:'Zen Dots',monospace;font-size:24px;color:var(--red);text-shadow:1px 2px 0 rgba(232,64,58,.18)}
-.map-logo-sub{font-size:9px;color:rgba(42,26,14,.38);font-weight:800;letter-spacing:2px;margin-top:1px}
-.map-wallet{
-  display:flex;align-items:center;gap:7px;
-  background:var(--panel);border:2px solid rgba(248,200,50,.45);
-  border-radius:28px;padding:6px 16px;
-  box-shadow:0 4px 14px rgba(42,26,14,.1);
+.map-logo{font-family:'Zen Dots',monospace;font-size:22px;color:var(--red);text-shadow:0 2px 0 rgba(184,32,32,.2)}
+.map-logo-sub{font-size:9px;color:rgba(42,26,14,.4);font-weight:800;letter-spacing:2px}
+.map-coins-badge{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,252,245,.9);border:2px solid rgba(248,200,50,.5);
+  border-radius:24px;padding:5px 14px;font-family:'Zen Dots',monospace;
+  font-size:17px;color:var(--gold2);box-shadow:0 4px 12px rgba(0,0,0,.1);
 }
-.map-wallet-val{font-family:'Zen Dots',monospace;font-size:19px;color:var(--gold2)}
-.map-world{
-  position:relative;z-index:10;margin:0 20px 10px;
-  background:var(--panel);border:2px solid rgba(42,188,170,.28);
-  border-radius:14px;padding:8px 16px;
-  box-shadow:0 4px 14px rgba(42,26,14,.08);
-  display:flex;align-items:center;gap:10px;
+.map-banner{
+  margin:0 14px 10px;
+  background:rgba(255,252,245,.82);border:2px solid rgba(42,188,170,.3);
+  border-radius:12px;padding:7px 14px;display:flex;align-items:center;gap:8px;
+  backdrop-filter:blur(8px);
 }
-.map-world-t{font-family:'Zen Dots',monospace;font-size:12px;color:var(--teal2)}
-.map-world-s{font-size:9px;color:rgba(42,26,14,.38);font-weight:800;margin-top:2px}
-.map-body{flex:1;display:flex;align-items:center;overflow:hidden;position:relative}
-.map-scroll{width:100%;overflow-x:auto;overflow-y:hidden;padding:14px 26px}
-.map-scroll::-webkit-scrollbar{display:none}
-.levels-row{display:flex;align-items:center;min-width:max-content}
-.lv-line{width:44px;height:3px;background:repeating-linear-gradient(90deg,rgba(42,26,14,.18) 0,rgba(42,26,14,.18) 4px,transparent 4px,transparent 9px)}
-.lv-wrap{display:flex;flex-direction:column;align-items:center}
+.map-banner-t{font-family:'Zen Dots',monospace;font-size:11px;color:var(--teal2)}
+.map-banner-s{font-size:8px;color:rgba(42,26,14,.35);font-weight:800;margin-top:1px}
+.map-scroll-area{flex:1;overflow-x:auto;overflow-y:hidden;display:flex;align-items:center;padding:10px 24px 14px}
+.map-scroll-area::-webkit-scrollbar{display:none}
+.levels-row{display:flex;align-items:center;gap:0;min-width:max-content}
+.lv-connector{width:40px;height:3px;background:repeating-linear-gradient(90deg,rgba(42,26,14,.2) 0,rgba(42,26,14,.2) 4px,transparent 4px,transparent 8px)}
+.lv-wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
 .lv-node{
-  width:84px;height:84px;border-radius:50%;flex-shrink:0;
+  width:78px;height:78px;border-radius:50%;cursor:pointer;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  cursor:pointer;position:relative;transition:transform .14s;
+  position:relative;transition:transform .14s;
+  border:4px solid #fff;
 }
-.lv-node:active{transform:scale(.88) translateY(4px)}
-.lv-node.done{background:radial-gradient(circle at 38% 32%,#fff,var(--teal),var(--teal2));border:4px solid #fff;box-shadow:0 7px 0 var(--teal2),0 9px 20px rgba(42,188,170,.3),inset 0 2px 0 rgba(255,255,255,.6)}
-.lv-node.next{background:radial-gradient(circle at 38% 32%,#fffad0,var(--gold),var(--gold2));border:4px solid #fff;box-shadow:0 7px 0 var(--gold2),0 9px 20px rgba(248,200,50,.35),inset 0 2px 0 rgba(255,255,255,.6);animation:npulse 1.8s ease-in-out infinite}
-.lv-node.locked{background:radial-gradient(circle at 38% 32%,#ddd,#aaa,#888);border:4px solid #fff;box-shadow:0 6px 0 #666,inset 0 2px 0 rgba(255,255,255,.3);opacity:.6;cursor:default}
-@keyframes npulse{0%,100%{box-shadow:0 7px 0 var(--gold2),0 0 0 0 rgba(248,200,50,.7)}50%{box-shadow:0 7px 0 var(--gold2),0 0 0 16px rgba(248,200,50,0)}}
-.lv-num{font-family:'Zen Dots',monospace;font-size:26px;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.2);line-height:1}
-.lv-stars{display:flex;gap:1px;margin-top:2px}
-.lv-stars span{font-size:12px}
-.lv-shadow{width:62px;height:9px;background:radial-gradient(ellipse,rgba(0,0,0,.16),transparent);border-radius:50%;margin-top:4px}
-.map-deco{position:absolute;bottom:0;left:0;right:0;height:35%;pointer-events:none;z-index:1}
-.deco-i{position:absolute;bottom:0;filter:drop-shadow(0 4px 8px rgba(0,0,0,.1))}
-.petal{position:absolute;animation:petal-fall linear infinite;pointer-events:none;z-index:0;opacity:.65}
-@keyframes petal-fall{0%{transform:translateX(0) rotate(0);opacity:.65}100%{transform:translateX(70px) rotate(360deg);opacity:0;top:110vh!important}}
+.lv-node:active{transform:scale(.86) translateY(3px)}
+.lv-node.done{
+  background:radial-gradient(circle at 38% 30%,#e0fff8,var(--teal),var(--teal2));
+  box-shadow:0 7px 0 var(--teal2),0 10px 22px rgba(42,188,170,.35),inset 0 2px 0 rgba(255,255,255,.5);
+}
+.lv-node.next{
+  background:radial-gradient(circle at 38% 30%,#fffce0,var(--gold),var(--gold2));
+  box-shadow:0 7px 0 var(--gold2),0 10px 22px rgba(248,200,50,.4),inset 0 2px 0 rgba(255,255,255,.5);
+  animation:nxt-pulse 2s ease-in-out infinite;
+}
+@keyframes nxt-pulse{0%,100%{box-shadow:0 7px 0 var(--gold2),0 0 0 0 rgba(248,200,50,.6)}50%{box-shadow:0 7px 0 var(--gold2),0 0 0 14px rgba(248,200,50,0)}}
+.lv-node.locked{background:radial-gradient(circle at 38% 30%,#ddd,#aaa,#777);box-shadow:0 6px 0 #555,inset 0 2px 0 rgba(255,255,255,.25);opacity:.55;cursor:default}
+.lv-num{font-family:'Zen Dots',monospace;font-size:24px;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.2)}
+.lv-stars-row{display:flex;gap:1px;font-size:11px}
+.lv-shadow{width:58px;height:8px;background:radial-gradient(ellipse,rgba(0,0,0,.14),transparent);border-radius:50%}
+.map-deco-strip{position:absolute;bottom:0;left:0;right:0;height:28%;pointer-events:none;display:flex;align-items:flex-end;padding:0 6% 0;justify-content:space-between}
+.deco-item{font-size:38px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.12))}
+.petal{position:absolute;animation:pfall linear infinite;pointer-events:none;font-size:12px}
+@keyframes pfall{from{transform:translateY(-20px) rotate(0) translateX(0)}to{transform:translateY(110vh) rotate(540deg) translateX(60px);opacity:0}}
 
-/* ═══════════════════════════════════
-   GAME SCREEN — TRUE FULLSCREEN
-═══════════════════════════════════ */
-#screen-game{overflow:hidden;position:relative}
+/* ══════════════════════════════════════
+   GAME SCREEN — 3D ISOMETRIC WORLD
+══════════════════════════════════════ */
+#screen-game{display:flex;flex-direction:column;background:#5ab8e8}
 
-/* ── THE WORLD (fills entire screen) ── */
+/* ── WORLD CANVAS ── */
 #world{
-  position:absolute;inset:0;
-  overflow:hidden;
-}
-
-/* Sky */
-.world-sky{
-  position:absolute;inset:0;
+  flex:1;position:relative;overflow:hidden;
+  /* perspective for 3D */
+  perspective:900px;
   background:linear-gradient(180deg,
-    #7ed4f8 0%,
-    #b8eaff 30%,
-    #cef5d0 52%,
-    #8ed848 52%,
-    #60b828 64%,
-    #38800a 72%,
-    #c88838 72%,
-    #a06018 80%,
-    #383848 80%,
-    #22222e 100%
+    #4ab0f0 0%,
+    #7dcef8 28%,
+    #a8e0f8 42%
   );
 }
 
-/* Animated sky elements */
-.world-sun{
-  position:absolute;top:12px;right:60px;width:52px;height:52px;border-radius:50%;z-index:2;
-  background:radial-gradient(circle at 42% 38%,#fffad0,#ffe050,#ffb000);
-  box-shadow:0 0 0 8px rgba(255,220,50,.15),0 0 0 18px rgba(255,210,40,.07),0 0 40px rgba(255,190,0,.4);
-  animation:sun-glow 5s ease-in-out infinite;
+/* ── SKY LAYER ── */
+.sky-sun{
+  position:absolute;top:6%;right:12%;
+  width:56px;height:56px;border-radius:50%;z-index:2;
+  background:radial-gradient(circle at 42%36%,#fffce0,#ffe060,#ffaa00);
+  box-shadow:0 0 0 10px rgba(255,220,50,.12),0 0 0 22px rgba(255,200,40,.07),0 0 50px rgba(255,180,0,.4);
+  animation:sun-pulse 5s ease-in-out infinite;
 }
-@keyframes sun-glow{0%,100%{box-shadow:0 0 0 8px rgba(255,220,50,.15),0 0 40px rgba(255,190,0,.4)}50%{box-shadow:0 0 0 14px rgba(255,220,50,.22),0 0 60px rgba(255,190,0,.6)}}
-.world-cloud{position:absolute;animation:cloud-move linear infinite;pointer-events:none;z-index:3;opacity:.85}
-@keyframes cloud-move{from{transform:translateX(-140px)}to{transform:translateX(115vw)}}
+@keyframes sun-pulse{0%,100%{box-shadow:0 0 0 10px rgba(255,220,50,.12),0 0 50px rgba(255,180,0,.35)}50%{box-shadow:0 0 0 18px rgba(255,220,50,.18),0 0 70px rgba(255,180,0,.55)}}
+.sky-cloud{position:absolute;font-size:36px;animation:cloud-drift linear infinite;filter:drop-shadow(0 3px 6px rgba(0,0,50,.06));z-index:2;opacity:.88}
+@keyframes cloud-drift{from{transform:translateX(-150px)}to{transform:translateX(115vw)}}
 
-/* Water layer with waves */
-.water-zone{
-  position:absolute;left:0;right:0;z-index:4;
+/* ── GROUND PLANE — CSS 3D PERSPECTIVE TRICK ── */
+/* Использует transform на слоях чтобы дать ощущение глубины */
+.ground-wrap{
+  position:absolute;left:0;right:0;bottom:0;
+  height:68%;
+  transform-origin:bottom center;
+  transform:perspective(700px) rotateX(8deg);
+  transform-style:preserve-3d;
+}
+
+/* Terrain bands — from front to back */
+.band{position:absolute;left:0;right:0}
+.band-road{
+  bottom:0;height:18%;
+  background:linear-gradient(180deg,#454558 0%,#2a2a38 55%,#1a1a26 100%);
+  border-top:2px solid rgba(255,255,255,.07);
+}
+.band-road::after{/* dashes */
+  content:'';position:absolute;top:44%;left:0;right:0;height:5px;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.5) 0,rgba(255,255,255,.5) 24px,transparent 24px,transparent 52px);
+  border-radius:3px;
+}
+.band-dirt{
+  bottom:18%;height:10%;
+  background:linear-gradient(180deg,#d89040 0%,#a86820 55%,#885010 100%);
+}
+.band-grass{
+  bottom:28%;height:24%;
+  background:linear-gradient(180deg,#78d840 0%,#52a818 45%,#357808 100%);
+}
+.band-water{
+  bottom:52%;height:20%;
+  background:linear-gradient(180deg,#48b8e8 0%,#2888c0 55%,#1060a0 100%);
   overflow:hidden;
 }
-.water-surface{
-  position:absolute;inset:0;
-  background:linear-gradient(180deg,var(--water) 0%,var(--water2) 50%,var(--water3) 100%);
+.band-water::before{/* wave shimmer */
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.1) 0,rgba(255,255,255,.1) 38px,transparent 38px,transparent 80px);
+  animation:wsh 3s linear infinite;
 }
-.water-wave{
-  position:absolute;top:0;left:-100%;right:-100%;height:8px;
+@keyframes wsh{from{background-position:0}to{background-position:80px}}
+.band-water::after{/* wave lines */
+  content:'';position:absolute;top:18%;left:0;right:0;height:5px;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.22) 0,rgba(255,255,255,.22) 48px,transparent 48px,transparent 96px);
+  animation:wsh 2.5s linear infinite reverse;border-radius:3px;
+}
+.band-hillbg{
+  bottom:72%;height:18%;
+  background:linear-gradient(180deg,#88c840 0%,#60a010 60%,#3a7808 100%);
+  clip-path:ellipse(60% 100% at 50% 100%);
+}
+
+/* Side hills for depth */
+.hill-left,.hill-right{
+  position:absolute;bottom:52%;z-index:3;
+  width:22%;height:60px;border-radius:50% 50% 0 0;
+  background:linear-gradient(180deg,#6cc830,#3a8800);
+}
+.hill-left{left:-3%;box-shadow:inset -4px 0 12px rgba(0,0,0,.1)}
+.hill-right{right:-3%;box-shadow:inset 4px 0 12px rgba(0,0,0,.1)}
+
+/* Fence along water/grass border */
+.fence-bar{
+  position:absolute;bottom:52%;left:0;right:0;z-index:5;height:14px;
   background:repeating-linear-gradient(90deg,
-    rgba(255,255,255,.18) 0,rgba(255,255,255,.18) 40px,
-    transparent 40px,transparent 90px
+    #d4a040 0,#d4a040 10px,
+    #b07818 10px,#b07818 12px,
+    transparent 12px,transparent 50px
   );
-  animation:wave-move 3s linear infinite;
-  border-radius:4px;
 }
-.water-wave:nth-child(2){top:5px;animation-duration:4.5s;animation-delay:-2s;opacity:.6}
-.water-wave:nth-child(3){top:10px;animation-duration:3.8s;animation-delay:-1.2s;opacity:.4}
-@keyframes wave-move{from{transform:translateX(0)}to{transform:translateX(90px)}}
-.water-shimmer{
-  position:absolute;inset:0;
-  background:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0,rgba(255,255,255,.06) 2px,transparent 2px,transparent 28px);
-  animation:shim 4s linear infinite;
+
+/* ── SCENE OBJECTS (CSS positioned %) ── */
+.scene-obj{
+  position:absolute;
+  display:flex;flex-direction:column;align-items:center;
+  cursor:pointer;z-index:10;
+  /* drop shadow for 3D feel */
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.22));
+  transition:transform .12s,filter .12s;
 }
-@keyframes shim{from{background-position:0 0}to{background-position:56px 0}}
+.scene-obj:active{transform:scale(.88) translateY(4px)!important;filter:drop-shadow(0 3px 6px rgba(0,0,0,.2))}
+.scene-obj.dim{filter:drop-shadow(0 6px 10px rgba(0,0,0,.15)) brightness(.82) saturate(.6)}
 
-/* Terrain layers */
-.terrain-layer{position:absolute;left:0;right:0}
+/* Object shadow on ground */
+.obj-shadow{
+  width:70%;height:8px;
+  background:radial-gradient(ellipse,rgba(0,0,0,.22),transparent);
+  border-radius:50%;margin-top:2px;flex-shrink:0;
+}
 
-/* Ground fence */
-.fence-svg{position:absolute;left:0;right:0;z-index:8;pointer-events:none}
+/* Ready glow ring */
+.ready-ring{
+  position:absolute;inset:-8px;border-radius:14px;
+  box-shadow:0 0 0 3px var(--gold),0 0 16px rgba(248,200,50,.6);
+  animation:ring-pulse .9s ease-in-out infinite;display:none;
+}
+.ready-ring.show{display:block}
+@keyframes ring-pulse{0%,100%{box-shadow:0 0 0 3px var(--gold),0 0 10px rgba(248,200,50,.5)}50%{box-shadow:0 0 0 5px var(--gold),0 0 22px rgba(248,200,50,.8)}}
 
-/* ═══════════════════════════════════
-   SCENE OBJECTS — positioned absolutely in world
-═══════════════════════════════════ */
+/* Progress arc under object */
+.obj-pbar{width:64px;height:5px;background:rgba(0,0,0,.18);border-radius:3px;overflow:hidden;margin-top:1px;border:1px solid rgba(255,255,255,.3)}
+.obj-pfill{height:100%;background:linear-gradient(90deg,var(--teal),#a0f060);border-radius:3px;transition:width .25s linear}
+
+/* Lv badge */
+.lv-badge{
+  position:absolute;top:-8px;right:-8px;
+  background:linear-gradient(145deg,#fffce0,var(--gold));
+  border:2px solid var(--gold2);border-radius:7px;
+  padding:1px 5px;font-size:8px;font-weight:900;color:var(--gold2);
+  box-shadow:0 2px 0 rgba(180,120,0,.4);z-index:2;
+  white-space:nowrap;
+}
 
 /* ── PIER ── */
-.pier-structure{
-  position:absolute;z-index:6;
-  display:flex;flex-direction:column;align-items:center;
+.pier-body{
+  position:relative;width:90px;height:62px;
+  background:linear-gradient(180deg,#c8a048,#a07826,#785808);
+  border-radius:6px 6px 0 0;border:2.5px solid #503808;
+  box-shadow:0 6px 0 #302000,0 8px 20px rgba(0,0,0,.3);
 }
-.pier-deck{
-  position:relative;
-  border-radius:6px 6px 0 0;
-  background:linear-gradient(180deg,#c8a050,#a07828,#805808);
-  border:2px solid #604008;
-  box-shadow:0 4px 0 #402800,0 6px 16px rgba(0,0,0,.3);
-}
-.pier-deck::before{/* wood planks */
-  content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(90deg,rgba(0,0,0,.07) 0,rgba(0,0,0,.07) 1px,transparent 1px,transparent 14px);
-  border-radius:5px 5px 0 0;
-}
-.pier-deck::after{/* top shine */
-  content:'';position:absolute;top:0;left:0;right:0;height:38%;
-  background:linear-gradient(180deg,rgba(255,255,255,.2),transparent);
-  border-radius:5px 5px 0 0;
-}
-.pier-post{
-  position:absolute;bottom:-20px;
-  width:8px;background:linear-gradient(180deg,#a07828,#604008);
-  border-radius:0 0 3px 3px;border:1px solid #402800;
-}
-.pier-water-line{
-  width:100%;height:6px;
-  background:linear-gradient(180deg,rgba(255,255,255,.3),transparent);
-  border-radius:0 0 4px 4px;
-}
-/* Fisher character on pier */
-.fisher-char{
-  position:absolute;display:flex;flex-direction:column;align-items:center;
-  cursor:pointer;z-index:10;
-  transition:transform .12s;
-}
-.fisher-char:active{transform:scale(.88)}
-.char-body{
-  position:relative;display:flex;flex-direction:column;align-items:center;
-  filter:drop-shadow(0 4px 8px rgba(0,0,0,.25));
-}
-.char-emoji{font-size:32px;line-height:1;animation:fisher-idle 3s ease-in-out infinite}
-@keyframes fisher-idle{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
-.char-rod{font-size:18px;position:absolute;right:-14px;top:2px;animation:rod-bob 2s ease-in-out infinite}
-@keyframes rod-bob{0%,100%{transform:rotate(15deg)}50%{transform:rotate(25deg)}}
-.char-cd-ring{
-  position:absolute;inset:-5px;border-radius:50%;
-  border:3px solid transparent;
-  transition:all .2s;
-}
-.char-cd-ring.active{
-  border-color:rgba(42,188,170,.6);
-  animation:cd-spin 1s linear infinite;
-}
-@keyframes cd-spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-.char-ready-glow{
-  position:absolute;inset:-6px;border-radius:50%;
-  background:radial-gradient(circle,rgba(248,200,50,.35),transparent 70%);
-  animation:ready-pulse .9s ease-in-out infinite;
-}
-@keyframes ready-pulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.3);opacity:.4}}
-.char-bubble{
-  background:#fff;border:2px solid var(--teal);border-radius:10px;
-  padding:2px 8px;font-size:8px;font-weight:800;color:var(--teal2);
-  white-space:nowrap;margin-bottom:2px;
-  box-shadow:0 2px 6px rgba(0,0,0,.1);
-  animation:bubble-pop .3s ease;
-}
-@keyframes bubble-pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
-.char-progress{
-  width:42px;height:4px;background:rgba(0,0,0,.15);border-radius:3px;overflow:hidden;margin-top:3px;
-  border:1px solid rgba(255,255,255,.3);
-}
-.char-progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),#8ae880);border-radius:3px;transition:width .25s linear}
-.char-name{font-size:8px;font-weight:800;color:var(--ink);opacity:.55;margin-top:2px;white-space:nowrap}
-.lv-badge{
-  position:absolute;top:-7px;right:-7px;
-  background:linear-gradient(145deg,#fff8d0,var(--gold));
-  border:2px solid var(--gold2);border-radius:8px;
-  padding:1px 5px;font-size:8px;font-weight:900;color:var(--gold2);
-  box-shadow:0 2px 0 rgba(200,144,16,.4);z-index:5;
-}
-
-/* ── RICE FIELD ── */
-.rice-field{
-  position:absolute;z-index:6;
-  display:flex;flex-direction:column;align-items:center;cursor:pointer;
-}
-.field-plot{
-  position:relative;border-radius:8px;overflow:hidden;
-  background:linear-gradient(180deg,#78c838,#58a018,#388008);
-  border:2.5px solid #285008;
-  box-shadow:0 5px 0 #183808,0 7px 16px rgba(0,0,0,.2);
-}
-.field-plot::before{/* grid lines */
-  content:'';position:absolute;inset:0;
-  background:
-    repeating-linear-gradient(0deg,rgba(0,0,0,.06) 0,rgba(0,0,0,.06) 1px,transparent 1px,transparent 12px),
-    repeating-linear-gradient(90deg,rgba(0,0,0,.06) 0,rgba(0,0,0,.06) 1px,transparent 1px,transparent 12px);
-}
-.field-rice-row{
-  position:absolute;bottom:4px;left:0;right:0;
-  display:flex;justify-content:space-evenly;
-}
-.rice-stalk{font-size:14px;animation:rice-sway 2s ease-in-out infinite}
-.rice-stalk:nth-child(2){animation-delay:.3s}
-.rice-stalk:nth-child(3){animation-delay:.6s}
-.rice-stalk:nth-child(4){animation-delay:.9s}
-@keyframes rice-sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
-.field-farmer{
-  position:absolute;bottom:4px;right:4px;font-size:18px;
-  animation:farmer-work 2.5s ease-in-out infinite;
-}
-@keyframes farmer-work{0%,100%{transform:scaleX(1)}50%{transform:scaleX(-1)}}
+.pier-body::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(0,0,0,.07) 0,rgba(0,0,0,.07) 1px,transparent 1px,transparent 13px);border-radius:5px 5px 0 0}
+.pier-body::after{content:'';position:absolute;top:0;left:0;right:0;height:35%;background:linear-gradient(180deg,rgba(255,255,255,.22),transparent);border-radius:5px 5px 0 0}
+.pier-posts{position:absolute;bottom:-22px;left:0;right:0;display:flex;justify-content:space-around}
+.pier-post{width:9px;background:linear-gradient(180deg,#a07826,#503808);border-radius:0 0 3px 3px;border:1.5px solid #302000}
 
 /* ── AQUARIUM ── */
-.aqua-tank{
-  position:absolute;z-index:6;
-  display:flex;flex-direction:column;align-items:center;cursor:pointer;
-}
-.tank-body{
-  position:relative;border-radius:8px;overflow:hidden;
-  background:linear-gradient(165deg,#4ad0f8,#1a9ad8,#0a6898);
-  border:3px solid #0a4878;
-  box-shadow:0 5px 0 #063060,0 7px 18px rgba(10,72,120,.4);
-}
-.tank-water{
-  position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(255,255,255,.15),rgba(255,255,255,.05));
-}
-.tank-bubbles{position:absolute;inset:0}
-.tank-bubble{
-  position:absolute;border-radius:50%;
-  background:rgba(255,255,255,.55);
-  animation:bubble-rise linear infinite;
-}
-@keyframes bubble-rise{0%{transform:translateY(0) scale(1);opacity:.55}100%{transform:translateY(-60px) scale(.3);opacity:0}}
-.tank-fish{position:absolute;animation:fish-swim linear infinite}
-@keyframes fish-swim{0%{left:8px;transform:scaleX(1)}49%{left:calc(100% - 28px);transform:scaleX(1)}50%{left:calc(100% - 28px);transform:scaleX(-1)}99%{left:8px;transform:scaleX(-1)}100%{left:8px;transform:scaleX(1)}}
-.tank-glass{
-  position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,.2) 0,transparent 50%);
-  pointer-events:none;
-}
-
-/* ── GARDEN ── */
-.garden-plot{
-  position:absolute;z-index:6;
-  display:flex;flex-direction:column;align-items:center;cursor:pointer;
-}
-.garden-bed{
-  position:relative;border-radius:8px;overflow:hidden;
-  background:linear-gradient(180deg,#88b840,#60880a,#405808);
-  border:2.5px solid #284008;
-  box-shadow:0 5px 0 #182808,0 7px 14px rgba(0,0,0,.2);
-}
-.garden-bed::before{
-  content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(45deg,rgba(0,0,0,.04) 0,rgba(0,0,0,.04) 2px,transparent 2px,transparent 10px);
-}
-.garden-plants{
-  position:absolute;inset:4px;
-  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;align-items:end;
-}
-.garden-plant{font-size:14px;text-align:center;animation:plant-grow 3s ease-in-out infinite}
-.garden-plant:nth-child(2){animation-delay:.5s}
-.garden-plant:nth-child(3){animation-delay:1s}
-@keyframes plant-grow{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.08)}}
-
-/* ── KITCHEN BUILDING ── */
-.kitchen-building{
-  position:absolute;z-index:7;
-  display:flex;flex-direction:column;align-items:center;
-}
-/* Roof */
-.bld-roof-wrap{display:flex;flex-direction:column;align-items:center;width:100%}
-.bld-roof{
-  width:0;height:0;
-  position:relative;
-}
-.bld-roof-band{width:100%;border-radius:0 0 4px 4px;border:2px solid rgba(0,0,0,.2);border-top:none}
-/* Walls */
-.bld-walls{
-  width:100%;position:relative;overflow:hidden;
-  border:3px solid rgba(0,0,0,.25);border-top:none;
-  border-radius:0 0 8px 8px;
-}
-.bld-walls::before{
-  content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(180deg,rgba(0,0,0,.06) 0,rgba(0,0,0,.06) 1px,transparent 1px,transparent 10px);
-}
-.bld-walls::after{
-  content:'';position:absolute;top:0;left:0;right:0;height:32%;
-  background:linear-gradient(180deg,rgba(255,255,255,.2),transparent);
-}
-.bld-window{
-  position:absolute;background:linear-gradient(145deg,#c8e8f8,#88c0e0);
-  border:2px solid rgba(0,0,0,.25);border-radius:3px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);z-index:2;
-}
-.bld-window::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.4) 0,transparent 60%);border-radius:2px}
-.bld-door{
-  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
-  border:2px solid rgba(0,0,0,.3);border-radius:4px 4px 0 0;z-index:2;
-}
-.bld-sign{
-  position:absolute;top:4px;left:50%;transform:translateX(-50%);
-  background:rgba(255,255,255,.95);border:1.5px solid rgba(0,0,0,.1);
-  border-radius:7px;padding:2px 7px;font-size:9px;font-weight:900;color:var(--ink);
-  white-space:nowrap;z-index:3;box-shadow:0 2px 4px rgba(0,0,0,.08);
-}
-.bld-progress{position:absolute;bottom:0;left:0;right:0;height:6px;background:rgba(0,0,0,.18);z-index:3}
-.bld-progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),#80e860);transition:width .3s linear}
-/* Cook character in window */
-.cook-char{
-  position:absolute;z-index:4;
-  animation:cook-peek 4s ease-in-out infinite;
-}
-@keyframes cook-peek{0%,100%{transform:translateY(0)}30%,70%{transform:translateY(-4px)}}
-/* Steam from chimney */
-.chimney-obj{position:absolute;top:-18px;width:14px;height:20px;background:linear-gradient(180deg,#888,#555);border-radius:3px 3px 0 0;border:1.5px solid #333}
-.steam{
-  position:absolute;border-radius:50%;
-  background:rgba(220,235,255,.65);
-  animation:steam-rise 2s ease-out infinite;
-}
-@keyframes steam-rise{0%{transform:translateX(-50%) scale(1);opacity:.65}100%{transform:translateX(-50%) scale(3.5);opacity:0;margin-bottom:36px}}
-.bld-shadow{
-  width:90%;height:10px;margin-top:4px;
-  background:radial-gradient(ellipse,rgba(0,0,0,.2),transparent);
-  border-radius:50%;
-}
-.bld-lbl{font-size:9px;font-weight:800;color:rgba(42,26,14,.5);white-space:nowrap;margin-top:2px}
-.bld-working{box-shadow:0 5px 0 rgba(0,0,0,.25),0 0 0 3px rgba(42,188,170,.5),0 0 20px rgba(42,188,170,.3)!important}
-
-/* ── DELIVERY MOPED ── */
-.moped-obj{
-  position:absolute;z-index:9;
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  cursor:pointer;
-}
-.moped-speech{
-  background:#fff;border:2px solid var(--gold);border-radius:12px;
-  padding:3px 10px;font-size:9px;font-weight:800;color:var(--gold2);
-  box-shadow:0 3px 8px rgba(0,0,0,.1);white-space:nowrap;position:relative;
-}
-.moped-speech::after{
-  content:'';position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);
-  border-left:5px solid transparent;border-right:5px solid transparent;
-  border-top:7px solid #fff;
-}
-.moped-vehicle{
-  display:flex;flex-direction:column;align-items:center;
-  filter:drop-shadow(0 5px 8px rgba(0,0,0,.2));
-}
-.moped-body-svg{font-size:40px;line-height:1}
-.moped-obj.moving .moped-body-svg{animation:moped-bounce .25s ease-in-out infinite}
-@keyframes moped-bounce{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-4px) rotate(1deg)}}
-.moped-glow .moped-vehicle{filter:drop-shadow(0 0 10px rgba(248,200,50,1)) drop-shadow(0 5px 8px rgba(0,0,0,.2));animation:mglow .6s ease-in-out infinite}
-@keyframes mglow{0%,100%{filter:drop-shadow(0 0 6px rgba(248,200,50,.8)) drop-shadow(0 5px 8px rgba(0,0,0,.2))}50%{filter:drop-shadow(0 0 16px rgba(248,200,50,1)) drop-shadow(0 5px 8px rgba(0,0,0,.2))}}
-
-/* ═══════════════════════════════════
-   FLOATING UI — overlaid on world
-═══════════════════════════════════ */
-#ui-layer{
-  position:absolute;inset:0;pointer-events:none;z-index:20;
-}
-
-/* Compact floating HUD — top corners only */
-.top-bar{
-  pointer-events:all;
-  display:flex;align-items:flex-start;justify-content:space-between;
-  padding:8px 10px 0;
-  position:absolute;top:0;left:0;right:0;z-index:25;
-  pointer-events:none;
-}
-.hud-left{display:flex;flex-direction:column;gap:5px;pointer-events:all}
-.hud-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;pointer-events:all}
-.tb-back{
-  width:32px;height:32px;border-radius:50%;
-  background:rgba(255,255,255,.82);border:2px solid rgba(232,64,58,.3);
-  display:flex;align-items:center;justify-content:center;
-  font-size:12px;color:var(--red);cursor:pointer;
-  box-shadow:0 3px 10px rgba(0,0,0,.18);
-  backdrop-filter:blur(8px);transition:transform .12s;
-}
-.tb-back:active{transform:scale(.85)}
-.tb-lvl{
-  display:inline-block;
-  background:var(--red);border-radius:9px;
-  padding:3px 10px;font-family:'Zen Dots',monospace;
-  font-size:11px;color:#fff;box-shadow:0 3px 0 var(--red2);
-}
-.hud-row{display:flex;align-items:center;gap:5px}
-/* Steps - tiny */
-.tb-steps{display:flex;gap:3px}
-.step-pill{
-  padding:3px 7px;border-radius:16px;font-size:8px;font-weight:800;
-  background:rgba(255,255,255,.65);color:rgba(42,26,14,.3);
-  border:1px solid rgba(255,255,255,.4);backdrop-filter:blur(6px);
-  transition:all .3s;white-space:nowrap;
-}
-.step-pill.active{background:rgba(248,200,50,.88);color:#7a4800;border-color:rgba(248,200,50,.5);animation:spulse .9s ease-in-out infinite}
-.step-pill.done{background:rgba(42,188,170,.82);color:#fff;border-color:rgba(42,188,170,.4)}
-@keyframes spulse{0%,100%{opacity:1}50%{opacity:.55}}
-/* Stars */
-.tb-stars{display:flex;gap:1px}
-.tb-star{font-size:16px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.2)) grayscale(1) opacity(.3);transition:filter .3s,transform .3s}
-.tb-star.on{filter:drop-shadow(0 2px 4px rgba(248,200,50,.5));animation:star-pop .4s ease}
-@keyframes star-pop{0%{transform:scale(1)}50%{transform:scale(1.9)}100%{transform:scale(1)}}
-/* Timer */
-.tb-timer{
-  background:rgba(22,22,32,.80);border-radius:10px;
-  padding:3px 10px;font-family:'Zen Dots',monospace;font-size:13px;color:#fff;
-  min-width:58px;text-align:center;
-  backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,.22);
-}
-.tb-timer.red{background:rgba(232,64,58,.9);animation:tblink .5s infinite}
-@keyframes tblink{0%,100%{opacity:1}50%{opacity:.5}}
-/* Coins */
-.tb-coins{
-  display:flex;align-items:center;gap:3px;
-  background:rgba(255,255,255,.85);border:2px solid rgba(248,200,50,.4);
-  border-radius:10px;padding:3px 9px;
-  font-size:13px;font-weight:900;color:var(--gold2);
-  backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,.1);
-}
-
-/* Side panels */
-.side-panels{
-  position:absolute;top:0;bottom:0;left:0;right:0;
-  display:flex;align-items:stretch;pointer-events:none;
-  padding:64px 8px 10px;gap:8px;
-}
-
-/* Orders panel — left */
-.orders-panel{
-  width:136px;flex-shrink:0;pointer-events:all;
-  background:rgba(255,252,245,.9);
-  border:2px solid rgba(42,26,14,.08);border-radius:16px;
-  display:flex;flex-direction:column;padding:8px 6px;gap:5px;
-  backdrop-filter:blur(10px);
-  box-shadow:0 8px 24px rgba(0,0,0,.12);
+.aqua-body{
+  position:relative;width:76px;height:62px;border-radius:8px;
+  background:linear-gradient(160deg,#50d8ff,#1898d8,#0868a8);
+  border:3px solid #0848a0;
+  box-shadow:0 6px 0 #042068,0 8px 20px rgba(8,80,168,.4);
   overflow:hidden;
 }
+.aqua-glass{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.25) 0,rgba(255,255,255,.04) 55%)}
+.aqua-water{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(0,0,0,.06))}
+.aqua-bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);animation:brise linear infinite}
+@keyframes brise{from{transform:translateY(0);opacity:.55}to{transform:translateY(-70px);opacity:0}}
+.aqua-fish{position:absolute;font-size:18px;animation:fswim linear infinite}
+@keyframes fswim{0%{left:6px;transform:scaleX(1)}49%{left:calc(100% - 26px);transform:scaleX(1)}50%{left:calc(100% - 26px);transform:scaleX(-1)}100%{left:6px;transform:scaleX(-1)}}
+
+/* ── RICE FIELD ── */
+.field-body{
+  position:relative;width:98px;height:66px;border-radius:8px;
+  background:linear-gradient(180deg,#7cd040,#50a018,#307808);
+  border:2.5px solid #204808;
+  box-shadow:0 6px 0 #143208,0 8px 18px rgba(0,0,0,.22);
+  overflow:hidden;
+}
+.field-body::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.05) 0,rgba(0,0,0,.05) 1px,transparent 1px,transparent 10px),repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0,rgba(0,0,0,.05) 1px,transparent 1px,transparent 14px)}
+.field-top{position:absolute;top:0;left:0;right:0;height:35%;background:linear-gradient(180deg,rgba(255,255,255,.2),transparent)}
+.stalks{position:absolute;bottom:5px;left:0;right:0;display:flex;justify-content:space-around;padding:0 4px}
+.stalk{font-size:16px;animation:sway 2.2s ease-in-out infinite}
+.stalk:nth-child(2){animation-delay:.25s}
+.stalk:nth-child(3){animation-delay:.55s}
+.stalk:nth-child(4){animation-delay:.85s}
+@keyframes sway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+.field-farmer{position:absolute;bottom:4px;right:5px;font-size:20px;animation:fwork 2.5s ease-in-out infinite}
+@keyframes fwork{0%,100%{transform:scaleX(1) rotate(-5deg)}50%{transform:scaleX(-1) rotate(5deg)}}
+
+/* ── GARDEN ── */
+.garden-body{
+  position:relative;width:82px;height:56px;border-radius:8px;
+  background:linear-gradient(180deg,#90c040,#60880a,#407008);
+  border:2.5px solid #284008;
+  box-shadow:0 5px 0 #182808,0 7px 16px rgba(0,0,0,.2);
+  overflow:hidden;
+}
+.garden-body::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(0,0,0,.04) 0,rgba(0,0,0,.04) 2px,transparent 2px,transparent 9px)}
+.gplants{position:absolute;inset:4px;display:grid;grid-template-columns:repeat(3,1fr);align-items:end;gap:1px}
+.gplant{font-size:15px;text-align:center;animation:pgrow 3.2s ease-in-out infinite}
+.gplant:nth-child(2n){animation-delay:.6s}
+@keyframes pgrow{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.1)}}
+
+/* ── BUILDING ── */
+.bld-wrap{
+  position:absolute;
+  display:flex;flex-direction:column;align-items:center;
+  cursor:pointer;z-index:11;
+  filter:drop-shadow(0 10px 20px rgba(0,0,0,.28));
+  transition:filter .2s;
+}
+.bld-wrap.working{filter:drop-shadow(0 10px 20px rgba(0,0,0,.28)) drop-shadow(0 0 12px rgba(42,188,170,.8))}
+.bld-roof{
+  width:0;height:0;
+  /* triangle roof via borders */
+}
+.bld-roof-edge{height:12px;width:100%;border-radius:0 0 4px 4px;border:2px solid rgba(0,0,0,.25);border-top:none}
+.bld-body{
+  position:relative;width:100%;
+  border:3px solid rgba(0,0,0,.22);border-top:none;border-radius:0 0 8px 8px;
+  overflow:hidden;
+}
+.bld-body::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(0,0,0,.05) 0,rgba(0,0,0,.05) 1px,transparent 1px,transparent 9px)}
+.bld-body::after{content:'';position:absolute;top:0;left:0;right:0;height:30%;background:linear-gradient(180deg,rgba(255,255,255,.22),transparent)}
+.bld-sign{
+  position:absolute;top:5px;left:50%;transform:translateX(-50%);
+  background:rgba(255,255,255,.95);border:1.5px solid rgba(0,0,0,.1);
+  border-radius:7px;padding:2px 6px;font-size:9px;font-weight:900;color:var(--ink);
+  white-space:nowrap;z-index:3;box-shadow:0 2px 4px rgba(0,0,0,.1);
+}
+.bld-window{
+  position:absolute;border:2px solid rgba(0,0,0,.25);border-radius:3px;
+  background:linear-gradient(145deg,#c8e8f8,#88b8d8);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4);z-index:2;
+}
+.bld-window::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.4) 0,transparent 55%);border-radius:2px}
+.bld-door{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  border:2px solid rgba(0,0,0,.3);border-radius:3px 3px 0 0;z-index:2;
+}
+.bld-progress{position:absolute;bottom:0;left:0;right:0;height:7px;background:rgba(0,0,0,.2);z-index:4}
+.bld-progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),#80f060);transition:width .3s linear;width:0%}
+.bld-cook{position:absolute;z-index:3;bottom:0;font-size:20px;animation:cook-bob 3s ease-in-out infinite}
+@keyframes cook-bob{0%,100%{transform:translateY(0)}40%,60%{transform:translateY(-5px)}}
+.chimney{position:absolute;top:-20px;width:13px;height:22px;background:linear-gradient(180deg,#777,#444);border:1.5px solid #222;border-radius:3px 3px 0 0}
+.steam-puff{
+  position:absolute;border-radius:50%;
+  background:rgba(220,230,245,.6);
+  animation:spuff 2.2s ease-out infinite;
+}
+@keyframes spuff{0%{transform:translateX(-50%) scale(.8);opacity:.6}100%{transform:translateX(-50%) scale(3);opacity:0;bottom:30px!important}}
+.bld-lv{position:absolute;top:-8px;right:-8px;background:linear-gradient(145deg,#fffce0,var(--gold));border:2px solid var(--gold2);border-radius:7px;padding:1px 5px;font-size:8px;font-weight:900;color:var(--gold2);box-shadow:0 2px 0 rgba(180,120,0,.35);z-index:5}
+
+/* ── MOPED ── */
+.moped-wrap{
+  position:absolute;bottom:3%;z-index:12;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;transition:left .15s linear;
+}
+.moped-bubble{
+  background:#fff;border:2px solid var(--gold);border-radius:11px;
+  padding:3px 9px;font-size:9px;font-weight:800;color:var(--gold2);
+  box-shadow:0 3px 8px rgba(0,0,0,.1);white-space:nowrap;position:relative;
+}
+.moped-bubble::after{content:'';position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#fff}
+.moped-icon{font-size:38px;filter:drop-shadow(0 5px 10px rgba(0,0,0,.22));line-height:1}
+.moped-wrap.moving .moped-icon{animation:mride .22s ease-in-out infinite}
+@keyframes mride{0%,100%{transform:rotate(-2deg) translateY(0)}50%{transform:rotate(2deg) translateY(-5px)}}
+.moped-wrap.glow .moped-icon{filter:drop-shadow(0 0 10px rgba(248,200,50,1)) drop-shadow(0 5px 10px rgba(0,0,0,.2));animation:mglow .7s ease-in-out infinite}
+@keyframes mglow{0%,100%{filter:drop-shadow(0 0 6px var(--gold)) drop-shadow(0 5px 8px rgba(0,0,0,.2))}50%{filter:drop-shadow(0 0 18px var(--gold)) drop-shadow(0 5px 8px rgba(0,0,0,.2))}}
+
+/* ── FLOATING UI ── */
+#ui-layer{position:absolute;inset:0;pointer-events:none;z-index:30}
+
+/* Top corners HUD */
+.hud-tl{
+  position:absolute;top:8px;left:8px;
+  display:flex;flex-direction:column;gap:5px;
+  pointer-events:all;
+}
+.hud-tr{
+  position:absolute;top:8px;right:8px;
+  display:flex;flex-direction:column;align-items:flex-end;gap:5px;
+  pointer-events:all;
+}
+.hud-chip{
+  display:flex;align-items:center;gap:4px;
+  background:rgba(255,252,245,.88);border:1.5px solid rgba(255,255,255,.6);
+  border-radius:20px;padding:4px 10px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 3px 12px rgba(0,0,0,.14);
+}
+.hud-lv{background:var(--red);border-radius:9px;padding:4px 11px;font-family:'Zen Dots',monospace;font-size:11px;color:#fff;box-shadow:0 3px 0 var(--red2)}
+.hud-back{
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(255,252,245,.88);border:2px solid rgba(184,32,32,.25);
+  display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--red);
+  cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.14);backdrop-filter:blur(8px);
+  transition:transform .12s;pointer-events:all;
+}
+.hud-back:active{transform:scale(.85)}
+.hud-steps{display:flex;gap:3px}
+.hstep{
+  padding:3px 7px;border-radius:14px;font-size:9px;font-weight:800;
+  background:rgba(255,255,255,.6);color:rgba(42,26,14,.28);
+  border:1px solid rgba(255,255,255,.4);backdrop-filter:blur(6px);
+  white-space:nowrap;transition:all .3s;
+}
+.hstep.active{background:rgba(248,200,50,.9);color:#6a3800;animation:hstep-p .9s ease-in-out infinite}
+.hstep.done{background:rgba(42,188,170,.85);color:#fff}
+@keyframes hstep-p{0%,100%{opacity:1}50%{opacity:.55}}
+.hud-timer{
+  font-family:'Zen Dots',monospace;font-size:14px;color:#fff;
+  background:rgba(22,22,34,.8);border-radius:10px;padding:4px 11px;
+  min-width:60px;text-align:center;backdrop-filter:blur(8px);
+  box-shadow:0 2px 8px rgba(0,0,0,.2);
+}
+.hud-timer.urgent{background:rgba(220,50,40,.9);animation:tblink .5s infinite}
+@keyframes tblink{0%,100%{opacity:1}50%{opacity:.5}}
+.hud-coins{font-family:'Zen Dots',monospace;font-size:13px;color:var(--gold2)}
+.hud-stars span{font-size:17px;filter:grayscale(1) opacity(.25);transition:all .3s}
+.hud-stars span.on{filter:none;animation:spop .4s ease}
+@keyframes spop{0%{transform:scale(1)}50%{transform:scale(2)}100%{transform:scale(1)}}
+
+/* Side panels */
+.panel-orders{
+  position:absolute;top:64px;left:6px;bottom:8px;
+  width:130px;pointer-events:all;
+  background:rgba(255,252,245,.9);
+  border:2px solid rgba(42,26,14,.07);border-radius:16px;
+  display:flex;flex-direction:column;padding:8px 6px;gap:5px;
+  backdrop-filter:blur(12px);box-shadow:0 8px 28px rgba(0,0,0,.14);
+  overflow:hidden;
+}
+.panel-kitchen{
+  position:absolute;top:64px;right:6px;bottom:8px;
+  width:130px;pointer-events:all;
+  background:rgba(255,252,245,.9);
+  border:2px solid rgba(42,26,14,.07);border-radius:16px;
+  display:flex;flex-direction:column;padding:8px 6px;gap:6px;
+  backdrop-filter:blur(12px);box-shadow:0 8px 28px rgba(0,0,0,.14);
+  overflow-y:auto;
+}
+.panel-kitchen::-webkit-scrollbar{display:none}
 .panel-title{
-  font-family:'Zen Dots',monospace;font-size:9px;color:rgba(42,26,14,.35);
-  letter-spacing:1.5px;text-transform:uppercase;text-align:center;
-  padding:3px 0 5px;border-bottom:1px solid rgba(42,26,14,.07);
+  font-family:'Zen Dots',monospace;font-size:8px;color:rgba(42,26,14,.3);
+  letter-spacing:2px;text-transform:uppercase;text-align:center;
+  padding:2px 0 5px;border-bottom:1px solid rgba(42,26,14,.06);flex-shrink:0;
 }
 .orders-list{display:flex;flex-direction:column;gap:5px;flex:1;overflow-y:auto}
 .orders-list::-webkit-scrollbar{display:none}
 .order-card{
-  background:#fff;border:2.5px solid #f0dfc0;border-radius:12px;
-  padding:7px 8px 6px;flex-shrink:0;cursor:pointer;position:relative;
-  box-shadow:0 3px 0 rgba(42,26,14,.09),0 4px 12px rgba(42,26,14,.05);
-  transition:transform .12s,box-shadow .12s;overflow:hidden;
+  background:#fff;border:2.5px solid #f0dfbe;border-radius:11px;
+  padding:7px 7px 5px;cursor:pointer;position:relative;flex-shrink:0;
+  box-shadow:0 3px 0 rgba(42,26,14,.08),0 5px 12px rgba(42,26,14,.05);
+  transition:transform .12s;overflow:hidden;
 }
-.order-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:12px 12px 0 0}
-.order-card:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(42,26,14,.09)}
-.order-card.sel{border-color:var(--teal);box-shadow:0 3px 0 var(--teal2),0 0 0 3px rgba(42,188,170,.2)}
-.order-card.ready{border-color:var(--teal);box-shadow:0 3px 0 var(--teal2),0 0 0 3px rgba(42,188,170,.18);animation:card-bob .85s ease-in-out infinite}
-@keyframes card-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-.oi-row{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:4px}
+.order-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:11px 11px 0 0}
+.order-card:active{transform:translateY(2px)}
+.order-card.sel{border-color:var(--teal);box-shadow:0 3px 0 var(--teal2),0 0 0 3px rgba(42,188,170,.18)}
+.order-card.ready{border-color:var(--teal);box-shadow:0 3px 0 var(--teal2),0 0 0 3px rgba(42,188,170,.15);animation:cbob .85s ease-in-out infinite}
+@keyframes cbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.oi-row{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:3px}
 .oi{font-size:20px;transition:filter .2s,opacity .2s}
-.oi.dim{filter:grayscale(1);opacity:.2}
-.o-reward{font-size:11px;font-weight:900;color:var(--gold2);display:flex;align-items:center;gap:2px}
-.o-tbar{height:4px;background:rgba(42,26,14,.08);border-radius:3px;overflow:hidden;margin-top:4px}
-.o-tfill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--teal),#80e860);transition:width .4s linear,background .4s}
-.o-tfill.low{background:linear-gradient(90deg,var(--red),#ff8060)}
-.o-ph{border:2px dashed rgba(42,26,14,.1);border-radius:12px;min-height:52px;display:flex;align-items:center;justify-content:center;font-size:20px;opacity:.18}
+.oi.dim{filter:grayscale(1);opacity:.18}
+.o-bottom{display:flex;align-items:center;justify-content:space-between}
+.o-reward{font-size:11px;font-weight:900;color:var(--gold2)}
+.o-tbar{height:4px;background:rgba(42,26,14,.07);border-radius:3px;overflow:hidden;margin-top:4px}
+.o-tfill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--teal),#80f060);transition:width .4s linear}
+.o-tfill.low{background:linear-gradient(90deg,var(--red),#ff7040)}
+.o-ph{border:2px dashed rgba(42,26,14,.09);border-radius:11px;min-height:50px;display:flex;align-items:center;justify-content:center;font-size:18px;opacity:.14}
 
-/* Spacer middle */
-.panel-spacer{flex:1}
-
-/* Kitchen panel — right */
-.kitchen-panel{
-  width:136px;flex-shrink:0;pointer-events:all;
-  background:rgba(255,252,245,.9);
-  border:2px solid rgba(42,26,14,.08);border-radius:16px;
-  display:flex;flex-direction:column;padding:8px 6px;gap:6px;
-  backdrop-filter:blur(10px);
-  box-shadow:0 8px 24px rgba(0,0,0,.12);
-  overflow-y:auto;
+.kc-card{
+  background:#fff;border:2.5px solid rgba(42,26,14,.07);border-radius:11px;
+  padding:8px;display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.05);position:relative;
+  transition:transform .12s;flex-shrink:0;
 }
-.kitchen-panel::-webkit-scrollbar{display:none}
+.kc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:11px 11px 0 0}
+.kc-card:active{transform:scale(.95)}
+.kc-card.working{border-color:var(--teal);box-shadow:0 3px 8px rgba(0,0,0,.05),0 0 0 3px rgba(42,188,170,.18)}
+.kc-ico{font-size:24px;filter:drop-shadow(0 3px 5px rgba(0,0,0,.12))}
+.kc-recipe{font-size:10px;font-weight:800;color:rgba(42,26,14,.4)}
+.kc-nm{font-size:8px;font-weight:800;color:rgba(42,26,14,.3)}
+.kc-pb{width:100%;height:5px;background:rgba(42,26,14,.07);border-radius:3px;overflow:hidden}
+.kc-pbf{height:100%;background:linear-gradient(90deg,var(--teal),#80f060);transition:width .3s linear}
+.kc-lv{position:absolute;top:-6px;right:-6px;background:linear-gradient(145deg,#fffce0,var(--gold));border:2px solid var(--gold2);border-radius:7px;padding:1px 5px;font-size:8px;font-weight:900;color:var(--gold2);box-shadow:0 2px 0 rgba(180,120,0,.3)}
 
-/* Kitchen card (tappable building proxy) */
-.kitchen-card{
-  background:#fff;border:2.5px solid rgba(42,26,14,.08);border-radius:12px;
-  padding:8px;display:flex;flex-direction:column;align-items:center;gap:4px;
-  cursor:pointer;transition:transform .12s,box-shadow .12s;
-  box-shadow:0 3px 8px rgba(0,0,0,.06);position:relative;
+.fridge-widget{
+  background:linear-gradient(155deg,#e0f8f5,#c0ecea);
+  border:2px solid rgba(42,188,170,.28);border-radius:11px;
+  padding:6px 7px;flex-shrink:0;
 }
-.kitchen-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:12px 12px 0 0}
-.kitchen-card:active{transform:scale(.96)}
-.kitchen-card.working{
-  border-color:var(--teal);
-  box-shadow:0 3px 8px rgba(0,0,0,.06),0 0 0 3px rgba(42,188,170,.2);
-}
-.kc-icon{font-size:26px;filter:drop-shadow(0 3px 5px rgba(0,0,0,.15))}
-.kc-recipe{font-size:10px;font-weight:800;color:rgba(42,26,14,.45);white-space:nowrap}
-.kc-name{font-size:9px;font-weight:800;color:rgba(42,26,14,.35);white-space:nowrap}
-.kc-prog{width:100%;height:5px;background:rgba(42,26,14,.08);border-radius:3px;overflow:hidden}
-.kc-prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),#80e860);transition:width .3s linear}
-.kc-lv{position:absolute;top:-6px;right:-6px;background:linear-gradient(145deg,#fffad0,var(--gold));border:2px solid var(--gold2);border-radius:7px;padding:1px 5px;font-size:8px;font-weight:900;color:var(--gold2);box-shadow:0 2px 0 rgba(200,144,16,.3)}
+.fridge-hdr{font-size:9px;font-weight:800;color:var(--teal2);margin-bottom:3px;display:flex;justify-content:space-between}
+.fridge-cnt{font-size:8px;color:rgba(42,26,14,.3)}
+.fridge-chips{display:flex;gap:2px;flex-wrap:wrap}
+.fchip{background:#fff;border:1.5px solid rgba(42,188,170,.25);border-radius:7px;padding:2px 4px;font-size:12px;display:flex;align-items:center;gap:1px}
+.fchip span{font-size:8px;font-weight:900;color:var(--teal2)}
+.fridge-empty{font-size:8px;color:rgba(42,26,14,.22);font-weight:700}
 
-/* Fridge card */
-.fridge-card{
-  background:linear-gradient(160deg,#e8f8f8,#c8ecea);
-  border:2px solid rgba(42,188,170,.3);border-radius:12px;
-  padding:6px 8px;
-  box-shadow:0 3px 8px rgba(0,0,0,.06);
+/* Portrait panels */
+@media(orientation:portrait){
+  .panel-orders{
+    top:auto;bottom:8px;left:6px;right:6px;
+    width:auto;height:110px;
+    flex-direction:row;align-items:center;padding:5px 8px;gap:6px;
+  }
+  .panel-orders .panel-title{display:none}
+  .orders-list{flex-direction:row;overflow-x:auto;overflow-y:hidden;gap:6px}
+  .order-card{min-width:86px;flex-shrink:0}
+  .o-ph{min-width:76px;min-height:40px;flex-shrink:0}
+  .panel-kitchen{
+    top:60px;bottom:128px;right:6px;
+    width:118px;
+  }
+  .panel-orders.hidden,.panel-kitchen.hidden{display:none}
 }
-.fridge-title{font-size:9px;font-weight:800;color:var(--teal2);margin-bottom:4px;display:flex;align-items:center;gap:4px}
-.fridge-items{display:flex;gap:2px;flex-wrap:wrap}
-.fridge-chip{background:#fff;border:1.5px solid rgba(42,188,170,.3);border-radius:8px;padding:2px 5px;font-size:12px;display:flex;align-items:center;gap:1px}
-.fridge-chip span{font-size:8px;font-weight:900;color:var(--teal2)}
-.fridge-empty{font-size:9px;color:rgba(42,26,14,.25);font-weight:700}
 
-/* ═══════════════════════════════════
+/* ══════════════════════════════════════
    UPGRADE SCREEN
-═══════════════════════════════════ */
+══════════════════════════════════════ */
 #screen-upgrade{
-  background:linear-gradient(160deg,#fdf6ee,#f0ead8);
-  flex-direction:row;overflow:hidden;
+  background:linear-gradient(155deg,#fdf6ee,#efe8d8);
+  display:flex;flex-direction:row;
 }
-.upg-left{width:262px;flex-shrink:0;background:rgba(255,255,255,.75);border-right:2px solid rgba(42,26,14,.08);backdrop-filter:blur(12px);display:flex;flex-direction:column;padding:20px;gap:12px}
-.upg-hl{font-family:'Zen Dots',monospace;font-size:21px;color:var(--red)}
-.upg-stars-row{display:flex;gap:10px;margin:4px 0}
-.s-big{font-size:36px;filter:grayscale(1) opacity(.2);transition:filter .3s,transform .3s}
-.s-big.on{filter:none;animation:spop .5s ease}
-@keyframes spop{0%{transform:scale(0) rotate(-25deg)}60%{transform:scale(1.35) rotate(8deg)}100%{transform:scale(1)}}
-.res-pills{display:flex;gap:7px;flex-wrap:wrap}
-.rpill{background:rgba(255,255,255,.85);border:1.5px solid rgba(42,26,14,.1);border-radius:13px;padding:7px 13px;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,.05)}
-.rpill-v{font-family:'Zen Dots',monospace;font-size:18px;color:var(--ink)}
-.rpill-l{font-size:9px;color:rgba(42,26,14,.4);margin-top:2px}
-.upg-wallet{font-size:13px;font-weight:700;color:rgba(42,26,14,.4);margin-top:auto}
-.upg-wallet strong{font-family:'Zen Dots',monospace;font-size:19px;color:var(--gold2)}
-.btn-next{width:100%;padding:14px;background:linear-gradient(145deg,var(--teal),var(--teal2));border:none;border-radius:16px;font-family:'Zen Dots',monospace;font-size:17px;color:#fff;cursor:pointer;box-shadow:0 5px 0 rgba(42,144,120,.5),0 7px 18px rgba(42,188,170,.25);transition:transform .12s,box-shadow .12s}
-.btn-next:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(42,144,120,.5)}
-.upg-right{flex:1;overflow-y:auto;padding:13px;display:flex;flex-direction:column;gap:5px}
-.upg-right::-webkit-scrollbar{display:none}
-.upg-sec{font-family:'Zen Dots',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(42,26,14,.28);margin:5px 0 3px}
-.upg-card{background:#fff;border:2px solid rgba(42,26,14,.07);border-radius:15px;padding:10px 12px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:background .15s,transform .12s;box-shadow:0 3px 10px rgba(0,0,0,.04)}
-.upg-card:hover{background:#fffaf4}
-.upg-card:active{transform:scale(.97)}
-.upg-card.off{opacity:.4;cursor:default}
-.upg-card.broke{opacity:.5;cursor:default}
-.u-ico{font-size:26px;flex-shrink:0}
+@media(orientation:portrait){#screen-upgrade{flex-direction:column}}
+.upg-sidebar{
+  width:250px;flex-shrink:0;
+  background:rgba(255,255,255,.72);border-right:2px solid rgba(42,26,14,.07);
+  backdrop-filter:blur(12px);display:flex;flex-direction:column;padding:18px;gap:10px;
+}
+@media(orientation:portrait){.upg-sidebar{width:100%;border-right:none;border-bottom:2px solid rgba(42,26,14,.07);padding:12px 16px;gap:7px}}
+.upg-title{font-family:'Zen Dots',monospace;font-size:20px;color:var(--red)}
+.upg-srow{display:flex;gap:8px}
+.s-big{font-size:34px;filter:grayscale(1) opacity(.18);transition:all .3s}
+.s-big.on{filter:none;animation:sbig-pop .5s ease}
+@keyframes sbig-pop{0%{transform:scale(0) rotate(-25deg)}60%{transform:scale(1.4) rotate(8deg)}100%{transform:scale(1)}}
+.stat-pills{display:flex;gap:6px;flex-wrap:wrap}
+.stat-pill{background:rgba(255,255,255,.85);border:1.5px solid rgba(42,26,14,.09);border-radius:12px;padding:6px 11px;text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.05)}
+.stat-v{font-family:'Zen Dots',monospace;font-size:16px;color:var(--ink)}
+.stat-l{font-size:8px;color:rgba(42,26,14,.38);margin-top:2px}
+.upg-wallet{font-size:12px;font-weight:700;color:rgba(42,26,14,.35);margin-top:auto}
+@media(orientation:portrait){.upg-wallet{margin-top:0}}
+.upg-wallet strong{font-family:'Zen Dots',monospace;font-size:17px;color:var(--gold2)}
+.btn-next{
+  width:100%;padding:13px;border:none;border-radius:14px;cursor:pointer;
+  background:linear-gradient(145deg,var(--teal),var(--teal2));
+  font-family:'Zen Dots',monospace;font-size:16px;color:#fff;
+  box-shadow:0 5px 0 rgba(26,140,122,.5),0 7px 18px rgba(42,188,170,.2);
+  transition:transform .12s,box-shadow .12s;
+}
+.btn-next:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(26,140,122,.5)}
+.upg-list-area{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px}
+.upg-list-area::-webkit-scrollbar{display:none}
+.upg-section{font-family:'Zen Dots',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(42,26,14,.25);margin:6px 0 2px}
+.upg-row{
+  background:#fff;border:2px solid rgba(42,26,14,.06);border-radius:14px;
+  padding:9px 11px;display:flex;align-items:center;gap:8px;cursor:pointer;
+  box-shadow:0 3px 9px rgba(0,0,0,.04);transition:transform .12s;
+}
+.upg-row:active{transform:scale(.97)}
+.upg-row.maxed,.upg-row.broke{opacity:.45;cursor:default}
+.u-ico{font-size:24px;flex-shrink:0}
 .u-info{flex:1}
 .u-name{font-size:13px;font-weight:900;color:var(--ink)}
-.u-sub{font-size:10px;color:rgba(42,26,14,.38);margin-top:2px}
-.u-dots{display:flex;gap:3px;margin-top:4px}
-.udot{width:9px;height:9px;border-radius:50%;background:rgba(42,26,14,.1)}
+.u-sub{font-size:9px;color:rgba(42,26,14,.35);margin-top:1px}
+.u-dots{display:flex;gap:3px;margin-top:3px}
+.udot{width:8px;height:8px;border-radius:50%;background:rgba(42,26,14,.1)}
 .udot.on{background:var(--teal)}
-.u-cost-btn{background:linear-gradient(145deg,#fffad0,#fde68a);border:2px solid rgba(248,200,50,.5);border-radius:11px;padding:5px 10px;box-shadow:0 3px 0 rgba(200,144,16,.28);cursor:pointer;text-align:center;flex-shrink:0;transition:transform .12s,box-shadow .12s}
-.u-cost-btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(200,144,16,.28)}
-.u-cost-v{font-family:'Zen Dots',monospace;font-size:14px;color:var(--gold2)}
-.u-cost-l{font-size:8px;color:rgba(200,144,16,.6)}
-.u-max{font-size:10px;font-weight:800;color:rgba(42,26,14,.22);padding:5px 8px;flex-shrink:0}
-
-/* ═══════════════════════════════════
-   TUTORIAL
-═══════════════════════════════════ */
-.tut-overlay{position:fixed;inset:0;z-index:999;pointer-events:none}
-.tut-bg{position:absolute;inset:0;background:rgba(0,0,0,.55);pointer-events:all}
-.tut-bubble{
-  position:absolute;background:#fff;border:3px solid var(--teal);border-radius:20px;
-  padding:14px 16px;max-width:228px;
-  box-shadow:0 10px 30px rgba(0,0,0,.15);pointer-events:all;z-index:1;
-  animation:bub-in .3s cubic-bezier(.34,1.56,.64,1);
+.u-buy-btn{
+  background:linear-gradient(145deg,#fffce0,#fde880);
+  border:2px solid rgba(248,200,50,.45);border-radius:10px;
+  padding:4px 9px;box-shadow:0 3px 0 rgba(180,120,0,.25);
+  flex-shrink:0;text-align:center;transition:transform .12s,box-shadow .12s;
 }
-@keyframes bub-in{from{transform:scale(.6) translateY(10px);opacity:0}to{transform:scale(1);opacity:1}}
-.tut-arrow{font-size:24px;display:block;animation:arrbob .65s ease-in-out infinite;margin-bottom:4px}
-@keyframes arrbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.tut-title{font-family:'Zen Dots',monospace;font-size:14px;color:var(--red);margin-bottom:5px}
-.tut-text{font-size:11px;font-weight:700;color:rgba(42,26,14,.55);line-height:1.7}
-.tut-ok{margin-top:10px;width:100%;padding:9px;background:var(--teal);border:none;border-radius:10px;font-family:'Zen Dots',monospace;font-size:13px;color:#fff;cursor:pointer;box-shadow:0 4px 0 var(--teal2);transition:transform .12s,box-shadow .12s}
-.tut-ok:active{transform:translateY(3px);box-shadow:0 1px 0 var(--teal2)}
-.tut-hl{position:absolute;border:3px solid var(--gold);border-radius:14px;box-shadow:0 0 0 4px rgba(248,200,50,.3),0 0 20px rgba(248,200,50,.4);pointer-events:none;z-index:2;animation:hl-p 1s ease-in-out infinite}
-@keyframes hl-p{0%,100%{box-shadow:0 0 0 4px rgba(248,200,50,.3),0 0 20px rgba(248,200,50,.4)}50%{box-shadow:0 0 0 9px rgba(248,200,50,0),0 0 30px rgba(248,200,50,.6)}}
+.u-buy-btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(180,120,0,.25)}
+.u-buy-v{font-family:'Zen Dots',monospace;font-size:13px;color:var(--gold2)}
+.u-buy-l{font-size:7px;color:rgba(180,120,0,.55)}
+.u-max-lbl{font-size:9px;font-weight:800;color:rgba(42,26,14,.2);padding:4px 7px;flex-shrink:0}
 
-/* FX */
-.fx{position:fixed;pointer-events:none;z-index:9999;font-family:'Zen Dots',monospace;font-size:16px;animation:fxup 1.3s ease-out forwards}
-@keyframes fxup{0%{opacity:1;transform:translateY(0) scale(1)}75%{opacity:1}100%{opacity:0;transform:translateY(-65px) scale(.6)}}
-.particle{position:fixed;pointer-events:none;z-index:9998;border-radius:50%;animation:part-fly .85s ease-out forwards}
-@keyframes part-fly{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:var(--fly) scale(0)}}
+/* ══ TUTORIAL ══ */
+.tut-overlay{position:fixed;inset:0;z-index:999;pointer-events:none}
+.tut-bg{position:absolute;inset:0;background:rgba(0,0,0,.5);pointer-events:all}
+.tut-box{
+  position:absolute;background:#fff;border:3px solid var(--teal);border-radius:18px;
+  padding:14px 15px;max-width:220px;z-index:1;pointer-events:all;
+  box-shadow:0 12px 32px rgba(0,0,0,.15);
+  animation:tbox-in .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes tbox-in{from{transform:scale(.55) translateY(12px);opacity:0}to{transform:scale(1);opacity:1}}
+.tut-arr{font-size:22px;display:block;animation:tarr .65s ease-in-out infinite;margin-bottom:3px}
+@keyframes tarr{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.tut-ttl{font-family:'Zen Dots',monospace;font-size:13px;color:var(--red);margin-bottom:4px}
+.tut-txt{font-size:10px;font-weight:700;color:rgba(42,26,14,.5);line-height:1.7}
+.tut-ok{
+  margin-top:9px;width:100%;padding:8px;border:none;border-radius:9px;
+  background:var(--teal);font-family:'Zen Dots',monospace;font-size:12px;color:#fff;
+  cursor:pointer;box-shadow:0 3px 0 var(--teal2);transition:transform .12s,box-shadow .12s;
+}
+.tut-ok:active{transform:translateY(2px);box-shadow:0 1px 0 var(--teal2)}
+.tut-hl{
+  position:absolute;border:3px solid var(--gold);border-radius:12px;z-index:2;
+  box-shadow:0 0 0 5px rgba(248,200,50,.3),0 0 24px rgba(248,200,50,.5);
+  animation:thl .9s ease-in-out infinite;pointer-events:none;
+}
+@keyframes thl{0%,100%{box-shadow:0 0 0 5px rgba(248,200,50,.3),0 0 16px rgba(248,200,50,.4)}50%{box-shadow:0 0 0 10px rgba(248,200,50,0),0 0 30px rgba(248,200,50,.7)}}
+
+/* ══ FX ══ */
+.fx-pop{position:fixed;pointer-events:none;z-index:9999;font-family:'Zen Dots',monospace;font-size:15px;font-weight:900;animation:fxp 1.3s ease-out forwards;white-space:nowrap}
+@keyframes fxp{0%{opacity:1;transform:translateY(0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translateY(-70px) scale(.5)}}
+.particle{position:fixed;pointer-events:none;z-index:9998;border-radius:50%;width:7px;height:7px;animation:pfly .8s ease-out forwards}
+@keyframes pfly{from{opacity:1;transform:translate(0,0)}to{opacity:0;transform:var(--d)}}
 </style>
 </head>
 <body>
 
-<div class="portrait-warn">
-  <div class="pw-icon">📱</div>
-  <div class="pw-t">Поверни телефон!</div>
-  <div class="pw-s">Sushi Rush лучше в<br>горизонтальном режиме 🍣</div>
-</div>
-
-<!-- ══════════ MAP ══════════ -->
+<!-- ══════ MAP ══════ -->
 <div id="screen-map" class="screen">
-  <div id="map-petals" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0"></div>
+  <div id="petals-layer" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0"></div>
   <div class="map-header">
-    <div><div class="map-logo">🍣 Sushi Rush</div><div class="map-logo-sub">Catch · Cook · Deliver</div></div>
-    <div class="map-wallet"><span style="font-size:20px">🪙</span><div class="map-wallet-val" id="map-coins">0</div></div>
+    <div>
+      <div class="map-logo">🍣 Sushi Rush</div>
+      <div class="map-logo-sub" style="padding-left:2px">Catch · Cook · Deliver</div>
+    </div>
+    <div class="map-coins-badge">🪙<span id="map-coins">0</span></div>
   </div>
-  <div class="map-world">
-    <span style="font-size:20px">🌸</span>
-    <div><div class="map-world-t">Мир 1 — Токийская гавань</div><div class="map-world-s">Нажми уровень чтобы начать</div></div>
-  </div>
-  <div class="map-body">
-    <div class="map-scroll">
-      <div class="levels-row" id="levels-path"></div>
+  <div class="map-banner">
+    <span style="font-size:22px">🌸</span>
+    <div>
+      <div class="map-banner-t">Мир 1 — Токийская гавань</div>
+      <div class="map-banner-s">Выбери уровень</div>
     </div>
   </div>
-  <div class="map-deco" id="map-deco"></div>
+  <div class="map-scroll-area">
+    <div class="levels-row" id="levels-row"></div>
+  </div>
+  <div class="map-deco-strip" id="map-deco"></div>
 </div>
 
-<!-- ══════════ GAME ══════════ -->
+<!-- ══════ GAME ══════ -->
 <div id="screen-game" class="screen hidden">
 
-  <!-- WORLD — full background -->
+  <!-- WORLD -->
   <div id="world">
-    <div class="world-sky"></div>
-    <div class="world-sun"></div>
-    <div id="world-clouds"></div>
-    <div id="world-layers"></div>
-    <div id="world-objects"></div>
-    <div id="world-mopers"></div>
-  </div>
+    <!-- Sky elements -->
+    <div class="sky-sun"></div>
+    <div id="sky-clouds"></div>
 
-  <!-- UI LAYER — floats above world -->
-  <div id="ui-layer">
-    <!-- Compact corner HUD -->
-    <div class="top-bar">
-      <div class="hud-left">
-        <div class="hud-row">
-          <div class="tb-back" onclick="goMap()">◀</div>
-          <div class="tb-lvl" id="tb-lvl">Lv.1</div>
-        </div>
-        <div class="tb-steps">
-          <div class="step-pill" id="sp0">🎣</div>
-          <div class="step-pill" id="sp1">🍳</div>
-          <div class="step-pill" id="sp2">📋</div>
-          <div class="step-pill" id="sp3">🛵</div>
-        </div>
-      </div>
-      <div class="hud-right">
-        <div class="hud-row">
-          <div class="tb-stars" id="tb-stars">
-            <span class="tb-star">⭐</span><span class="tb-star">⭐</span><span class="tb-star">⭐</span>
-          </div>
-          <div class="tb-timer" id="tb-timer">2:00</div>
-        </div>
-        <div class="tb-coins">🪙<span id="tb-coins">0</span></div>
-      </div>
+    <!-- Ground with 3D tilt -->
+    <div class="ground-wrap" id="ground-wrap">
+      <div class="band band-water"></div>
+      <div class="band band-hillbg"></div>
+      <div class="band band-grass"></div>
+      <div class="band band-dirt"></div>
+      <div class="band band-road"></div>
     </div>
 
-    <!-- Side panels -->
-    <div class="side-panels">
-      <!-- Left: orders -->
-      <div class="orders-panel">
-        <div class="panel-title">📋 Заказы</div>
-        <div class="orders-list" id="orders-list"></div>
-      </div>
+    <!-- Side hills -->
+    <div class="hill-left"></div>
+    <div class="hill-right"></div>
+    <!-- Fence -->
+    <div class="fence-bar"></div>
 
-      <div class="panel-spacer"></div>
+    <!-- Scene objects — positioned via % in JS -->
+    <div id="scene-sources"></div>
+    <div id="scene-buildings"></div>
+    <div id="scene-mopers"></div>
+  </div>
 
-      <!-- Right: kitchen controls -->
-      <div class="kitchen-panel" id="kitchen-panel">
-        <div class="panel-title">👨‍🍳 Кухня</div>
-        <!-- injected -->
+  <!-- UI LAYER -->
+  <div id="ui-layer">
+    <div class="hud-tl">
+      <div style="display:flex;gap:5px;align-items:center">
+        <div class="hud-back" onclick="goMap()">◀</div>
+        <div class="hud-lv" id="hud-lv">Lv.1</div>
       </div>
+      <div class="hud-steps">
+        <div class="hstep" id="hs0">🎣</div>
+        <div class="hstep" id="hs1">🍳</div>
+        <div class="hstep" id="hs2">📋</div>
+        <div class="hstep" id="hs3">🛵</div>
+      </div>
+    </div>
+    <div class="hud-tr">
+      <div style="display:flex;gap:5px;align-items:center">
+        <div class="hud-chip hud-stars" id="hud-stars">
+          <span>⭐</span><span>⭐</span><span>⭐</span>
+        </div>
+        <div class="hud-timer" id="hud-timer">2:00</div>
+      </div>
+      <div class="hud-chip"><span style="font-size:16px">🪙</span><span class="hud-coins" id="hud-coins">0</span></div>
+    </div>
+
+    <div class="panel-orders" id="panel-orders">
+      <div class="panel-title">📋 Заказы</div>
+      <div class="orders-list" id="orders-list"></div>
+    </div>
+
+    <div class="panel-kitchen" id="panel-kitchen">
+      <div class="panel-title">👨‍🍳 Кухня</div>
+      <!-- populated by JS -->
     </div>
   </div>
 </div>
 
-<!-- ══════════ UPGRADE ══════════ -->
+<!-- ══════ UPGRADE ══════ -->
 <div id="screen-upgrade" class="screen hidden">
-  <div class="upg-left">
-    <div class="upg-hl" id="upg-hl">🎉 Пройден!</div>
-    <div class="upg-stars-row" id="upg-stars"><span class="s-big">⭐</span><span class="s-big">⭐</span><span class="s-big">⭐</span></div>
-    <div class="res-pills" id="res-pills"></div>
-    <div class="upg-wallet" style="margin-top:auto">Монеты: <strong id="upg-wallet">0</strong> 🪙</div>
+  <div class="upg-sidebar">
+    <div class="upg-title" id="upg-ttl">🎉 Пройден!</div>
+    <div class="upg-srow" id="upg-stars"><span class="s-big">⭐</span><span class="s-big">⭐</span><span class="s-big">⭐</span></div>
+    <div class="stat-pills" id="stat-pills"></div>
+    <div class="upg-wallet" style="margin-top:auto">Монеты: <strong id="upg-coins">0</strong> 🪙</div>
     <button class="btn-next" id="btn-next">Следующий →</button>
   </div>
-  <div class="upg-right" id="upg-list"></div>
+  <div class="upg-list-area" id="upg-list"></div>
 </div>
 
 <script>
 'use strict';
 
-/* ═══════════════════════════ DATA ═══════════════════════════ */
+/* ══ DATA ══ */
 const LEVELS=[
-  {id:1,time:120,goals:[250,500,800],maxOrders:3,kitchens:['sushi'],sources:['fisher','rice']},
-  {id:2,time:140,goals:[400,750,1200],maxOrders:3,kitchens:['sushi','tempura'],sources:['fisher','rice','aqua']},
-  {id:3,time:155,goals:[600,1100,1700],maxOrders:4,kitchens:['sushi','tempura'],sources:['fisher','rice','aqua','garden']},
-  {id:4,time:170,goals:[900,1600,2400],maxOrders:4,kitchens:['sushi','tempura'],sources:['fisher','rice','aqua','garden']},
+  {id:1,time:120,goals:[250,500,800],  maxOrders:3,kitchens:['sushi'],            sources:['fisher','rice']},
+  {id:2,time:140,goals:[400,750,1200], maxOrders:3,kitchens:['sushi','tempura'],  sources:['fisher','rice','aqua']},
+  {id:3,time:155,goals:[600,1100,1700],maxOrders:4,kitchens:['sushi','tempura'],  sources:['fisher','rice','aqua','garden']},
+  {id:4,time:170,goals:[900,1600,2400],maxOrders:4,kitchens:['sushi','tempura'],  sources:['fisher','rice','aqua','garden']},
   {id:5,time:170,goals:[1200,2000,3000],maxOrders:5,kitchens:['sushi','tempura'],sources:['fisher','rice','aqua','garden']},
 ];
 const SOURCES={
-  fisher:{e:'🎣',n:'Рыбак',     out:'🐟',outN:'Рыба',     baseCd:7000,zone:'water'},
-  rice:  {e:'🌾',n:'Рисовое поле',out:'🍚',outN:'Рис',    baseCd:8000,zone:'grass'},
-  aqua:  {e:'🦐',n:'Аквариум',  out:'🦐',outN:'Креветка', baseCd:9000,zone:'water'},
-  garden:{e:'🥑',n:'Огород',    out:'🥑',outN:'Авокадо',  baseCd:10000,zone:'hill'},
+  fisher:{icon:'🎣',char:'👨‍🦱',rod:'🎣',label:'Рыбак',   out:'🐟',outN:'Рыба',    baseCd:7000,zone:'water'},
+  rice:  {icon:'🌾',char:'👩‍🌾',rod:null, label:'Рис',     out:'🍚',outN:'Рис',     baseCd:8000,zone:'grass'},
+  aqua:  {icon:'🦐',char:null,  rod:null, label:'Аквариум',out:'🦐',outN:'Креветка',baseCd:9000,zone:'water'},
+  garden:{icon:'🥑',char:'🧑‍🌾',rod:null, label:'Огород',  out:'🥑',outN:'Авокадо', baseCd:10000,zone:'hill'},
 };
 const KITCHENS={
-  sushi:  {e:'🍣',n:'Суши-стол',  color:'#c83838',roofColor:'#8a1a1a',in:'🐟',in2:'🍚',out:'🍱',outN:'Суши',   baseTime:9000},
-  tempura:{e:'🍤',n:'Темпура',    color:'#d47020',roofColor:'#904010',in:'🦐',in2:'🍚',out:'🍤',outN:'Темпура', baseTime:11000},
+  sushi:  {e:'🍣',n:'Суши-стол', color:'#c03030',roofC:'#8a1818',wallC:'#d84040',in:'🐟',in2:'🍚',out:'🍱',outN:'Суши',  baseTime:9000},
+  tempura:{e:'🍤',n:'Темпура',   color:'#c86020',roofC:'#8a3808',wallC:'#e07030',in:'🦐',in2:'🍚',out:'🍤',outN:'Темпура',baseTime:11000},
 };
 const ORDER_POOLS=[
   [{i:['🐟'],r:70},{i:['🍚'],r:60},{i:['🐟','🍚'],r:140},{i:['🍱'],r:160}],
   [{i:['🐟'],r:70},{i:['🦐'],r:80},{i:['🍱'],r:160},{i:['🍤'],r:140},{i:['🐟','🦐'],r:180}],
   [{i:['🍱'],r:160},{i:['🍤'],r:140},{i:['🥑','🍚'],r:130},{i:['🍱','🍤'],r:280},{i:['🐟','🦐','🍚'],r:320}],
 ];
-const UPG=[
-  {k:'fisher', e:'🎣',n:'Рыбак',       d:'Ловит рыбу быстрее',   m:5},
-  {k:'rice',   e:'🌾',n:'Поле риса',   d:'Рис растёт быстрее',   m:5},
-  {k:'aqua',   e:'🦐',n:'Аквариум',    d:'Быстрее даёт креветок', m:5},
-  {k:'garden', e:'🥑',n:'Огород',      d:'Авокадо растёт быстрее',m:5},
-  {k:'sushi',  e:'🍣',n:'Суши-стол',   d:'Повар работает быстрее',m:5},
-  {k:'tempura',e:'🍤',n:'Темпура',     d:'Жарит быстрее',         m:5},
-  {k:'moped',  e:'🛵',n:'Мопед',       d:'Быстрее доставляет',    m:5},
-  {k:'fridge', e:'🧊',n:'Холодильник', d:'Больше места',          m:5},
+const UPG_DEFS=[
+  {k:'fisher', e:'🎣',n:'Рыбак',       d:'Быстрее ловит рыбу',     m:5},
+  {k:'rice',   e:'🌾',n:'Поле риса',   d:'Рис растёт быстрее',     m:5},
+  {k:'aqua',   e:'🦐',n:'Аквариум',    d:'Быстрее даёт креветок',  m:5},
+  {k:'garden', e:'🥑',n:'Огород',      d:'Авокадо растёт быстрее', m:5},
+  {k:'sushi',  e:'🍣',n:'Суши-стол',   d:'Повар варит быстрее',    m:5},
+  {k:'tempura',e:'🍤',n:'Темпура',     d:'Жарит быстрее',          m:5},
+  {k:'moped',  e:'🛵',n:'Мопед',       d:'Быстрее доставляет',     m:5},
+  {k:'fridge', e:'🧊',n:'Холодильник', d:'Больше места в складе',  m:5},
 ];
 const UCOSTS=[0,150,280,450,650,900];
 
-/* ═══════════════════════════ STATE ═══════════════════════════ */
+/* ══ STATE ══ */
 const S={coins:0,stars:{},upg:{fisher:1,rice:1,aqua:1,garden:1,sushi:1,tempura:1,moped:1,fridge:1}};
 let G=null;
 
-const sCd=k=>Math.max(1500,SOURCES[k].baseCd-(S.upg[k]-1)*1200);
-const kTm=k=>Math.max(3000,KITCHENS[k].baseTime-(S.upg[k]-1)*2000);
-const mTm=()=>Math.max(1500,6000-(S.upg.moped-1)*1100);
+const sCd  =k=>Math.max(1500,SOURCES[k].baseCd-(S.upg[k]-1)*1200);
+const kTm  =k=>Math.max(3000,KITCHENS[k].baseTime-(S.upg[k]-1)*2000);
+const mTm  =()=>Math.max(1500,6000-(S.upg.moped-1)*1100);
 const stMax=()=>6+(S.upg.fridge-1)*4;
 const stUsed=()=>Object.values(G.storage).reduce((a,b)=>a+b,0);
 const $=id=>document.getElementById(id);
-const show=id=>{document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));$(id).classList.remove('hidden')};
 
-/* ═══════════════════════════ MAP ═══════════════════════════ */
-function renderMap(){
-  $('map-coins').textContent=S.coins;
-  const pp=$('map-petals');pp.innerHTML='';
-  for(let i=0;i<14;i++){
-    const el=document.createElement('div');el.className='petal';el.textContent='🌸';
-    el.style.cssText=`left:${Math.random()*100}%;top:${-5+Math.random()*15}%;animation-duration:${5+Math.random()*9}s;animation-delay:-${Math.random()*12}s;font-size:${9+Math.random()*9}px`;
-    pp.appendChild(el);
-  }
-  const deco=$('map-deco');deco.innerHTML='';
-  [['🌊',3,42],['🐠',13,36],['⛩️',30,44],['🌳',50,40],['🎋',65,38],['🗼',82,48]].forEach(([e,l,fs])=>{
-    const d=document.createElement('div');d.className='deco-i';
-    d.textContent=e;d.style.cssText=`left:${l}%;font-size:${fs}px`;
-    deco.appendChild(d);
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>{
+    if(s.id===id){s.classList.remove('hidden');s.style.display='';}
+    else{s.classList.add('hidden');}
   });
-  const path=$('levels-path');path.innerHTML='';
+}
+
+/* ══ MAP ══ */
+function initMap(){
+  $('map-coins').textContent=S.coins;
+  // Petals
+  const pl=$('petals-layer');pl.innerHTML='';
+  for(let i=0;i<16;i++){
+    const p=document.createElement('div');p.className='petal';p.textContent='🌸';
+    p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*10-8}%;font-size:${9+Math.random()*9}px;animation-duration:${5+Math.random()*10}s;animation-delay:-${Math.random()*14}s`;
+    pl.appendChild(p);
+  }
+  // Deco
+  const deco=$('map-deco');deco.innerHTML='';
+  ['⛩️','🌊','🎋','🗼','🌸','🎏'].forEach((e,i)=>{
+    const d=document.createElement('div');d.className='deco-item';d.textContent=e;deco.appendChild(d);
+  });
+  // Levels
+  const row=$('levels-row');row.innerHTML='';
+  const next=nextUnlocked();
   LEVELS.forEach((lv,i)=>{
-    if(i>0){const ln=document.createElement('div');ln.className='lv-line';path.appendChild(ln);}
-    const stars=S.stars[lv.id]||0,unlocked=lv.id<=nextUnlocked(),isCur=lv.id===nextUnlocked();
-    const wrap=document.createElement('div');wrap.className='lv-wrap';
+    if(i>0){const ln=document.createElement('div');ln.className='lv-connector';row.appendChild(ln);}
+    const stars=S.stars[lv.id]||0;
+    const isNext=lv.id===next;
+    const unlocked=lv.id<=next;
+    const w=document.createElement('div');w.className='lv-wrap';
     const node=document.createElement('div');
-    node.className='lv-node '+(stars>0?'done':isCur?'next':'locked');
+    node.className='lv-node '+(stars>0?'done':isNext?'next':'locked');
     let sh='';for(let s=1;s<=3;s++)sh+=`<span>${s<=stars?'⭐':'☆'}</span>`;
-    node.innerHTML=stars>0||isCur?`<div class="lv-num">${lv.id}</div><div class="lv-stars">${sh}</div>`:'<span style="font-size:24px">🔒</span>';
+    node.innerHTML=unlocked
+      ?`<div class="lv-num">${lv.id}</div><div class="lv-stars-row">${sh}</div>`
+      :`<span style="font-size:22px">🔒</span>`;
     if(unlocked)node.onclick=()=>startLevel(lv.id);
-    const shadow=document.createElement('div');shadow.className='lv-shadow';
-    wrap.appendChild(node);wrap.appendChild(shadow);path.appendChild(wrap);
+    w.appendChild(node);
+    const sh2=document.createElement('div');sh2.className='lv-shadow';w.appendChild(sh2);
+    row.appendChild(w);
   });
 }
 const nextUnlocked=()=>{for(const l of LEVELS)if(!(S.stars[l.id]>0))return l.id;return LEVELS[LEVELS.length-1].id};
 
-/* ═══════════════════════════ START LEVEL ═══════════════════════════ */
+/* ══ START LEVEL ══ */
 function startLevel(id){
   const cfg=LEVELS.find(l=>l.id===id);if(!cfg)return;
   G={cfg,running:false,ended:false,timeLeft:cfg.time,coins:0,ordersOk:0,ordersFailed:0,
      storage:{},orders:[],oid:0,sources:{},kitchens:{},
-     mopers:[{id:0,busy:false,tl:0,x:0},{id:1,busy:false,tl:0,x:0}],
+     mopers:[{id:0,busy:false,tl:0},{id:1,busy:false,tl:0}],
      selOrder:null,tick:null};
   cfg.sources.forEach(k=>G.sources[k]={cd:0,maxCd:sCd(k)});
   cfg.kitchens.forEach(k=>G.kitchens[k]={running:false,tl:0,total:kTm(k)});
-  buildWorld();show('screen-game');
-  setTimeout(()=>{spawnOrder();spawnOrder();if(id===1)runTutorial(()=>beginGame());else beginGame();},350);
+
+  // Show screen first, THEN build world after a frame
+  showScreen('screen-game');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    buildScene(cfg);
+    refreshHUD();
+    spawnOrder();spawnOrder();
+    if(id===1)runTutorial(()=>beginGame());else beginGame();
+  }));
 }
 
-/* ═══════════════════════════ BUILD WORLD ═══════════════════════════ */
-function buildWorld(){
-  const cfg=G.cfg;
-  $('tb-lvl').textContent='Lv.'+cfg.id;
-  refreshTimer();refreshCoins();refreshStars();
-
-  const W=window.innerWidth,H=window.innerHeight;
-
-  // z-layout percentages (from bottom)
-  const roadH   = Math.round(H*0.24);
-  const dirtH   = Math.round(H*0.08);
-  const grassH  = Math.round(H*0.18);
-  const waterH  = Math.round(H*0.16);
-  const skyBot  = roadH+dirtH+grassH+waterH;
-
-  // Clouds
-  const wc=$('world-clouds');wc.innerHTML='';
-  [{t:8,d:24},{t:18,d:36},{t:6,d:44}].forEach((c,i)=>{
-    const el=document.createElement('div');el.className='world-cloud';el.textContent='☁️';
-    el.style.cssText=`top:${c.t}px;font-size:${24+i*4}px;animation-duration:${c.d}s;animation-delay:-${i*11}s`;
-    wc.appendChild(el);
-  });
-
-  // Layers
-  const wl=$('world-layers');wl.innerHTML='';
-
-  // Water zone
-  const waterZone=document.createElement('div');
-  waterZone.className='water-zone';
-  waterZone.style.cssText=`bottom:${roadH+dirtH+grassH}px;height:${waterH}px`;
-  waterZone.innerHTML=`<div class="water-surface"></div><div class="water-wave"></div><div class="water-wave"></div><div class="water-wave"></div><div class="water-shimmer"></div>`;
-  wl.appendChild(waterZone);
-
-  // Grass
-  const grass=document.createElement('div');
-  grass.className='terrain-layer';
-  grass.style.cssText=`bottom:${roadH+dirtH}px;height:${grassH}px;background:linear-gradient(180deg,#6cc83a,#4aa018,#2a7008);z-index:5`;
-  wl.appendChild(grass);
-
-  // Dirt
-  const dirt=document.createElement('div');
-  dirt.className='terrain-layer';
-  dirt.style.cssText=`bottom:${roadH}px;height:${dirtH}px;background:linear-gradient(180deg,#c8883a,#a06018,#784010);z-index:5`;
-  wl.appendChild(dirt);
-
-  // Road
-  const road=document.createElement('div');
-  road.className='terrain-layer';
-  road.style.cssText=`bottom:0;height:${roadH}px;background:linear-gradient(180deg,#3a3a4a,#22222e,#181820);z-index:5;border-top:2px solid rgba(255,255,255,.06)`;
-  road.innerHTML=`<div style="position:absolute;top:42%;left:0;right:0;height:5px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.35) 0,rgba(255,255,255,.35) 22px,transparent 22px,transparent 48px);border-radius:3px"></div>`;
-  wl.appendChild(road);
-
-  // Hills SVG behind grass
-  const hillsDiv=document.createElement('div');
-  hillsDiv.style.cssText=`position:absolute;bottom:${roadH+dirtH+grassH-18}px;left:0;right:0;height:60px;z-index:4;pointer-events:none`;
-  hillsDiv.innerHTML=`<svg viewBox="0 0 ${W} 60" preserveAspectRatio="none" style="width:100%;height:100%">
-    <ellipse cx="${W*.12}" cy="65" rx="${W*.18}" ry="50" fill="#4aa018" opacity=".8"/>
-    <ellipse cx="${W*.55}" cy="70" rx="${W*.26}" ry="46" fill="#5ab828" opacity=".7"/>
-    <ellipse cx="${W*.88}" cy="68" rx="${W*.16}" ry="44" fill="#3a8a10" opacity=".75"/>
-  </svg>`;
-  wl.appendChild(hillsDiv);
-
-  // Ground fence
-  const fenceDiv=document.createElement('div');
-  fenceDiv.className='fence-svg';
-  fenceDiv.style.cssText=`bottom:${roadH+dirtH+grassH-6}px;height:18px`;
-  fenceDiv.innerHTML=`<svg viewBox="0 0 ${W} 18" preserveAspectRatio="none" style="width:100%;height:100%">
-    <rect y="4" width="${W}" height="4" rx="2" fill="#c89040" stroke="#7a4e10" stroke-width="1"/>
-    <rect y="10" width="${W}" height="4" rx="2" fill="#b07828" stroke="#7a4e10" stroke-width="1"/>
-    ${Array.from({length:Math.ceil(W/52)},(_,i)=>`<rect x="${i*52+7}" y="0" width="9" height="18" rx="2" fill="#d4a840" stroke="#7a4e10" stroke-width="1.5"/>`).join('')}
-  </svg>`;
-  wl.appendChild(fenceDiv);
-
-  // ── BUILD SCENE OBJECTS ──
-  const wo=$('world-objects');wo.innerHTML='';
-  buildSourceObjects(wo,cfg,W,H,roadH,dirtH,grassH,waterH);
-  buildKitchenBuildings(wo,cfg,W,H,roadH,dirtH,grassH);
+/* ══ BUILD SCENE ══ */
+function buildScene(cfg){
+  buildClouds();
+  buildSources(cfg);
+  buildBuildings(cfg);
+  buildMopers();
   buildKitchenPanel(cfg);
-  buildMopers(W,H,roadH);
 }
 
-/* ── SOURCE OBJECTS (piers, fields, aqua, garden) ── */
-function buildSourceObjects(container,cfg,W,H,roadH,dirtH,grassH,waterH){
-  const sources=cfg.sources;
-  // Layout: fisher on pier (water), aqua on water-right, rice field center-grass, garden on hill-right
-  const layouts={
-    fisher:{x:0.18,zone:'water',side:'left'},
-    aqua:  {x:0.42,zone:'water',side:'left'},
-    rice:  {x:0.52,zone:'grass',side:'center'},
-    garden:{x:0.72,zone:'hill', side:'right'},
-  };
-
-  sources.forEach(k=>{
-    const lo=layouts[k]||{x:0.5,zone:'grass'};
-    const s=SOURCES[k];
-    const cx=Math.round(lo.x*W);
-
-    if(k==='fisher') buildPier(container,k,cx,W,H,roadH,dirtH,grassH,waterH);
-    else if(k==='aqua') buildAquarium(container,k,cx,W,H,roadH,dirtH,grassH,waterH);
-    else if(k==='rice') buildRiceField(container,k,cx,W,H,roadH,dirtH,grassH);
-    else if(k==='garden') buildGarden(container,k,cx,W,H,roadH,dirtH,grassH);
+function buildClouds(){
+  const c=$('sky-clouds');c.innerHTML='';
+  [{t:6,dur:26},{t:14,dur:40},{t:4,dur:34}].forEach((cl,i)=>{
+    const el=document.createElement('div');el.className='sky-cloud';el.textContent='☁️';
+    el.style.cssText=`top:${cl.t}px;font-size:${26+i*5}px;animation-duration:${cl.dur}s;animation-delay:-${i*12}s`;
+    c.appendChild(el);
   });
 }
 
-function buildPier(c,k,cx,W,H,roadH,dirtH,grassH,waterH){
-  const pW=88,pH=60;
-  const bottom=roadH+dirtH+grassH+Math.round(waterH*0.1);
-  const div=document.createElement('div');
-  div.style.cssText=`position:absolute;left:${cx-pW/2}px;bottom:${bottom}px;z-index:6;display:flex;flex-direction:column;align-items:center`;
-  div.innerHTML=`
-    <div class="pier-deck" id="pier-${k}" style="width:${pW}px;height:${pH}px;cursor:pointer">
-      <div class="pier-post" style="left:8px;height:${Math.round(waterH*0.6)}px"></div>
-      <div class="pier-post" style="right:8px;height:${Math.round(waterH*0.6)}px"></div>
-      <div class="pier-post" style="left:50%;transform:translateX(-50%);height:${Math.round(waterH*0.5)}px"></div>
-    </div>`;
-  // Fisher on pier
-  const fisher=document.createElement('div');
-  fisher.style.cssText=`position:absolute;bottom:${pH+2}px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;z-index:7`;
-  fisher.id='src-'+k;
-  fisher.innerHTML=`
-    <div style="position:relative">
-      <div id="src-ready-${k}" class="char-ready-glow" style="width:48px;height:48px;border-radius:50%;position:absolute;top:-4px;left:-4px"></div>
-      <div style="font-size:34px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.3));animation:fisher-idle 3s ease-in-out infinite">👨‍🦱</div>
-      <div style="font-size:16px;position:absolute;right:-14px;top:0;animation:rod-bob 2s ease-in-out infinite">🎣</div>
-      <div class="lv-badge" style="top:-6px;right:-8px">Lv${S.upg[k]}</div>
-    </div>
-    <div style="width:44px"><div class="char-progress"><div class="char-progress-fill" id="pbf-${k}" style="width:100%"></div></div></div>
-    <div class="char-name">${SOURCES[k].outN}</div>`;
-  fisher.addEventListener('click',()=>tapSource(k));
-  div.appendChild(fisher);
-  c.appendChild(div);
+/* Source layout — % based, no pixel measurement */
+const SRC_LAYOUT={
+  fisher:{left:'13%', bottom:'57%', type:'pier'},
+  aqua:  {left:'36%', bottom:'56%', type:'aqua'},
+  rice:  {left:'54%', bottom:'31%', type:'field'},
+  garden:{left:'68%', bottom:'38%', type:'garden'},
+};
+
+function buildSources(cfg){
+  const cont=$('scene-sources');cont.innerHTML='';
+  cfg.sources.forEach(k=>{
+    const lo=SRC_LAYOUT[k];
+    const el=document.createElement('div');
+    el.className='scene-obj';el.id='src-'+k;
+    el.style.cssText=`position:absolute;left:${lo.left};bottom:${lo.bottom};display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;z-index:10;filter:drop-shadow(0 8px 16px rgba(0,0,0,.22));transition:transform .12s,filter .12s`;
+
+    let bodyHtml='';
+    if(lo.type==='pier'){
+      bodyHtml=`
+        <div style="position:relative">
+          <div id="rr-${k}" class="ready-ring"></div>
+          <div class="pier-body">
+            <div class="pier-posts">
+              <div class="pier-post" style="height:22px"></div>
+              <div class="pier-post" style="height:20px"></div>
+              <div class="pier-post" style="height:22px"></div>
+            </div>
+          </div>
+          <div style="position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-size:30px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.25));animation:fisher-idle 3s ease-in-out infinite">👨‍🦱</div>
+          <div style="position:absolute;bottom:110%;right:-10px;font-size:16px;animation:rod-bob 2s ease-in-out infinite">🎣</div>
+          <div class="lv-badge">Lv${S.upg[k]}</div>
+        </div>`;
+    } else if(lo.type==='aqua'){
+      bodyHtml=`
+        <div style="position:relative">
+          <div id="rr-${k}" class="ready-ring"></div>
+          <div class="aqua-body">
+            <div class="aqua-water"></div>
+            <div class="aqua-glass"></div>
+            <div class="aqua-bubble" style="width:5px;height:5px;left:20%;bottom:6px;animation-duration:1.4s"></div>
+            <div class="aqua-bubble" style="width:4px;height:4px;left:45%;bottom:4px;animation-duration:1.9s;animation-delay:-.6s"></div>
+            <div class="aqua-bubble" style="width:6px;height:6px;left:70%;bottom:5px;animation-duration:1.6s;animation-delay:-1s"></div>
+            <div class="aqua-fish" style="top:28%;animation-duration:4s">🦐</div>
+            <div class="aqua-fish" style="top:52%;font-size:14px;animation-duration:6s;animation-delay:-2s">🐟</div>
+            <div class="lv-badge">Lv${S.upg[k]}</div>
+          </div>
+        </div>`;
+    } else if(lo.type==='field'){
+      bodyHtml=`
+        <div style="position:relative">
+          <div id="rr-${k}" class="ready-ring"></div>
+          <div class="field-body">
+            <div class="field-top"></div>
+            <div class="stalks">
+              <div class="stalk">🌾</div><div class="stalk">🌾</div>
+              <div class="stalk">🌾</div><div class="stalk">🌾</div>
+            </div>
+            <div class="field-farmer">👩‍🌾</div>
+            <div class="lv-badge">Lv${S.upg[k]}</div>
+          </div>
+        </div>`;
+    } else {
+      bodyHtml=`
+        <div style="position:relative">
+          <div id="rr-${k}" class="ready-ring"></div>
+          <div class="garden-body">
+            <div class="gplants">
+              <div class="gplant">🥑</div><div class="gplant">🌿</div><div class="gplant">🥒</div>
+              <div class="gplant">🥑</div><div class="gplant">🌿</div><div class="gplant">🥒</div>
+            </div>
+            <div class="lv-badge">Lv${S.upg[k]}</div>
+          </div>
+        </div>`;
+    }
+
+    el.innerHTML=bodyHtml+`
+      <div class="obj-pbar"><div class="obj-pfill" id="pbf-${k}" style="width:100%"></div></div>
+      <div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);text-shadow:0 1px 3px rgba(0,0,0,.5)">${SOURCES[k].outN}</div>
+      <div class="obj-shadow"></div>`;
+
+    el.addEventListener('click',()=>tapSource(k));
+    cont.appendChild(el);
+  });
 }
 
-function buildAquarium(c,k,cx,W,H,roadH,dirtH,grassH,waterH){
-  const aW=72,aH=58;
-  const bottom=roadH+dirtH+grassH+Math.round(waterH*0.15);
-  const div=document.createElement('div');
-  div.id='src-'+k;
-  div.style.cssText=`position:absolute;left:${cx-aW/2}px;bottom:${bottom}px;z-index:6;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer`;
-  div.innerHTML=`
-    <div style="position:relative">
-      <div id="src-ready-${k}" class="char-ready-glow" style="width:${aW+10}px;height:${aH+10}px;border-radius:10px;position:absolute;top:-5px;left:-5px"></div>
-      <div class="tank-body" style="width:${aW}px;height:${aH}px">
-        <div class="tank-water"></div>
-        <div class="tank-bubbles">
-          ${Array.from({length:5},(_,i)=>`<div class="tank-bubble" style="width:${4+Math.random()*4}px;height:${4+Math.random()*4}px;left:${10+i*12}%;bottom:5px;animation-duration:${1.5+Math.random()}s;animation-delay:-${Math.random()*2}s"></div>`).join('')}
-        </div>
-        <div class="tank-fish" style="top:30%;font-size:18px;animation-duration:4s">🦐</div>
-        <div class="tank-fish" style="top:55%;font-size:14px;animation-duration:6s;animation-delay:-2s">🐟</div>
-        <div class="tank-glass"></div>
-        <div class="lv-badge">Lv${S.upg[k]}</div>
-      </div>
-    </div>
-    <div style="width:${aW-6}px"><div class="char-progress"><div class="char-progress-fill" id="pbf-${k}" style="width:100%"></div></div></div>
-    <div class="char-name">${SOURCES[k].outN}</div>`;
-  div.addEventListener('click',()=>tapSource(k));
-  c.appendChild(div);
-}
-
-function buildRiceField(c,k,cx,W,H,roadH,dirtH,grassH){
-  const fW=96,fH=62;
-  const bottom=roadH+dirtH+Math.round(grassH*0.05);
-  const div=document.createElement('div');
-  div.id='src-'+k;
-  div.style.cssText=`position:absolute;left:${cx-fW/2}px;bottom:${bottom}px;z-index:6;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer`;
-  div.innerHTML=`
-    <div style="position:relative">
-      <div id="src-ready-${k}" class="char-ready-glow" style="width:${fW+10}px;height:${fH+10}px;border-radius:10px;position:absolute;top:-5px;left:-5px"></div>
-      <div class="field-plot" style="width:${fW}px;height:${fH}px">
-        <div class="field-rice-row">
-          <div class="rice-stalk">🌾</div><div class="rice-stalk">🌾</div>
-          <div class="rice-stalk">🌾</div><div class="rice-stalk">🌾</div>
-        </div>
-        <div class="field-farmer">👩‍🌾</div>
-        <div class="lv-badge">Lv${S.upg[k]}</div>
-      </div>
-    </div>
-    <div style="width:${fW-6}px"><div class="char-progress"><div class="char-progress-fill" id="pbf-${k}" style="width:100%"></div></div></div>
-    <div class="char-name">${SOURCES[k].outN}</div>`;
-  div.addEventListener('click',()=>tapSource(k));
-  c.appendChild(div);
-}
-
-function buildGarden(c,k,cx,W,H,roadH,dirtH,grassH){
-  const gW=80,gH=54;
-  const bottom=roadH+dirtH+Math.round(grassH*0.35);
-  const div=document.createElement('div');
-  div.id='src-'+k;
-  div.style.cssText=`position:absolute;left:${cx-gW/2}px;bottom:${bottom}px;z-index:6;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer`;
-  div.innerHTML=`
-    <div style="position:relative">
-      <div id="src-ready-${k}" class="char-ready-glow" style="width:${gW+10}px;height:${gH+10}px;border-radius:10px;position:absolute;top:-5px;left:-5px"></div>
-      <div class="garden-bed" style="width:${gW}px;height:${gH}px">
-        <div class="garden-plants">
-          <div class="garden-plant">🥑</div><div class="garden-plant">🌿</div>
-          <div class="garden-plant">🥒</div><div class="garden-plant">🥑</div>
-          <div class="garden-plant">🌿</div><div class="garden-plant">🥒</div>
-        </div>
-        <div class="lv-badge">Lv${S.upg[k]}</div>
-      </div>
-    </div>
-    <div style="width:${gW-6}px"><div class="char-progress"><div class="char-progress-fill" id="pbf-${k}" style="width:100%"></div></div></div>
-    <div class="char-name">${SOURCES[k].outN}</div>`;
-  div.addEventListener('click',()=>tapSource(k));
-  c.appendChild(div);
-}
-
-/* ── KITCHEN BUILDINGS ── */
-function buildKitchenBuildings(container,cfg,W,H,roadH,dirtH,grassH){
-  const bldPositions={
-    sushi:  {x:0.85,widthRatio:0.1},
-    tempura:{x:0.76,widthRatio:0.09},
-  };
-  cfg.kitchens.forEach((k,i)=>{
+const BLD_LAYOUT={
+  sushi:  {right:'7%', bottom:'22%'},
+  tempura:{right:'18%',bottom:'22%'},
+};
+function buildBuildings(cfg){
+  const cont=$('scene-buildings');cont.innerHTML='';
+  cfg.kitchens.forEach(k=>{
     const kit=KITCHENS[k];
-    const pos=bldPositions[k]||{x:0.82-i*0.1,widthRatio:0.09};
-    const bW=Math.round(W*pos.widthRatio);
-    const bH=Math.round(bW*0.8);
-    const cx=Math.round(pos.x*W);
-    const bottom=roadH+dirtH;
-    const roofW=bW+20;
-
-    const div=document.createElement('div');
-    div.className='kitchen-building';div.id='bld-'+k;
-    div.style.cssText=`left:${cx-bW/2}px;bottom:${bottom}px`;
-    div.innerHTML=`
-      <div class="bld-roof-wrap" style="width:${bW}px">
-        <div class="bld-roof" style="border-left:${roofW/2}px solid transparent;border-right:${roofW/2}px solid transparent;border-bottom:${Math.round(roofW*0.32)}px solid ${kit.roofColor};margin-left:-10px"></div>
-        <div class="bld-roof-band" style="background:linear-gradient(180deg,${kit.roofColor},${kit.color});height:10px"></div>
-      </div>
-      <div class="bld-walls" id="bldw-${k}" style="width:${bW}px;height:${bH}px;background:linear-gradient(165deg,${kit.color},${kit.roofColor});box-shadow:0 6px 0 rgba(0,0,0,.28),0 8px 20px rgba(0,0,0,.2)">
-        <div class="bld-sign">${kit.in}+${kit.in2}→${kit.out}</div>
-        <div class="bld-window" style="left:${Math.round(bW*.08)}px;top:${Math.round(bH*.32)}px;width:${Math.round(bW*.2)}px;height:${Math.round(bH*.22)}px">
-          <div class="cook-char" style="font-size:${Math.round(bW*.18)}px;bottom:0;left:50%;transform:translateX(-50%)">👨‍🍳</div>
+    const lo=BLD_LAYOUT[k]||{right:'8%',bottom:'22%'};
+    const w=document.createElement('div');
+    w.className='bld-wrap';w.id='bld-'+k;
+    w.style.cssText=`right:${lo.right};bottom:${lo.bottom}`;
+    const bW=90,bH=68;
+    w.innerHTML=`
+      <div style="position:relative">
+        <!-- Chimney -->
+        <div class="chimney" style="${k==='sushi'?'right:18px':'left:18px'}">
+          <div class="steam-puff" style="width:9px;height:9px;left:50%;bottom:8px;animation-delay:0s"></div>
+          <div class="steam-puff" style="width:7px;height:7px;left:50%;bottom:8px;animation-delay:1.1s"></div>
         </div>
-        <div class="bld-window" style="right:${Math.round(bW*.08)}px;top:${Math.round(bH*.32)}px;width:${Math.round(bW*.2)}px;height:${Math.round(bH*.22)}px"></div>
-        <div class="bld-door" style="width:${Math.round(bW*.22)}px;height:${Math.round(bH*.44)}px;background:${kit.roofColor}"></div>
-        <div class="bld-progress"><div class="bld-progress-fill" id="bpf-${k}" style="width:0%"></div></div>
-        <div class="chimney-obj" style="${k==='sushi'?'right:14px':'left:14px'}">
-          <div class="steam" style="width:10px;height:10px;left:50%;bottom:10px;animation-delay:0s"></div>
-          <div class="steam" style="width:8px;height:8px;left:50%;bottom:10px;animation-delay:.8s"></div>
+        <!-- Roof -->
+        <div style="display:flex;flex-direction:column;align-items:center;width:${bW}px">
+          <div class="bld-roof" style="border-left:${bW/2+12}px solid transparent;border-right:${bW/2+12}px solid transparent;border-bottom:${Math.round((bW+24)*0.33)}px solid ${kit.roofC}"></div>
+          <div class="bld-roof-edge" style="background:linear-gradient(180deg,${kit.roofC},${kit.color});width:${bW}px"></div>
         </div>
-        <div class="lv-badge">Lv${S.upg[k]}</div>
-      </div>
-      <div class="bld-shadow" style="width:${bW}px"></div>`;
-    div.querySelector('.bld-walls').addEventListener('click',()=>tapKitchen(k));
-    container.appendChild(div);
+        <!-- Walls -->
+        <div class="bld-body" id="bldw-${k}" style="width:${bW}px;height:${bH}px;background:linear-gradient(165deg,${kit.wallC},${kit.color});">
+          <div class="bld-sign">${kit.in}+${kit.in2}→${kit.out}</div>
+          <div class="bld-window" style="left:8px;top:22px;width:19px;height:17px">
+            <div class="bld-cook" style="left:0px;font-size:17px">👨‍🍳</div>
+          </div>
+          <div class="bld-window" style="right:8px;top:22px;width:19px;height:17px"></div>
+          <div class="bld-door"   style="width:20px;height:28px;background:${kit.roofC}"></div>
+          <div class="bld-progress"><div class="bld-progress-fill" id="bpf-${k}"></div></div>
+          <div class="bld-lv">Lv${S.upg[k]}</div>
+        </div>
+        <!-- Shadow -->
+        <div style="width:${bW}px;height:9px;background:radial-gradient(ellipse,rgba(0,0,0,.2),transparent);border-radius:50%"></div>
+      </div>`;
+    w.addEventListener('click',()=>tapKitchen(k));
+    cont.appendChild(w);
   });
 }
 
-/* ── KITCHEN PANEL (right UI) ── */
+function buildMopers(){
+  const cont=$('scene-mopers');cont.innerHTML='';
+  const leftPcts=['22%','46%'];
+  G.mopers.forEach((m,i)=>{
+    m.leftPct=leftPcts[i];
+    const el=document.createElement('div');
+    el.className='moped-wrap';el.id='mp-'+m.id;
+    el.style.cssText=`left:${m.leftPct};bottom:3%`;
+    el.innerHTML=`
+      <div class="moped-bubble" id="mpb-${m.id}">Готов ✓</div>
+      <div class="moped-icon">🛵</div>`;
+    el.addEventListener('click',()=>tapMoper(m.id));
+    cont.appendChild(el);
+  });
+}
+
 function buildKitchenPanel(cfg){
-  const kp=$('kitchen-panel');
-  kp.querySelectorAll('.kitchen-card,.fridge-card').forEach(e=>e.remove());
+  const kp=$('panel-kitchen');
+  kp.querySelectorAll('.kc-card,.fridge-widget').forEach(e=>e.remove());
   cfg.kitchens.forEach(k=>{
     const kit=KITCHENS[k],lv=S.upg[k];
-    const card=document.createElement('div');card.className='kitchen-card';card.id='kc-'+k;
+    const card=document.createElement('div');card.className='kc-card';card.id='kc-'+k;
     card.innerHTML=`
-      <div class="kc-icon">${kit.e}</div>
+      <div class="kc-ico">${kit.e}</div>
       <div class="kc-recipe">${kit.in}+${kit.in2}→${kit.out}</div>
-      <div class="kc-name">${kit.n}</div>
-      <div class="kc-prog"><div class="kc-prog-fill" id="kpf-${k}" style="width:0%"></div></div>
+      <div class="kc-nm">${kit.n}</div>
+      <div class="kc-pb"><div class="kc-pbf" id="kpf-${k}" style="width:0%"></div></div>
       <div class="kc-lv">Lv${lv}</div>`;
     card.addEventListener('click',()=>tapKitchen(k));
     kp.appendChild(card);
   });
-  // Fridge
-  const fcard=document.createElement('div');fcard.className='fridge-card';fcard.id='fridge-card';
-  fcard.innerHTML=`
-    <div class="fridge-title">🧊 Холодильник <span id="fridge-count" style="color:rgba(42,26,14,.3)">(0/${stMax()})</span></div>
-    <div class="fridge-items" id="fridge-items"><div class="fridge-empty">Пусто</div></div>`;
-  kp.appendChild(fcard);
+  const fw=document.createElement('div');fw.className='fridge-widget';fw.id='fridge-widget';
+  fw.innerHTML=`
+    <div class="fridge-hdr">🧊 Склад <span class="fridge-cnt" id="fridge-cnt">(0/${stMax()})</span></div>
+    <div class="fridge-chips" id="fridge-chips"><div class="fridge-empty">Пусто</div></div>`;
+  kp.appendChild(fw);
 }
 
-/* ── MOPERS ── */
-function buildMopers(W,H,roadH){
-  const mw=$('world-mopers');mw.innerHTML='';
-  const startXs=[Math.round(W*0.28),Math.round(W*0.55)];
-  G.mopers.forEach((m,i)=>{
-    m.x=startXs[i];
-    const bottom=Math.round(roadH*0.18);
-    const div=document.createElement('div');div.className='moped-obj';div.id='mp-'+m.id;
-    div.style.cssText=`left:${m.x}px;bottom:${bottom}px`;
-    div.innerHTML=`
-      <div class="moped-speech" id="mpb-${m.id}">Готов ✓</div>
-      <div class="moped-vehicle">
-        <div class="moped-body-svg">🛵</div>
-      </div>`;
-    div.addEventListener('click',()=>tapMoper(m.id));
-    mw.appendChild(div);
-  });
-}
-
-/* ═══════════════════════════ GAME LOOP ═══════════════════════════ */
+/* ══ GAME LOOP ══ */
 const TICK=200;
 function beginGame(){G.running=true;G.tick=setInterval(gameTick,TICK)}
 
@@ -1163,15 +1011,15 @@ function gameTick(){
   if(G.timeLeft<=0){G.timeLeft=0;endGame();return;}
   refreshTimer();
 
-  // Sources
+  // Sources cooldown
   G.cfg.sources.forEach(k=>{
     const s=G.sources[k];
     if(s.cd>0){
       s.cd=Math.max(0,s.cd-TICK);
       const pct=100-(s.cd/s.maxCd*100);
       const bar=$('pbf-'+k);if(bar)bar.style.width=pct+'%';
-      const rg=$('src-ready-'+k);if(rg)rg.style.display=s.cd===0?'block':'none';
-      const src=$('src-'+k);if(src){src.style.opacity=s.cd>0?'0.7':'1';}
+      const rr=$('rr-'+k);if(rr)rr.classList.toggle('show',s.cd===0);
+      const srcEl=$('src-'+k);if(srcEl)srcEl.style.filter=s.cd>0?'drop-shadow(0 6px 10px rgba(0,0,0,.15)) brightness(.75) saturate(.5)':'drop-shadow(0 8px 16px rgba(0,0,0,.22))';
     }
   });
 
@@ -1180,59 +1028,69 @@ function gameTick(){
     const kit=G.kitchens[k];
     if(kit.running){
       kit.tl-=TICK;
-      const pct=((kit.total-kit.tl)/kit.total)*100;
-      [$('bpf-'+k),$('kpf-'+k)].forEach(b=>{if(b)b.style.width=Math.min(100,pct)+'%'});
+      const pct=Math.min(100,((kit.total-kit.tl)/kit.total)*100);
+      [$('bpf-'+k),$('kpf-'+k)].forEach(b=>{if(b)b.style.width=pct+'%'});
       if(kit.tl<=0){
         kit.running=false;
         [$('bpf-'+k),$('kpf-'+k)].forEach(b=>{if(b)b.style.width='0%'});
-        $('bldw-'+k)?.classList.remove('bld-working');
+        $('bldw-'+k)?.parentElement?.parentElement?.classList.remove('working');
         $('kc-'+k)?.classList.remove('working');
         addStorage(KITCHENS[k].out);
-        fxEl($('bld-'+k),KITCHENS[k].out+' готово!','#2abcaa');
+        popFx($('bld-'+k),KITCHENS[k].out+' готово!','#2abcaa');
         refreshSteps();
       }
     }
   });
 
-  // Mopers
-  const W=window.innerWidth;
+  // Mopers animation
   G.mopers.forEach(m=>{
     if(m.busy&&m.tl>0){
-      m.tl-=TICK;m.x=Math.min(W+100,m.x+6);
-      const el=$('mp-'+m.id);if(el)el.style.left=m.x+'px';
+      m.tl-=TICK;
+      const el=$('mp-'+m.id);
+      if(el){
+        const pct=parseFloat(el.style.left||'22')+0.8;
+        el.style.left=Math.min(110,pct)+'%';
+      }
       if(m.tl<=0){
         m.busy=false;
-        const sx=[Math.round(W*0.28),Math.round(W*0.55)];m.x=sx[m.id];
-        if(el){el.style.left=m.x+'px';el.classList.remove('moped-glow');el.classList.remove('moving');}
+        const leftPcts=['22%','46%'];
+        const el=$('mp-'+m.id);
+        if(el){el.style.left=m.leftPct||leftPcts[m.id];el.classList.remove('moving','glow');}
         const mb=$('mpb-'+m.id);if(mb)mb.textContent='Готов ✓';
       }
     }
   });
 
-  // Orders timer
-  let rerender=false;
+  // Orders tick
+  let needRender=false;
   G.orders.forEach(o=>{
     if(!o.active)return;
     o.tl-=TICK/1000;
-    if(o.tl<=0){o.active=false;G.ordersFailed++;rerender=true;refreshStars();setTimeout(()=>{if(G.running)spawnOrder();},2500);}
-    else{const f=$('otf-'+o.id);if(f){const p=(o.tl/o.maxTl)*100;f.style.width=p+'%';f.classList.toggle('low',p<25);}}
+    if(o.tl<=0){
+      o.active=false;G.ordersFailed++;needRender=true;refreshStars();
+      setTimeout(()=>{if(G.running)spawnOrder();},2500);
+    } else {
+      const f=$('otf-'+o.id);
+      if(f){const p=o.tl/o.maxTl*100;f.style.width=p+'%';f.classList.toggle('low',p<25);}
+    }
   });
-  if(rerender)renderOrders();
-  if(G.orders.filter(o=>o.active).length<G.cfg.maxOrders&&Math.random()<0.006)spawnOrder();
-  checkAllDeliv();
+  if(needRender)renderOrders();
+  if(G.orders.filter(o=>o.active).length<G.cfg.maxOrders&&Math.random()<.006)spawnOrder();
+  checkAllDeliverable();
 }
 
-/* ═══════════════════════════ INTERACTIONS ═══════════════════════════ */
+/* ══ INTERACTIONS ══ */
 function tapSource(k){
   if(!G.running)return;
   const s=G.sources[k];if(s.cd>0)return;
-  if(stUsed()>=stMax()){fxXY(window.innerWidth*.5,60,'🧊 Холодильник полон!','#e8403a');return;}
+  if(stUsed()>=stMax()){popFxXY(window.innerWidth*.5,50,'🧊 Склад полон!','#e8403a');return;}
   addStorage(SOURCES[k].out);
   s.cd=sCd(k);s.maxCd=s.cd;
-  const rg=$('src-ready-'+k);if(rg)rg.style.display='none';
-  const src=$('src-'+k);if(src)src.style.opacity='0.7';
-  spawnParticles($('src-'+k),SOURCES[k].out);
-  fxEl($('src-'+k),SOURCES[k].out+' +1','#2abcaa');
+  const rr=$('rr-'+k);if(rr)rr.classList.remove('show');
+  const srcEl=$('src-'+k);
+  if(srcEl){srcEl.style.filter='drop-shadow(0 6px 10px rgba(0,0,0,.15)) brightness(.75) saturate(.5)'}
+  doParticles(srcEl,SOURCES[k].out);
+  popFx(srcEl,SOURCES[k].out+' +1','#2abcaa');
   refreshSteps();
 }
 
@@ -1240,32 +1098,32 @@ function tapKitchen(k){
   if(!G.running)return;
   const kit=G.kitchens[k];if(kit.running)return;
   const need1=KITCHENS[k].in,need2=KITCHENS[k].in2;
-  if(!(G.storage[need1]>0)){fxXY(window.innerWidth*.72,120,'Нужно '+need1,'#e8403a');return;}
-  if(!(G.storage[need2]>0)){fxXY(window.innerWidth*.72,120,'Нужно '+need2,'#e8403a');return;}
+  if(!(G.storage[need1]>0)){popFxXY(window.innerWidth*.78,100,'Нужно '+need1,'#e8403a');return;}
+  if(!(G.storage[need2]>0)){popFxXY(window.innerWidth*.78,100,'Нужно '+need2,'#e8403a');return;}
   removeStorage(need1,1);removeStorage(need2,1);
   kit.running=true;kit.tl=kTm(k);kit.total=kit.tl;
-  $('bldw-'+k)?.classList.add('bld-working');
+  $('bldw-'+k)?.parentElement?.parentElement?.classList.add('working');
   $('kc-'+k)?.classList.add('working');
   refreshSteps();
 }
 
 function tapMoper(id){
   if(!G.running)return;
-  const moper=G.mopers[id];if(moper.busy)return;
-  if(!G.selOrder){fxXY(window.innerWidth*.5,100,'👆 Выбери заказ!','#f8c832');return;}
+  const m=G.mopers[id];if(m.busy)return;
+  if(!G.selOrder){popFxXY(window.innerWidth*.5,90,'👆 Выбери заказ!','#f8c832');return;}
   const order=G.orders.find(o=>o.id===G.selOrder&&o.active);
   if(!order){G.selOrder=null;renderOrders();return;}
-  if(!order.deliverable){fxXY(window.innerWidth*.5,100,'❌ Не хватает!','#e8403a');return;}
+  if(!order.deliverable){popFxXY(window.innerWidth*.5,90,'❌ Не хватает!','#e8403a');return;}
   const need={};order.items.forEach(i=>need[i]=(need[i]||0)+1);
   Object.entries(need).forEach(([i,q])=>removeStorage(i,q));
   order.active=false;G.ordersOk++;G.coins+=order.reward;G.selOrder=null;
   refreshCoins();refreshStars();renderOrders();
-  moper.busy=true;moper.tl=mTm();
+  m.busy=true;m.tl=mTm();
   const el=$('mp-'+id);
-  el?.classList.remove('moped-glow');el?.classList.add('moving');
-  const mb=$('mpb-'+id);if(mb)mb.textContent='🏍️ Едет!';
-  fxXY(window.innerWidth*.5,72,'+'+order.reward+'🪙','#f8c832');
-  fxXY(window.innerWidth*.5,100,'✅ Доставлено!','#2abcaa');
+  el?.classList.add('moving');
+  if(G.orders.some(o=>o.active&&o.deliverable))el?.classList.add('glow');
+  const mb=$('mpb-'+id);if(mb)mb.textContent='🏍 Едет!';
+  popFxXY(window.innerWidth*.5,62,'+'+order.reward+'🪙','#f8c832');
   setTimeout(()=>{if(G.running)spawnOrder();},2200);
   refreshSteps();
 }
@@ -1274,32 +1132,32 @@ function selectOrder(id){
   G.selOrder=G.selOrder===id?null:id;renderOrders();
   if(G.selOrder){
     const rm=G.mopers.find(m=>!m.busy);
-    if(rm){const el=$('mp-'+rm.id);el?.classList.add('moped-glow');setTimeout(()=>el?.classList.remove('moped-glow'),2500);}
+    if(rm){const el=$('mp-'+rm.id);el?.classList.add('glow');setTimeout(()=>el?.classList.remove('glow'),2500);}
   }
   refreshSteps();
 }
 
-/* ═══════════════════════════ STORAGE ═══════════════════════════ */
-function addStorage(item){G.storage[item]=(G.storage[item]||0)+1;renderFridge();checkAllDeliv();}
-function removeStorage(item,qty){G.storage[item]=(G.storage[item]||0)-qty;if(G.storage[item]<=0)delete G.storage[item];renderFridge();checkAllDeliv();}
+/* ══ STORAGE ══ */
+function addStorage(item){G.storage[item]=(G.storage[item]||0)+1;renderFridge();checkAllDeliverable();}
+function removeStorage(item,qty){G.storage[item]=(G.storage[item]||0)-qty;if(G.storage[item]<=0)delete G.storage[item];renderFridge();checkAllDeliverable();}
 function renderFridge(){
   const max=stMax(),used=stUsed();
-  const cnt=$('fridge-count');if(cnt)cnt.textContent=`(${used}/${max})`;
-  const items=$('fridge-items');
-  if(items){
+  const cnt=$('fridge-cnt');if(cnt)cnt.textContent=`(${used}/${max})`;
+  const chips=$('fridge-chips');
+  if(chips){
     const entries=Object.entries(G.storage).filter(([,v])=>v>0);
-    items.innerHTML=entries.length
-      ?entries.map(([e,q])=>`<div class="fridge-chip">${e}<span>×${q}</span></div>`).join('')
+    chips.innerHTML=entries.length
+      ?entries.map(([e,q])=>`<div class="fchip">${e}<span>×${q}</span></div>`).join('')
       :'<div class="fridge-empty">Пусто</div>';
   }
 }
 
-/* ═══════════════════════════ ORDERS ═══════════════════════════ */
+/* ══ ORDERS ══ */
 function spawnOrder(){
-  if(G.orders.filter(o=>o.active).length>=G.cfg.maxOrders)return;
+  if(!G||G.orders.filter(o=>o.active).length>=G.cfg.maxOrders)return;
   const pi=Math.min(G.cfg.id-1,ORDER_POOLS.length-1);
-  const prod=new Set([...G.cfg.sources.map(k=>SOURCES[k].out),...G.cfg.kitchens.map(k=>KITCHENS[k].out)]);
-  const valid=ORDER_POOLS[pi].filter(t=>t.i.every(x=>prod.has(x)));
+  const avail=new Set([...G.cfg.sources.map(k=>SOURCES[k].out),...G.cfg.kitchens.map(k=>KITCHENS[k].out)]);
+  const valid=ORDER_POOLS[pi].filter(t=>t.i.every(x=>avail.has(x)));
   if(!valid.length)return;
   const tmpl=valid[Math.floor(Math.random()*valid.length)];
   const dur=28+tmpl.i.length*10;
@@ -1310,167 +1168,176 @@ function spawnOrder(){
 function renderOrders(){
   const list=$('orders-list');list.innerHTML='';
   const active=G.orders.filter(o=>o.active);
-  if(!active.length){list.innerHTML='<div style="color:rgba(42,26,14,.2);font-size:10px;font-weight:800;text-align:center;padding:12px">Ожидаем...</div>';return;}
+  if(!active.length){list.innerHTML='<div style="color:rgba(42,26,14,.2);font-size:9px;font-weight:800;text-align:center;padding:12px">Ждём заказы...</div>';return;}
   active.forEach(o=>{
-    checkDeliv(o);
-    const isSel=G.selOrder===o.id;
-    const html=o.items.map(item=>`<span class="oi ${(G.storage[item]||0)>0?'':'dim'}">${item}</span>`).join('');
+    checkDeliverable(o);
     const card=document.createElement('div');
-    card.className='order-card'+(isSel?' sel':'')+(o.deliverable&&!isSel?' ready':'');
+    card.className='order-card'+(G.selOrder===o.id?' sel':o.deliverable?' ready':'');
     card.id='oc-'+o.id;card.onclick=()=>selectOrder(o.id);
-    card.innerHTML=`<div class="oi-row">${html}</div><div class="o-reward">🪙${o.reward}</div><div class="o-tbar"><div class="o-tfill" id="otf-${o.id}" style="width:${o.tl/o.maxTl*100}%"></div></div>`;
+    card.innerHTML=`
+      <div class="oi-row">${o.items.map(item=>`<span class="oi ${(G.storage[item]||0)>0?'':'dim'}">${item}</span>`).join('')}</div>
+      <div class="o-bottom"><div class="o-reward">🪙${o.reward}</div></div>
+      <div class="o-tbar"><div class="o-tfill ${o.tl/o.maxTl<.25?'low':''}" id="otf-${o.id}" style="width:${o.tl/o.maxTl*100}%"></div></div>`;
     list.appendChild(card);
   });
   for(let i=active.length;i<G.cfg.maxOrders;i++)list.innerHTML+='<div class="o-ph">🍱</div>';
 }
 
-function checkDeliv(o){
+function checkDeliverable(o){
   const need={};o.items.forEach(i=>need[i]=(need[i]||0)+1);
   o.deliverable=Object.entries(need).every(([i,q])=>(G.storage[i]||0)>=q);
 }
-function checkAllDeliv(){
-  G.orders.forEach(o=>{if(o.active)checkDeliv(o);});
+function checkAllDeliverable(){
+  G.orders.forEach(o=>{if(o.active)checkDeliverable(o);});
   G.orders.filter(o=>o.active).forEach(o=>{
     const c=$('oc-'+o.id);if(!c)return;
-    c.classList.toggle('ready',o.deliverable&&G.selOrder!==o.id);
-    c.classList.toggle('sel',G.selOrder===o.id);
+    c.className='order-card'+(G.selOrder===o.id?' sel':o.deliverable?' ready':'');
     c.querySelectorAll('.oi').forEach((el,i)=>el.classList.toggle('dim',(G.storage[o.items[i]]||0)===0));
   });
   refreshSteps();
 }
 
-/* ═══════════════════════════ DISPLAY ═══════════════════════════ */
+/* ══ HUD ══ */
+function refreshHUD(){refreshTimer();refreshCoins();refreshStars();refreshSteps();}
 function refreshTimer(){
-  const el=$('tb-timer');
+  const el=$('hud-timer');if(!el)return;
   const m=Math.floor(G.timeLeft/60),s=Math.floor(G.timeLeft%60);
   el.textContent=m+':'+String(s).padStart(2,'0');
-  el.classList.toggle('red',G.timeLeft<30);
+  el.classList.toggle('urgent',G.timeLeft<30);
 }
-function refreshCoins(){$('tb-coins').textContent=G.coins;}
+function refreshCoins(){const el=$('hud-coins');if(el)el.textContent=G.coins;}
 function refreshStars(){
   const n=calcStars();
-  document.querySelectorAll('#tb-stars .tb-star').forEach((el,i)=>{
-    el.textContent=i<n?'⭐':'☆';
-    el.classList.toggle('on',i<n);
+  document.querySelectorAll('#hud-stars span').forEach((el,i)=>{
+    el.textContent=i<n?'⭐':'☆';el.classList.toggle('on',i<n);
   });
 }
 function calcStars(){const g=G.cfg.goals;return G.coins>=g[2]?3:G.coins>=g[1]?2:G.coins>=g[0]?1:0;}
 function refreshSteps(){
   if(!G)return;
-  [0,1,2,3].forEach(i=>{const el=$('sp'+i);if(el)el.className='step-pill';});
-  const hasRes=Object.values(G.storage||{}).some(v=>v>0);
+  ['hs0','hs1','hs2','hs3'].forEach(id=>{const el=$(id);if(el)el.className='hstep';});
+  const set=(i,cls)=>{const el=$('hs'+i);if(el)el.className='hstep '+cls;};
+  const hasRes=stUsed()>0;
   const canKit=G.cfg.kitchens.some(k=>{const kit=KITCHENS[k];return(G.storage[kit.in]||0)>0&&(G.storage[kit.in2]||0)>0&&!G.kitchens[k].running;});
-  const kitRun=Object.values(G.kitchens||{}).some(k=>k.running);
+  const kitRun=Object.values(G.kitchens).some(k=>k.running);
   const hasReady=G.orders.some(o=>o.active&&o.deliverable);
   const hasSel=!!G.selOrder;
-  const set=(i,cls)=>{const el=$('sp'+i);if(el)el.className='step-pill '+cls;};
   if(!hasRes&&!kitRun)set(0,'active');
   else if(canKit){set(0,'done');set(1,'active');}
   else if(hasReady&&!hasSel){set(0,'done');set(1,'done');set(2,'active');}
   else if(hasSel){set(0,'done');set(1,'done');set(2,'done');set(3,'active');}
-  else if(hasRes||kitRun)set(0,'done');
+  else set(0,'done');
 }
 
-/* ═══════════════════════════ FX ═══════════════════════════ */
-function fxEl(el,t,c){if(!el)return;const r=el.getBoundingClientRect();fxXY(r.left+r.width/2,r.top,t,c);}
-function fxXY(x,y,t,c){
-  const el=document.createElement('div');el.className='fx';
-  el.style.cssText=`left:${x-40}px;top:${y-8}px;color:${c}`;
-  el.textContent=t;document.body.appendChild(el);setTimeout(()=>el.remove(),1400);
+/* ══ FX ══ */
+function popFx(el,t,c){
+  if(!el)return;const r=el.getBoundingClientRect();
+  popFxXY(r.left+r.width/2,r.top+10,t,c);
 }
-function spawnParticles(el){
-  if(!el)return;
-  const r=el.getBoundingClientRect();const cx=r.left+r.width/2,cy=r.top+r.height/2;
-  const colors=['#2abcaa','#f8c832','#f4846a','#6cc83a','#e8403a'];
-  for(let i=0;i<8;i++){
+function popFxXY(x,y,t,c){
+  const el=document.createElement('div');el.className='fx-pop';
+  el.style.cssText=`left:${x-44}px;top:${y-10}px;color:${c};text-shadow:0 1px 3px rgba(0,0,0,.18)`;
+  el.textContent=t;document.body.appendChild(el);
+  setTimeout(()=>el.remove(),1350);
+}
+function doParticles(el){
+  if(!el)return;const r=el.getBoundingClientRect();
+  const cx=r.left+r.width/2,cy=r.top+r.height/2;
+  ['#2abcaa','#f8c832','#f4846a','#6cc83a','#e8403a','#88d8f8'].forEach((c,i)=>{
     const p=document.createElement('div');p.className='particle';
-    const ang=Math.random()*360,dist=40+Math.random()*50;
-    const dx=Math.cos(ang*Math.PI/180)*dist,dy=Math.sin(ang*Math.PI/180)*dist;
-    p.style.cssText=`left:${cx}px;top:${cy}px;width:7px;height:7px;background:${colors[i%colors.length]};--fly:translate(${dx}px,${dy}px);animation-delay:${i*.035}s`;
-    document.body.appendChild(p);setTimeout(()=>p.remove(),900);
-  }
+    const a=i*(360/6)*(Math.PI/180),d=42+Math.random()*38;
+    p.style.cssText=`left:${cx}px;top:${cy}px;background:${c};--d:translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px);animation-delay:${i*.04}s`;
+    document.body.appendChild(p);setTimeout(()=>p.remove(),860);
+  });
 }
 
-/* ═══════════════════════════ END ═══════════════════════════ */
+/* ══ END GAME ══ */
 function endGame(){
   if(G.ended)return;G.ended=true;G.running=false;clearInterval(G.tick);
   const stars=calcStars();
   S.stars[G.cfg.id]=Math.max(S.stars[G.cfg.id]||0,stars);
   S.coins+=G.coins;
-  setTimeout(()=>showResult(stars),600);
+  setTimeout(()=>showResult(stars),500);
 }
-function goMap(){if(G){G.running=false;clearInterval(G.tick);}show('screen-map');renderMap();}
+function goMap(){
+  if(G){G.running=false;clearInterval(G.tick);}
+  showScreen('screen-map');initMap();
+}
 
-/* ═══════════════════════════ RESULT ═══════════════════════════ */
+/* ══ RESULT / UPGRADE ══ */
 function showResult(stars){
-  $('upg-hl').textContent=stars===0?'😔 Ещё раз!':stars===1?'👍 Пройден!':stars===2?'🎉 Отлично!':'🏆 Мастер суши!';
-  document.querySelectorAll('#upg-stars .s-big').forEach((el,i)=>setTimeout(()=>{el.textContent=i<stars?'⭐':'☆';if(i<stars)el.classList.add('on');},i*280));
-  $('res-pills').innerHTML=`
-    <div class="rpill"><div class="rpill-v">🪙${G.coins}</div><div class="rpill-l">Монет</div></div>
-    <div class="rpill"><div class="rpill-v">📦${G.ordersOk}</div><div class="rpill-l">Доставлено</div></div>
-    <div class="rpill"><div class="rpill-v">❌${G.ordersFailed}</div><div class="rpill-l">Просрочено</div></div>`;
-  $('upg-wallet').textContent=S.coins;
+  $('upg-ttl').textContent=stars===0?'😔 Ещё раз!':stars===1?'👍 Пройден!':stars===2?'🎉 Отлично!':'🏆 Мастер суши!';
+  document.querySelectorAll('#upg-stars .s-big').forEach((el,i)=>{
+    el.className='s-big';
+    setTimeout(()=>{el.textContent=i<stars?'⭐':'☆';if(i<stars)el.classList.add('on');},i*280);
+  });
+  $('stat-pills').innerHTML=`
+    <div class="stat-pill"><div class="stat-v">🪙${G.coins}</div><div class="stat-l">Монет</div></div>
+    <div class="stat-pill"><div class="stat-v">📦${G.ordersOk}</div><div class="stat-l">Доставлено</div></div>
+    <div class="stat-pill"><div class="stat-v">❌${G.ordersFailed}</div><div class="stat-l">Просрочено</div></div>`;
+  $('upg-coins').textContent=S.coins;
   buildUpgList();
-  const btn=$('btn-next');
-  if(stars===0){btn.textContent='🔄 Ещё раз';btn.onclick=()=>startLevel(G.cfg.id);}
-  else{const nid=G.cfg.id+1,has=LEVELS.find(l=>l.id===nid);btn.textContent=has?'Следующий →':'🗺 На карту';btn.onclick=()=>{show('screen-map');renderMap();};}
-  show('screen-upgrade');
+  const nid=G.cfg.id+1,has=LEVELS.find(l=>l.id===nid);
+  if(stars===0){$('btn-next').textContent='🔄 Ещё раз';$('btn-next').onclick=()=>startLevel(G.cfg.id);}
+  else{$('btn-next').textContent=has?'Следующий →':'🗺 На карту';$('btn-next').onclick=()=>{showScreen('screen-map');initMap();};}
+  showScreen('screen-upgrade');
 }
-
 function buildUpgList(){
   const list=$('upg-list');list.innerHTML='';
-  list.innerHTML+='<div class="upg-sec">🎣 Источники</div>';
-  UPG.forEach((item,idx)=>{
-    const lv=S.upg[item.k]||1,maxed=lv>=item.m,cost=UCOSTS[lv],afford=S.coins>=cost;
-    const dots=Array.from({length:item.m},(_,i)=>`<div class="udot ${i<lv?'on':''}"></div>`).join('');
-    const card=document.createElement('div');
-    card.className='upg-card'+(maxed?' off':'')+((!afford&&!maxed)?' broke':'');
-    card.innerHTML=`<div class="u-ico">${item.e}</div><div class="u-info"><div class="u-name">${item.n}</div><div class="u-sub">${item.d} · Lv${lv}${maxed?'':' → '+(lv+1)}</div><div class="u-dots">${dots}</div></div>${maxed?`<div class="u-max">МАКС ✓</div>`:`<div class="u-cost-btn" style="opacity:${afford?1:.4}"><div class="u-cost-v">🪙${cost}</div><div class="u-cost-l">Купить</div></div>`}`;
-    if(!maxed&&afford){card.onclick=()=>{S.upg[item.k]++;S.coins-=cost;$('upg-wallet').textContent=S.coins;$('map-coins').textContent=S.coins;buildUpgList();fxXY(window.innerWidth*.72,185,'⬆️ '+item.n+' Lv'+(lv+1),'#2abcaa');};}
-    list.appendChild(card);
-    if(item.k==='garden')list.innerHTML+='<div class="upg-sec" style="margin-top:5px">👨‍🍳 Кухня и доставка</div>';
+  list.innerHTML+='<div class="upg-section">🎣 Источники</div>';
+  UPG_DEFS.forEach((u,idx)=>{
+    const lv=S.upg[u.k]||1,maxed=lv>=u.m,cost=UCOSTS[lv],afford=S.coins>=cost;
+    const dots=Array.from({length:u.m},(_,i)=>`<div class="udot ${i<lv?'on':''}"></div>`).join('');
+    const row=document.createElement('div');
+    row.className='upg-row'+(maxed?' maxed':!afford?' broke':'');
+    row.innerHTML=`<div class="u-ico">${u.e}</div><div class="u-info"><div class="u-name">${u.n}</div><div class="u-sub">${u.d} · Lv${lv}${maxed?'':' → '+(lv+1)}</div><div class="u-dots">${dots}</div></div>${maxed?`<div class="u-max-lbl">МАКС ✓</div>`:`<div class="u-buy-btn" style="opacity:${afford?1:.35}"><div class="u-buy-v">🪙${cost}</div><div class="u-buy-l">Купить</div></div>`}`;
+    if(!maxed&&afford){row.onclick=()=>{S.upg[u.k]++;S.coins-=cost;$('upg-coins').textContent=S.coins;$('map-coins').textContent=S.coins;buildUpgList();popFxXY(window.innerWidth*.72,170,'⬆️ '+u.n+' Lv'+(lv+1),'#2abcaa');};}
+    list.appendChild(row);
+    if(u.k==='garden')list.innerHTML+='<div class="upg-section" style="margin-top:5px">🏗️ Кухня и доставка</div>';
   });
 }
 
-/* ═══════════════════════════ TUTORIAL ═══════════════════════════ */
-const TUT=[
-  {t:'src-fisher',title:'🎣 Тапни рыбака!',text:'Рыбак на пирсе ловит рыбу. Тапни его когда светится — получишь 🐟 для кухни!',pos:'right'},
-  {t:'fridge-card',title:'🧊 Холодильник',text:'Все ингредиенты хранятся здесь. Следи — не переполни склад!',pos:'left'},
-  {t:'kc-sushi',title:'🍣 Готовь суши!',text:'Тапни суши-стол — нужны рыба + рис. Повар в окне всё приготовит!',pos:'left'},
-  {t:'orders-list',title:'📋 Выбери заказ!',text:'Тапни карточку заказа. Когда всё есть — зелёная рамка!',pos:'right'},
-  {t:'mp-0',title:'🛵 Доставляй!',text:'Выбери заказ потом тапни мопед — курьер помчится к клиенту!',pos:'top'},
+/* ══ TUTORIAL ══ */
+const TUTS=[
+  {target:'src-fisher',title:'🎣 Тапни рыбака!',  text:'Рыбак на пирсе. Жди пока засветится кольцо — потом тапни, получишь 🐟!',dir:'right'},
+  {target:'fridge-widget',title:'🧊 Холодильник', text:'Все ингредиенты хранятся тут. Следи чтобы не переполнить!',dir:'left'},
+  {target:'kc-sushi',title:'🍣 Приготовь суши!',  text:'Нужны рыба 🐟 + рис 🍚. Тапни карточку кухни чтобы начать готовить!',dir:'left'},
+  {target:'orders-list',title:'📋 Выбери заказ!', text:'Тапни карточку заказа. Когда есть всё — она светится зелёным!',dir:'right'},
+  {target:'mp-0',title:'🛵 Доставляй!',           text:'Выбери заказ, потом тапни мопед — курьер помчится к клиенту!',dir:'top'},
 ];
-let tutI=0,tutOv=null;
-function runTutorial(done){tutI=0;showTutStep(done);}
-function showTutStep(done){
-  if(tutOv){tutOv.remove();tutOv=null;}
-  if(tutI>=TUT.length){done();return;}
-  const step=TUT[tutI];
-  const ov=document.createElement('div');ov.className='tut-overlay';tutOv=ov;
+let tutStep=0,tutEl=null;
+function runTutorial(done){tutStep=0;showTut(done);}
+function showTut(done){
+  if(tutEl){tutEl.remove();tutEl=null;}
+  if(tutStep>=TUTS.length){done();return;}
+  const t=TUTS[tutStep];
+  const ov=document.createElement('div');ov.className='tut-overlay';
   const bg=document.createElement('div');bg.className='tut-bg';ov.appendChild(bg);
-  const target=$(step.t);
-  let tx=window.innerWidth/2-114,ty=window.innerHeight/2-100;
+  tutEl=ov;
+  const target=$(t.target);
+  let bx=window.innerWidth/2-110,by=window.innerHeight/2-90;
   if(target){
     const r=target.getBoundingClientRect();
     const hl=document.createElement('div');hl.className='tut-hl';
     hl.style.cssText=`top:${r.top-5}px;left:${r.left-5}px;width:${r.width+10}px;height:${r.height+10}px`;
     ov.appendChild(hl);
-    if(step.pos==='right'){tx=r.right+12;ty=r.top+r.height/2-80;}
-    else if(step.pos==='left'){tx=r.left-244;ty=r.top+r.height/2-80;}
-    else if(step.pos==='top'){tx=r.left+r.width/2-114;ty=r.top-196;}
-    tx=Math.max(8,Math.min(window.innerWidth-244,tx));
-    ty=Math.max(8,Math.min(window.innerHeight-210,ty));
+    if(t.dir==='right'){bx=r.right+10;by=r.top+r.height/2-80;}
+    else if(t.dir==='left'){bx=r.left-240;by=r.top+r.height/2-80;}
+    else{bx=r.left+r.width/2-110;by=r.top-185;}
+    bx=Math.max(6,Math.min(window.innerWidth-236,bx));
+    by=Math.max(6,Math.min(window.innerHeight-205,by));
   }
-  const bubble=document.createElement('div');bubble.className='tut-bubble';
-  const arr=step.pos==='top'?'👇':step.pos==='right'?'👈':'👉';
-  bubble.innerHTML=`<span class="tut-arrow">${arr}</span><div class="tut-title">${step.title}</div><div class="tut-text">${step.text}</div><button class="tut-ok">${tutI<TUT.length-1?'Понял! →':'Поехали! 🍣'}</button>`;
-  bubble.style.cssText=`left:${tx}px;top:${ty}px`;
-  bubble.querySelector('.tut-ok').onclick=()=>{tutI++;showTutStep(done);};
-  ov.appendChild(bubble);document.body.appendChild(ov);
+  const box=document.createElement('div');box.className='tut-box';
+  const arr=t.dir==='top'?'👇':t.dir==='right'?'👈':'👉';
+  box.innerHTML=`<span class="tut-arr">${arr}</span><div class="tut-ttl">${t.title}</div><div class="tut-txt">${t.text}</div><button class="tut-ok">${tutStep<TUTS.length-1?'Понял! →':'Поехали! 🍣'}</button>`;
+  box.style.cssText=`left:${bx}px;top:${by}px`;
+  box.querySelector('.tut-ok').onclick=()=>{tutStep++;showTut(done);};
+  ov.appendChild(box);document.body.appendChild(ov);
 }
 
-/* ═══════════════════════════ INIT ═══════════════════════════ */
-renderMap();show('screen-map');
+/* ══ INIT ══ */
+showScreen('screen-map');
+initMap();
 </script>
 </body>
 </html>
